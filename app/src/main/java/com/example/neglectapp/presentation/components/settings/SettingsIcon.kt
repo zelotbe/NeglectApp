@@ -1,7 +1,6 @@
-package com.example.neglectapp.presentation.ui.components.settings
+package com.example.neglectapp.presentation.components.settings
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height

@@ -1,9 +1,9 @@
-package com.example.neglectapp.presentation.ui.components.display
+package com.example.neglectapp.presentation.ui.status
 
-import android.view.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.wear.compose.material.Text
+import com.example.neglectapp.presentation.components.display.DisplayProgress
 
 @Composable
 fun DisplayStatus(
