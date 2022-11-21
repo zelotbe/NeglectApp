@@ -9,10 +9,11 @@ const val WATCH_ID_NAV_ARGUMENT = "watchId"
 const val SCROLL_TYPE_NAV_ARGUMENT = "scrollType"
 
 sealed class Screen(val route: String){
-    object StatusScreen: Screen("status")
-    object SettingsScreen: Screen("settings")
-    object StimulansScreen: Screen("stimulans")
-    object IntensityScreen: Screen("intensity")
-    object OperatingHoursScreen: Screen("operatinghours")
-    object SessionScreen: Screen("session")
+    object Landing: Screen("landing")
+    object Status: Screen("status")
+    object Settings: Screen("settings")
+    object Stimula: Screen("stimula")
+    object Intensity: Screen("intensity")
+    object OperatingHours: Screen("operatinghours")
+    object Session: Screen("session")
 }
