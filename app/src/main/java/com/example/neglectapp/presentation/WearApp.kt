@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.*
+import androidx.wear.compose.navigation.SwipeDismissableNavHost
+import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.currentBackStackEntryAsState
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.example.neglectapp.presentation.components.display.DisplayProgress
@@ -21,8 +23,11 @@ import com.example.neglectapp.presentation.components.settings.SettingsIcon
 import com.example.neglectapp.presentation.data.States
 import com.example.neglectapp.presentation.navigation.DestinationScrollType
 import com.example.neglectapp.presentation.navigation.SCROLL_TYPE_NAV_ARGUMENT
+import com.example.neglectapp.presentation.navigation.Screen
 import com.example.neglectapp.presentation.ui.ScalingLazyListStateViewModel
 import com.example.neglectapp.presentation.ui.ScrollStateViewModel
+import com.example.neglectapp.presentation.ui.landing.DisplayLanding
+import com.example.neglectapp.presentation.ui.settings.DisplaySettings
 import com.example.neglectapp.presentation.util.ButtonType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,6 +35,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 private val _uiState = MutableStateFlow(States())
 val uiState: StateFlow<States> = _uiState.asStateFlow()
+
 @OptIn(ExperimentalWearMaterialApi::class)
 @Composable
 fun WearApp(
@@ -62,46 +68,27 @@ fun WearApp(
                         PositionIndicator(scrollState = viewModel.scrollState)
                     }
                 }
+
             }
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colors.background),
-//            verticalArrangement = Arrangement.Center
-                horizontalAlignment = Alignment.CenterHorizontally
+            SwipeDismissableNavHost(
+                navController = swipeDismissableNavController,
+                startDestination = Screen.Landing.route,
+                modifier = Modifier.background(MaterialTheme.colors.background)
             ) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally),
-//                    contentAlignment = Alignment.Center
+                // LANDING PAGE
+                composable(
+                    route = Screen.Landing.route
                 ){
-//                    CircularProgressIndicator( progress = 0.4f,
-//                        modifier = Modifier.fillMaxSize(),
-//                        strokeWidth = 5.dp)
-                     DisplayProgress()
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize(),
-//            verticalArrangement = Arrangement.Center
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        SettingsIcon(onClick = { /*TODO*/ })
-                        Spacer(modifier = Modifier.height(50.dp))
-                        DisplayStatus(modifier = Modifier)
-                        Spacer(modifier = Modifier.height(15.dp))
-                        Column(modifier = Modifier.size(75.dp)) {
-                            NeglectButton(type = ButtonType.TEXT, modifier = Modifier, label = "Starten"){}
-
-                        }
-
-                    }
-
+                    DisplayLanding(navController = swipeDismissableNavController, modifier = Modifier )
                 }
-
-
+                // SETTINGS PAGE
+                composable(
+                    route = Screen.Settings.route
+                ){
+                    DisplaySettings(modifier = Modifier)
+                }
             }
-
         }
     }
 }
