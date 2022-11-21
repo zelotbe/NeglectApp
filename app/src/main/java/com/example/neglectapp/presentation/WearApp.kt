@@ -15,14 +15,21 @@ import androidx.navigation.NavHostController
 import androidx.wear.compose.material.*
 import androidx.wear.compose.navigation.currentBackStackEntryAsState
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
+import com.example.neglectapp.presentation.components.display.DisplayProgress
 import com.example.neglectapp.presentation.ui.status.DisplayStatus
 import com.example.neglectapp.presentation.components.settings.SettingsIcon
+import com.example.neglectapp.presentation.data.States
 import com.example.neglectapp.presentation.navigation.DestinationScrollType
 import com.example.neglectapp.presentation.navigation.SCROLL_TYPE_NAV_ARGUMENT
 import com.example.neglectapp.presentation.ui.ScalingLazyListStateViewModel
 import com.example.neglectapp.presentation.ui.ScrollStateViewModel
 import com.example.neglectapp.presentation.util.ButtonType
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
+private val _uiState = MutableStateFlow(States())
+val uiState: StateFlow<States> = _uiState.asStateFlow()
 @OptIn(ExperimentalWearMaterialApi::class)
 @Composable
 fun WearApp(
@@ -57,11 +64,6 @@ fun WearApp(
                 }
             }
         ) {
-            CircularProgressIndicator( progress = 0.4f,
-                modifier = Modifier.fillMaxSize(),
-                startAngle = 10f,
-                endAngle = 290f,
-                strokeWidth = 4.dp)
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -69,15 +71,34 @@ fun WearApp(
 //            verticalArrangement = Arrangement.Center
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally),
+//                    contentAlignment = Alignment.Center
+                ){
+//                    CircularProgressIndicator( progress = 0.4f,
+//                        modifier = Modifier.fillMaxSize(),
+//                        strokeWidth = 5.dp)
+                     DisplayProgress()
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize(),
+//            verticalArrangement = Arrangement.Center
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        SettingsIcon(onClick = { /*TODO*/ })
+                        Spacer(modifier = Modifier.height(50.dp))
+                        DisplayStatus(modifier = Modifier)
+                        Spacer(modifier = Modifier.height(15.dp))
+                        Column(modifier = Modifier.size(75.dp)) {
+                            NeglectButton(type = ButtonType.TEXT, modifier = Modifier, label = "Starten"){}
 
-                SettingsIcon(onClick = { /*TODO*/ })
-                Spacer(modifier = Modifier.height(105.dp))
-                DisplayStatus(modifier = Modifier)
-                Spacer(modifier = Modifier.height(100.dp))
-                Column(modifier = Modifier.size(75.dp)) {
-                    NeglectButton(type = ButtonType.TEXT, modifier = Modifier, label = "Starten"){}
+                        }
+
+                    }
 
                 }
+
 
             }
 
