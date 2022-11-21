@@ -7,9 +7,8 @@ import com.example.neglectapp.presentation.components.display.DisplayProgress
 
 @Composable
 fun DisplayStatus(
-    status: Boolean = true,
+    status: Boolean = false,
     modifier: Modifier,
-
 ){
     if (status){
         Text("08:30 - 16:00")
