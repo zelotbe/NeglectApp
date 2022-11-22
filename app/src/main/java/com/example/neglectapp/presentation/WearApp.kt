@@ -1,15 +1,11 @@
 package com.example.neglectapp.presentation
 
-import NeglectButton
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.*
@@ -17,9 +13,6 @@ import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.currentBackStackEntryAsState
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
-import com.example.neglectapp.presentation.components.display.DisplayProgress
-import com.example.neglectapp.presentation.ui.status.DisplayStatus
-import com.example.neglectapp.presentation.components.settings.SettingsIcon
 import com.example.neglectapp.presentation.data.States
 import com.example.neglectapp.presentation.navigation.DestinationScrollType
 import com.example.neglectapp.presentation.navigation.SCROLL_TYPE_NAV_ARGUMENT
@@ -29,7 +22,6 @@ import com.example.neglectapp.presentation.ui.ScrollStateViewModel
 import com.example.neglectapp.presentation.ui.landing.DisplayLanding
 import com.example.neglectapp.presentation.ui.settings.DisplaySettings
 import com.example.neglectapp.presentation.ui.settings.stimulans.DisplayStimula
-import com.example.neglectapp.presentation.util.ButtonType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -93,7 +85,7 @@ fun WearApp(
                 composable(
                     route = Screen.Stimula.route
                 ){
-                    DisplayStimula(modifier = Modifier)
+                    DisplayStimula(modifier = Modifier, navController = swipeDismissableNavController)
                 }
             }
         }
