@@ -28,6 +28,7 @@ import com.example.neglectapp.presentation.ui.ScalingLazyListStateViewModel
 import com.example.neglectapp.presentation.ui.ScrollStateViewModel
 import com.example.neglectapp.presentation.ui.landing.DisplayLanding
 import com.example.neglectapp.presentation.ui.settings.DisplaySettings
+import com.example.neglectapp.presentation.ui.settings.stimulans.DisplayStimula
 import com.example.neglectapp.presentation.util.ButtonType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -86,7 +87,13 @@ fun WearApp(
                 composable(
                     route = Screen.Settings.route
                 ){
-                    DisplaySettings(modifier = Modifier)
+                    DisplaySettings(modifier = Modifier, navController = swipeDismissableNavController)
+                }
+                // STIMULA SETTINGS
+                composable(
+                    route = Screen.Stimula.route
+                ){
+                    DisplayStimula(modifier = Modifier)
                 }
             }
         }
