@@ -16,6 +16,4 @@ sealed class Screen(val route: String){
     object Intensity: Screen("intensity")
     object OperatingHours: Screen("operatinghours")
     object Session: Screen("session")
-    object Alarm: Screen("alarm")
-
 }
