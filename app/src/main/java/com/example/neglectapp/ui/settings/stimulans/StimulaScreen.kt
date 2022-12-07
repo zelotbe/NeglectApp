@@ -28,19 +28,6 @@ fun DisplayStimula(
     val getSound = stimulaStore.getSound.collectAsState(initial = false)
     val getLight = stimulaStore.getLight.collectAsState(initial = false)
 
-    //SOUND DATA STORE
-//    val soundStore = StoreSound(context)
-//    val getSound = soundStore.getSound.collectAsState(initial = false)
-//    //LIGHT DATA STORE
-//    val lightStore = StoreLight(context)
-//    val getLight = lightStore.getLight.collectAsState(initial = false)
-//    val vibrationChecked by settingsViewModel.vibrate.collectAsState()
-//    val soundChecked by settingsViewModel.sound.collectAsState()
-//    val lightChecked by settingsViewModel.light.collectAsState()
-//    val settings = context.dataStore.data.collectAsState(
-//        initial = AppSettings()
-//    ).value
-
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -50,25 +37,6 @@ fun DisplayStimula(
         ScalingLazyColumn(
             horizontalAlignment = Alignment.Start,
         ){
-//            items(settings.stimula){ setting ->
-//                SplitToggleChip(
-//                    checked = setting.active,
-//                    onCheckedChange = {},
-//                    onClick = { navController.navigate(Screen.Intensity.route) },
-//                    toggleControl = {
-//                        Switch(
-//                            checked = setting.active,
-//                            onCheckedChange = {scope.launch { setActiveStimula(context, setting); Log.d("Stimula:",
-//                                setting.toString()
-//                            ) }}
-//                        )
-//                    },
-//                    label = {
-//                        Text("" + setting.title)
-//                    },
-//                    modifier = Modifier.fillMaxWidth()
-//                )
-//            }
             item() {
                 SplitToggleChip(
                     checked = getVibration.value!!,
@@ -123,27 +91,3 @@ fun DisplayStimula(
         }
     }
 }
-
-//private suspend fun setActiveStimula(context: Context, stimula: StimulaObject){
-//    context.dataStore.updateData {
-//        it.copy(
-//            stimula = it.stimula.mutate {
-////                it.onEach{ e -> if(e.title == stimula.title){ e.active = stimula.active.not()} }
-////            { stimulaObject ->
-//                for (stimulaObject in it) {
-//                    Log.e("STIMULA:", stimulaObject.toString())
-//                    if (stimulaObject.title == stimula.title) {
-//                        Log.e("TAG", "${stimula.active}")
-//                        stimulaObject.active = true
-//                    }
-//                }
-//            }
-////                it.add(StimulaObject(title = "Test", active = true, intensity = 1.0))
-////            }
-//        )
-//    }
-//}
-
-//private suspend fun getStimula(context: Context){
-//    context.dataStore.data.collectAsState()
-//}

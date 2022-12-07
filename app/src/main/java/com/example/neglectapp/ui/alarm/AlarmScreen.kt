@@ -1,7 +1,6 @@
 package com.example.neglectapp.ui.alarm
 
 import android.content.Context
-import android.content.Context.VIBRATOR_SERVICE
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -12,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.MaterialTheme
 
