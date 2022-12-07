@@ -2,37 +2,32 @@ package com.example.neglectapp.data.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.doublePreferencesKey
-import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-
-
 
 class StoreStimula(private val context: Context) {
 
     companion object{
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("StimulaStore")
         val VIBRATION_STIMULA_KEY = booleanPreferencesKey("vibration_stimula")
-        val VIBRATION_INTENSITY_KEY = doublePreferencesKey("vibration_intensity")
+        val VIBRATION_INTENSITY_KEY = intPreferencesKey("vibration_intensity")
 
         val SOUND_STIMULA_KEY = booleanPreferencesKey("sound_stimula")
-        val SOUND_INTENSITY_KEY = doublePreferencesKey("sound_intensity")
+        val SOUND_INTENSITY_KEY = intPreferencesKey("sound_intensity")
 
         val LIGHT_STIMULA_KEY = booleanPreferencesKey("light_stimula")
-        val LIGHT_INTENSITY_KEY = doublePreferencesKey("light_intensity")
+        val LIGHT_INTENSITY_KEY = intPreferencesKey("light_intensity")
     }
 
     val getVibration: Flow<Boolean?> = context.dataStore.data
         .map { preferences ->
             preferences[VIBRATION_STIMULA_KEY] ?: true
         }
-    val getVibrationIntensity: Flow<Double?> = context.dataStore.data
+    val getVibrationIntensity: Flow<Int?> = context.dataStore.data
         .map { preferences ->
-            preferences[VIBRATION_INTENSITY_KEY] ?: 1.0
+            preferences[VIBRATION_INTENSITY_KEY] ?: 1
         }
 
     suspend fun saveVibration(status: Boolean){
@@ -40,7 +35,7 @@ class StoreStimula(private val context: Context) {
             preferences[VIBRATION_STIMULA_KEY] = status
         }
     }
-    suspend fun saveVibrationIntensity(intensity: Double){
+    suspend fun saveVibrationIntensity(intensity: Int){
         context.dataStore.edit { preferences ->
             preferences[VIBRATION_INTENSITY_KEY] = intensity
         }
@@ -50,9 +45,9 @@ class StoreStimula(private val context: Context) {
         .map { preferences ->
             preferences[SOUND_STIMULA_KEY] ?: false
         }
-    val getSoundIntensity: Flow<Double?> = context.dataStore.data
+    val getSoundIntensity: Flow<Int?> = context.dataStore.data
         .map { preferences ->
-            preferences[SOUND_INTENSITY_KEY] ?: 1.0
+            preferences[SOUND_INTENSITY_KEY] ?: 1
         }
 
     suspend fun saveSound(status: Boolean){
@@ -60,7 +55,7 @@ class StoreStimula(private val context: Context) {
             preferences[SOUND_STIMULA_KEY] = status
         }
     }
-    suspend fun saveSoundIntensity(intensity: Double){
+    suspend fun saveSoundIntensity(intensity: Int){
         context.dataStore.edit { preferences ->
             preferences[SOUND_INTENSITY_KEY] = intensity
         }
@@ -70,9 +65,9 @@ class StoreStimula(private val context: Context) {
         .map { preferences ->
             preferences[LIGHT_STIMULA_KEY] ?: false
         }
-    val getLightIntensity: Flow<Double?> = context.dataStore.data
+    val getLightIntensity: Flow<Int?> = context.dataStore.data
         .map { preferences ->
-            preferences[LIGHT_INTENSITY_KEY] ?: 1.0
+            preferences[LIGHT_INTENSITY_KEY] ?: 1
         }
 
     suspend fun saveLight(status: Boolean){
@@ -80,7 +75,7 @@ class StoreStimula(private val context: Context) {
             preferences[LIGHT_STIMULA_KEY] = status
         }
     }
-    suspend fun saveLightIntensity(intensity: Double){
+    suspend fun saveLightIntensity(intensity: Int){
         context.dataStore.edit { preferences ->
             preferences[LIGHT_INTENSITY_KEY] = intensity
         }
