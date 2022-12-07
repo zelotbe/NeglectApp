@@ -20,7 +20,6 @@ import com.example.neglectapp.navigation.Screen
 
 @Composable
 fun DisplaySettings(
-    status: Boolean = false,
     modifier: Modifier,
     navController: NavHostController,
 //    settingsViewModel: SettingsViewModel = viewModel()
