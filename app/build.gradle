@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.serialization'
+    id "com.google.protobuf" version "0.8.17"
 }
 
 android {
@@ -66,7 +67,7 @@ dependencies {
     implementation "androidx.wear.compose:compose-navigation:$wear_compose_version"
     implementation "com.google.android.horologist:horologist-composables:0.2.1"
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
-    implementation "androidx.datastore:datastore:1.0.0"
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
     implementation "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2"
     implementation "androidx.wear:wear-ongoing:1.0.0"
