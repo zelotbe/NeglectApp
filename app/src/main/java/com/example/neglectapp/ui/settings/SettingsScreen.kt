@@ -23,7 +23,7 @@ fun DisplaySettings(
     status: Boolean = false,
     modifier: Modifier,
     navController: NavHostController,
-    settingsViewModel: SettingsViewModel = viewModel()
+//    settingsViewModel: SettingsViewModel = viewModel()
 ){
     Column(
         modifier = Modifier
@@ -83,23 +83,6 @@ fun DisplaySettings(
                     label = {
 //                            Spacer(modifier = Modifier.width(10.dp))
                         Text("Aantal sessies")
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-            item(){
-                Chip(
-                    onClick = {},
-                    icon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.counter),
-                            contentDescription = "",
-                            modifier = Modifier.size(width = 25.dp, height = 25.dp)
-                        )
-                    },
-                    label = {
-//                            Spacer(modifier = Modifier.width(10.dp))
-                        Text("Light value=" + settingsViewModel.light.collectAsState().value )
                     },
                     modifier = Modifier.fillMaxWidth()
                 )
