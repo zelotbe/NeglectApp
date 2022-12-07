@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key.Companion.D
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.datastore.core.DataStore
@@ -25,6 +26,7 @@ import com.example.neglectapp.ui.ScalingLazyListStateViewModel
 import com.example.neglectapp.ui.ScrollStateViewModel
 import com.example.neglectapp.ui.alarm.DisplayAlarm
 import com.example.neglectapp.ui.landing.DisplayLanding
+import com.example.neglectapp.ui.operatinghours.DisplayOperatingHours
 import com.example.neglectapp.ui.settings.DisplaySettings
 import com.example.neglectapp.ui.settings.intensity.DisplayIntensity
 import com.example.neglectapp.ui.settings.stimulans.DisplayStimula
@@ -100,6 +102,12 @@ fun WearApp(
                     route = Screen.Alarm.route
                 ){
                     DisplayAlarm(modifier = Modifier, navController = swipeDismissableNavController)
+                }
+                // OPERATING HOURS SCREEN
+                composable(
+                    route = Screen.OperatingHours.route
+                ){
+                    DisplayOperatingHours(modifier = Modifier, navController = swipeDismissableNavController)
                 }
             }
         }
