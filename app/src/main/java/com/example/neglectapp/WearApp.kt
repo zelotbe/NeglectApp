@@ -11,6 +11,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import androidx.wear.compose.material.*
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
@@ -88,9 +90,10 @@ fun WearApp(
                 }
                 // INTENSITY - STIMULA
                 composable(
-                    route = Screen.Intensity.route
-                ){
-                    DisplayIntensity(modifier = Modifier)
+                    route = Screen.Intensity.route + "/{stimula}",
+                    arguments = listOf(navArgument("stimula"){ type = NavType.StringType})
+                ){ backStackEntry ->
+                    DisplayIntensity(modifier = Modifier, backStackEntry.arguments?.getString("stimula")!!)
                 }
                 // ALARM SCREEN
                 composable(
