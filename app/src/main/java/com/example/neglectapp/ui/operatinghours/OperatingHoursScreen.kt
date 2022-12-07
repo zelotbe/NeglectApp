@@ -2,6 +2,7 @@ package com.example.neglectapp.ui.operatinghours
 
 import NeglectButton
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -44,7 +45,7 @@ fun DisplayOperatingHours(
         }else{
             Spacer(modifier = Modifier.height(10.dp))
             Text("Einduur")
-            TimePicker(onTimeConfirm = {scope.launch { store.saveEnd(it.toString()) }; Log.d("EndTime", it.toString()); navController.navigate(Screen.Settings.route)}, time = LocalTime.parse(store.getEnd.collectAsState(initial = LocalTime.of(16,0).toString()).value), showSeconds = false )
+            TimePicker(onTimeConfirm = {scope.launch { store.saveEnd(it.toString()) }; Log.d("EndTime", it.toString()); Toast.makeText(context, "Werkingsuren opgeslagen", Toast.LENGTH_LONG).show(); navController.navigate(Screen.Settings.route)}, time = LocalTime.parse(store.getEnd.collectAsState(initial = LocalTime.of(16,0).toString()).value), showSeconds = false )
         }
     }
 }
