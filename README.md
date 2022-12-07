@@ -3,14 +3,14 @@
 This is an Android smartwatch app made with jetpack compose. 
 
 ## Status
-WIP
-- [ ] Choose & save operating hours
+  WIP
+- [x] Choose & save operating hours
 
 - [ ] Choose & save minimum and maximum amount of sessions
 
-- [ ] Configurable stimula (Vibration, Light, Sound)
+- [x] Configurable stimula (Vibration, Light, Sound)
 
-- [ ] Configurable stimula intensity
+- [x] Configurable stimula intensity
 
 - [ ] Show a functioning progress bar on landing screen (represents operating hours)
 
