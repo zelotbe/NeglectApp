@@ -17,6 +17,7 @@ import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import com.example.neglectapp.data.datastore.StoreSessions
 import com.example.neglectapp.data.datastore.StoreStimula
+import com.example.neglectapp.navigation.Screen
 import com.google.android.horologist.composables.TimePicker
 import kotlinx.coroutines.launch
 import java.time.LocalTime
@@ -26,7 +27,6 @@ fun DisplayOperatingHours(
     navController: NavHostController,
     modifier: Modifier,
     operatingViewModel: OperatingViewModel = viewModel()
-
 ){
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -37,14 +37,14 @@ fun DisplayOperatingHours(
         horizontalAlignment = Alignment.CenterHorizontally,
 //        verticalArrangement = Arrangement.Center
     ) {
-        Text("Werkingsuren")
-        Spacer(modifier = Modifier.height(5.dp))
         if (!operatingViewModel.showEnd.collectAsState().value){
+            Spacer(modifier = Modifier.height(10.dp))
             Text("Startuur")
             TimePicker( onTimeConfirm = {scope.launch { store.saveStart(it.toString()) }; Log.d("StartTime", it.toString()); operatingViewModel.toggleEnd()}, time = LocalTime.parse(store.getStart.collectAsState(initial = LocalTime.of(7,30).toString()).value), showSeconds = false)
         }else{
+            Spacer(modifier = Modifier.height(10.dp))
             Text("Einduur")
-            TimePicker(onTimeConfirm = {scope.launch { store.saveEnd(it.toString()) }; Log.d("EndTime", it.toString())} , time = LocalTime.parse(store.getEnd.collectAsState(initial = LocalTime.of(16,0).toString()).value), showSeconds = false )
+            TimePicker(onTimeConfirm = {scope.launch { store.saveEnd(it.toString()) }; Log.d("EndTime", it.toString()); navController.navigate(Screen.Settings.route)}, time = LocalTime.parse(store.getEnd.collectAsState(initial = LocalTime.of(16,0).toString()).value), showSeconds = false )
         }
     }
 }
