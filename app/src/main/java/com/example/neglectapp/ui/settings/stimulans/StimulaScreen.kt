@@ -10,7 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.wear.compose.material.*
 import com.example.neglectapp.data.datastore.StoreStimula
 import com.example.neglectapp.navigation.Screen
-import com.example.neglectapp.ui.settings.SettingsViewModel
+//import com.example.neglectapp.ui.settings.SettingsViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -18,7 +18,7 @@ fun DisplayStimula(
     status: Boolean = false,
     modifier: Modifier,
     navController: NavHostController,
-    settingsViewModel: SettingsViewModel = viewModel()
+//    settingsViewModel: SettingsViewModel = viewModel()
 ){
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -41,7 +41,7 @@ fun DisplayStimula(
                 SplitToggleChip(
                     checked = getVibration.value!!,
                     onCheckedChange = {},
-                    onClick = { navController.navigate(Screen.Intensity.route) },
+                    onClick = { navController.navigate(Screen.Intensity.route + "/Vibratie") },
                     toggleControl = {
                         Switch(
                             checked = getVibration.value!!,
@@ -58,7 +58,7 @@ fun DisplayStimula(
                 SplitToggleChip(
                     checked = getSound.value!!,
                     onCheckedChange = {},
-                    onClick = {  },
+                    onClick = { navController.navigate(Screen.Intensity.route + "/Geluid") },
                     toggleControl = {
                         Switch(
                             checked = getSound.value!!,
@@ -75,11 +75,11 @@ fun DisplayStimula(
                 SplitToggleChip(
                     checked = getLight.value!!,
                     onCheckedChange = {},
-                    onClick = {  },
+                    onClick = { navController.navigate(Screen.Intensity.route + "/Licht") },
                     toggleControl = {
                         Switch(
                             checked = getLight.value!!,
-                            onCheckedChange = { scope.launch { stimulaStore.saveSound(getLight.value!!.not())  } }
+                            onCheckedChange = { scope.launch { stimulaStore.saveLight(getLight.value!!.not())  } }
                         )
                     },
                     label = {
