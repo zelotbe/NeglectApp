@@ -1,9 +1,7 @@
 package com.example.neglectapp.ui.operatinghours
 
-import NeglectButton
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -14,10 +12,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import com.example.neglectapp.data.datastore.StoreSessions
-import com.example.neglectapp.data.datastore.StoreStimula
 import com.example.neglectapp.navigation.Screen
 import com.google.android.horologist.composables.TimePicker
 import kotlinx.coroutines.launch
@@ -36,7 +32,6 @@ fun DisplayOperatingHours(
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center
     ) {
         if (!operatingViewModel.showEnd.collectAsState().value){
             Spacer(modifier = Modifier.height(10.dp))
