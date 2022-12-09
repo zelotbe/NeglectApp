@@ -28,7 +28,7 @@ class StoreSessions(private val context: Context) {
         }
     val getMinSession: Flow<Int?> = context.dataStore.data
         .map { preferences ->
-            preferences[MIN_SESSION] ?: 1
+            preferences[MIN_SESSION] ?: 3
         }
     val getMaxSession: Flow<Int?> = context.dataStore.data
         .map { preferences ->
