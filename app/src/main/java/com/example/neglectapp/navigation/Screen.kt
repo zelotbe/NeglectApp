@@ -17,5 +17,7 @@ sealed class Screen(val route: String){
     object OperatingHours: Screen("operatinghours")
     object Session: Screen("session")
     object Alarm: Screen("alarm")
+    object NumberPicker: Screen("numberpicker")
+
 
 }
