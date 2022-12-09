@@ -27,6 +27,8 @@ import com.example.neglectapp.ui.ScrollStateViewModel
 import com.example.neglectapp.ui.alarm.DisplayAlarm
 import com.example.neglectapp.ui.landing.DisplayLanding
 import com.example.neglectapp.ui.operatinghours.DisplayOperatingHours
+import com.example.neglectapp.ui.session.DisplayNumberPicker
+import com.example.neglectapp.ui.session.DisplaySession
 import com.example.neglectapp.ui.settings.DisplaySettings
 import com.example.neglectapp.ui.settings.intensity.DisplayIntensity
 import com.example.neglectapp.ui.settings.stimulans.DisplayStimula
@@ -108,6 +110,19 @@ fun WearApp(
                     route = Screen.OperatingHours.route
                 ){
                     DisplayOperatingHours(modifier = Modifier, navController = swipeDismissableNavController)
+                }
+                // SESSION SCREEN
+                composable(
+                    route = Screen.Session.route
+                ){
+                    DisplaySession(modifier = Modifier, navController = swipeDismissableNavController)
+                }
+                //SESSION NUMBER PICKER SCREEN
+                composable(
+                    route = Screen.NumberPicker.route + "/{session}",
+                    arguments = listOf(navArgument("session"){ type = NavType.StringType})
+                ){ backStackEntry ->
+                    DisplayNumberPicker(navController = swipeDismissableNavController, modifier = Modifier, backStackEntry.arguments?.getString("session")!!)
                 }
             }
         }
