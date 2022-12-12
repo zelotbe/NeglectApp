@@ -1,10 +1,11 @@
 buildscript {
     ext {
-        compose_version = '1.2.0-alpha05'
-        wear_compose_version = '1.0.0-alpha18'
+        compose_version = '1.2.0-alpha08'
+        wear_compose_version = '1.2.0-alpha01'
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-serialization:1.6.10"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:2.43.2"
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
