@@ -13,7 +13,7 @@ This is an Android smartwatch app made with jetpack compose.
   WIP
 - [x] Choose & save operating hours
 
-- [ ] Choose & save minimum and maximum amount of sessions
+- [x] Choose & save minimum and maximum amount of sessions
 
 - [x] Configurable stimula (Vibration, Light, Sound)
 
