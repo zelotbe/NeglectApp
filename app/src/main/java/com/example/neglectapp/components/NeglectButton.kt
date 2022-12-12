@@ -1,6 +1,8 @@
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
@@ -22,15 +24,13 @@ fun NeglectButton(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .clickable { onClick() }
-            .then(modifier)
     ) {
         when (type) {
             ButtonType.TEXT -> {
-                CompactChip(onClick = { /*TODO*/ }, label = { Text(label) })
+                CompactChip(onClick = { onClick() }, label = { Text(label) }, modifier = Modifier.width(500.dp))
             }
             ButtonType.ICON -> {
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = { onClick() }) {
                     Icon(
                         Icons.Default.Check,
                         contentDescription = "Accept",
