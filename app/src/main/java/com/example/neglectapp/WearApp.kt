@@ -1,15 +1,10 @@
 package com.example.neglectapp
 
-import android.content.Context
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.Key.Companion.D
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.datastore.core.DataStore
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -24,7 +19,7 @@ import com.example.neglectapp.navigation.SCROLL_TYPE_NAV_ARGUMENT
 import com.example.neglectapp.navigation.Screen
 import com.example.neglectapp.ui.ScalingLazyListStateViewModel
 import com.example.neglectapp.ui.ScrollStateViewModel
-import com.example.neglectapp.ui.alarm.DisplayAlarm
+//import com.example.neglectapp.ui.alarm.DisplayAlarm
 import com.example.neglectapp.ui.landing.DisplayLanding
 import com.example.neglectapp.ui.operatinghours.DisplayOperatingHours
 import com.example.neglectapp.ui.session.DisplayNumberPicker
@@ -32,13 +27,15 @@ import com.example.neglectapp.ui.session.DisplaySession
 import com.example.neglectapp.ui.settings.DisplaySettings
 import com.example.neglectapp.ui.settings.intensity.DisplayIntensity
 import com.example.neglectapp.ui.settings.stimulans.DisplayStimula
+import com.example.neglectapp.util.SessionService
 
 
-@OptIn(ExperimentalWearMaterialApi::class)
+@OptIn(ExperimentalWearMaterialApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun WearApp(
     modifier: Modifier,
     swipeDismissableNavController: NavHostController = rememberSwipeDismissableNavController(),
+    sessionService: SessionService
 ) {
     MaterialTheme {
         // Mobile guidelines specify that if you back navigate out of a screen and then
@@ -78,7 +75,7 @@ fun WearApp(
                 composable(
                     route = Screen.Landing.route
                 ){
-                    DisplayLanding(navController = swipeDismissableNavController, modifier = Modifier )
+                    DisplayLanding(navController = swipeDismissableNavController, modifier = Modifier, sessionService = sessionService )
                 }
                 // SETTINGS PAGE
                 composable(
@@ -103,7 +100,7 @@ fun WearApp(
                 composable(
                     route = Screen.Alarm.route
                 ){
-                    DisplayAlarm(modifier = Modifier, navController = swipeDismissableNavController)
+//                    DisplayAlarm(modifier = Modifier, navController = swipeDismissableNavController)
                 }
                 // OPERATING HOURS SCREEN
                 composable(
@@ -129,8 +126,8 @@ fun WearApp(
     }
 }
 
-@Preview(name= "Preview", device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
-@Composable
-fun DefaultPreview() {
-    WearApp(Modifier)
-}
+//@Preview(name= "Preview", device = Devices.WEAR_OS_SMALL_ROUND, showSystemUi = true)
+//@Composable
+//fun DefaultPreview() {
+//    WearApp(Modifier, ForegroundStimulaService)
+//}
