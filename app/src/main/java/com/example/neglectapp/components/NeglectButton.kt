@@ -1,6 +1,7 @@
 import android.graphics.drawable.Icon
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -12,6 +13,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.*
+import androidx.wear.compose.material.MaterialTheme.colors
 import com.example.neglectapp.util.ButtonType
 
 
@@ -20,7 +22,8 @@ fun NeglectButton(
     modifier: Modifier,
     contentDescription: String = "Accept",
     icon: ImageVector = Icons.Default.Check,
-    color: androidx.compose.ui.graphics.Color = MaterialTheme.colors.primary,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
     onClick: () -> Unit
 ){
 
@@ -29,10 +32,10 @@ fun NeglectButton(
 //                CompactChip(onClick = { onClick() }, label = { Text(label) }, modifier = Modifier.width(200.dp))
 //            }
 //            ButtonType.ICON -> {
-                Button(onClick = { onClick() }, modifier = Modifier.fillMaxSize()) {
+                Button(onClick = { onClick() }, modifier = Modifier, interactionSource = interactionSource, enabled = enabled) {
                     Icon(
                         icon,
-                        contentDescription = "Accept",
+                        contentDescription = contentDescription,
                         modifier = Modifier.size(width = 35.dp, height = 35.dp)
                     )
                 }
