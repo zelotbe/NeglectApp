@@ -9,7 +9,9 @@ import android.os.Build
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.NotificationCompat
+import androidx.wear.ongoing.OngoingActivity
 import androidx.wear.ongoing.Status
+import com.example.neglectapp.R
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_CANCEL
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_START
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_STOP
@@ -123,33 +125,19 @@ class SessionService() : Service() {
     private fun startForegroundService() {
         createNotificationChannel()
         val ongoingActivityStatus = Status.Builder()
-            // Sets the text used across various surfaces.
             .addTemplate("ONGOING ACTIVITY")
             .build()
 
-//        val ongoingActivity =
-//            OngoingActivity.Builder(applicationContext, NOTIFICATION_ID, notificationBuilder)
-//                // Sets icon that will appear on the watch face in active mode. If it isn't set,
-//                // the watch face will use the static icon in active mode.
-////                .setAnimatedIcon(R.drawable.animated_walk)
-//                // Sets the icon that will appear on the watch face in ambient mode.
-//                // Falls back to Notification's smallIcon if not set. If neither is set,
-//                // an Exception is thrown.
-//                .setStaticIcon(R.drawable.ic_baseline_flaky_24)
-//                // Sets the tap/touch event, so users can re-enter your app from the
-//                // other surfaces.
-//                // Falls back to Notification's contentIntent if not set. If neither is set,
-//                // an Exception is thrown.
-//                .setTouchIntent(ServiceHelper.clickPendingIntent(context))
-//                // In our case, sets the text used for the Ongoing Activity (more options are
-//                // available for timers and stop watches).
-//                .setStatus(ongoingActivityStatus)
-//                .build()
-//
-//        // Applies any Ongoing Activity updates to the notification builder.
-//        // This method should always be called right before you build your notification,
-//        // since an Ongoing Activity doesn't hold references to the context.
-//        ongoingActivity.apply(applicationContext)
+        val ongoingActivity =
+            OngoingActivity.Builder(applicationContext, NOTIFICATION_ID, notificationBuilder)
+//                .setAnimatedIcon(R.drawable.animated_walk)
+                .setStaticIcon(R.drawable.ic_baseline_flaky_24)
+                .setTouchIntent(ServiceHelper.clickPendingIntent(applicationContext))
+                .setStatus(ongoingActivityStatus)
+                .build()
+
+        ongoingActivity.apply(applicationContext)
+
         startForeground(NOTIFICATION_ID, notificationBuilder.build())
     }
 
@@ -174,12 +162,12 @@ class SessionService() : Service() {
         notificationManager.notify(
             NOTIFICATION_ID,
             notificationBuilder.setContentText(
-                "Hello"
-//                formatTime(
-//                    hours = hours,
-//                    minutes = minutes,
-//                    seconds = seconds,
-//                )
+//                "Hello"
+                formatTime(
+                    hours = hours,
+                    minutes = minutes,
+                    seconds = seconds,
+                )
             ).build()
         )
     }
