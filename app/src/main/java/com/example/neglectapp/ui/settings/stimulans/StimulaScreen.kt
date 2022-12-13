@@ -22,7 +22,7 @@ fun DisplayStimula(
 ){
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    //VIBRATION DATA STORE
+    //STIMULA DATA STORE
     val stimulaStore = StoreStimula(context)
     val getVibration = stimulaStore.getVibration.collectAsState(initial = false)
     val getSound = stimulaStore.getSound.collectAsState(initial = false)
