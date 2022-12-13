@@ -19,6 +19,7 @@ import com.example.neglectapp.navigation.SCROLL_TYPE_NAV_ARGUMENT
 import com.example.neglectapp.navigation.Screen
 import com.example.neglectapp.ui.ScalingLazyListStateViewModel
 import com.example.neglectapp.ui.ScrollStateViewModel
+import com.example.neglectapp.ui.alarm.DisplayAlarm
 //import com.example.neglectapp.ui.alarm.DisplayAlarm
 import com.example.neglectapp.ui.landing.DisplayLanding
 import com.example.neglectapp.ui.operatinghours.DisplayOperatingHours
@@ -100,7 +101,7 @@ fun WearApp(
                 composable(
                     route = Screen.Alarm.route
                 ){
-//                    DisplayAlarm(modifier = Modifier, navController = swipeDismissableNavController)
+                    DisplayAlarm(modifier = Modifier, navController = swipeDismissableNavController)
                 }
                 // OPERATING HOURS SCREEN
                 composable(
