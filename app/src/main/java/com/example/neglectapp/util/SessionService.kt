@@ -225,7 +225,7 @@ class SessionService() : Service() {
         )
 
         alarmManager?.setAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
             SystemClock.elapsedRealtime() + 60 * 100,
            pendingIntent
         )
