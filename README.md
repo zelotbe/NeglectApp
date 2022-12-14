@@ -23,9 +23,11 @@ This is an Android smartwatch app made with jetpack compose.
 
 - [ ] Pause & resume ability
 
+- [ ] Show an alarm screen
+
 - [ ] Trigger a random amount of stimula between operating hours
 
-- [ ] Implement wake lock
+- [x] Implement ongoing activity
 
 - [ ] Ability to close the alarm
 
@@ -39,6 +41,7 @@ This is an Android smartwatch app made with jetpack compose.
 - [ ] Heartrate 
 - [ ] Detect movement before stimula is triggered
 - [ ] Optimization
+- [ ] Animated icon for Ongoing Activity (wear homescreen icon)
 
 ### Good resources
 
