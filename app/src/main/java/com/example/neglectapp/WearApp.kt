@@ -101,7 +101,7 @@ fun WearApp(
                 composable(
                     route = Screen.Alarm.route
                 ){
-                    DisplayAlarm(modifier = Modifier, navController = swipeDismissableNavController)
+                    DisplayAlarm(modifier = Modifier)
                 }
                 // OPERATING HOURS SCREEN
                 composable(
