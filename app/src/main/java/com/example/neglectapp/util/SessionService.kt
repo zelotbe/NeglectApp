@@ -1,20 +1,25 @@
 package com.example.neglectapp.util
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
+import android.app.*
+import android.app.Notification.CATEGORY_ALARM
+import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.Build
+import android.os.SystemClock
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.NotificationCompat
 import androidx.wear.ongoing.OngoingActivity
 import androidx.wear.ongoing.Status
+import com.example.neglectapp.AlarmActivity
 import com.example.neglectapp.R
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_CANCEL
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_START
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_STOP
+import com.example.neglectapp.util.Constants.ACTION_SHOW_ALARM
+import com.example.neglectapp.util.Constants.ACTION_TRIGGER_ALARM
 import com.example.neglectapp.util.Constants.NOTIFICATION_CHANNEL_ID
 import com.example.neglectapp.util.Constants.NOTIFICATION_CHANNEL_NAME
 import com.example.neglectapp.util.Constants.NOTIFICATION_ID
@@ -25,6 +30,7 @@ import javax.inject.Inject
 import kotlin.concurrent.fixedRateTimer
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
+
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
@@ -73,6 +79,7 @@ class SessionService() : Service() {
         intent?.action.let {
             when (it) {
                 ACTION_SERVICE_START -> {
+                    Log.d("OnStart:", "START DETECTED")
                     setStopButton()
                     startForegroundService()
                     startStopwatch { hours, minutes, seconds ->
@@ -87,6 +94,13 @@ class SessionService() : Service() {
                     stopStopwatch()
                     cancelStopwatch()
                     stopForegroundService()
+                }
+                ACTION_TRIGGER_ALARM -> {
+                    Log.d("OnStart:", "ALARM TRIGGER DETECTED")
+                    triggerAlarm(ACTION_SHOW_ALARM)
+                }
+                ACTION_SHOW_ALARM -> {
+                   showAlarm()
                 }
             }
         }
@@ -125,7 +139,7 @@ class SessionService() : Service() {
     private fun startForegroundService() {
         createNotificationChannel()
         val ongoingActivityStatus = Status.Builder()
-            .addTemplate("ONGOING ACTIVITY")
+            .addTemplate("HIER KOMT RESTERENDE TIJD")
             .build()
 
         val ongoingActivity =
@@ -133,6 +147,7 @@ class SessionService() : Service() {
 //                .setAnimatedIcon(R.drawable.animated_walk)
                 .setStaticIcon(R.drawable.ic_baseline_flaky_24)
                 .setTouchIntent(ServiceHelper.clickPendingIntent(applicationContext))
+                .setCategory(CATEGORY_ALARM)
                 .setStatus(ongoingActivityStatus)
                 .build()
 
@@ -196,6 +211,27 @@ class SessionService() : Service() {
             )
         )
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
+    }
+
+    private fun triggerAlarm(action: String) {
+        Log.d("SessionService:", "Triggered Alarm")
+        val alarmManager =
+            applicationContext.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+        val triggerIntent = Intent(applicationContext, SessionService::class.java).apply{
+            this.action = action
+        }
+        val pendingIntent = PendingIntent.getService(applicationContext,
+            0, triggerIntent,0
+        )
+
+        alarmManager?.setAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            SystemClock.elapsedRealtime() + 60 * 100,
+           pendingIntent
+        )
+    }
+    private fun showAlarm(){
+        applicationContext.startActivity(Intent(applicationContext, AlarmActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
     inner class SessionBinder : Binder() {
         fun getService(): SessionService = this@SessionService
