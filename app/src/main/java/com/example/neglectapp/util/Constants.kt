@@ -4,6 +4,9 @@ object Constants {
         const val ACTION_SERVICE_START = "ACTION_SERVICE_START"
         const val ACTION_SERVICE_STOP = "ACTION_SERVICE_STOP"
         const val ACTION_SERVICE_CANCEL = "ACTION_SERVICE_CANCEL"
+        const val ACTION_TRIGGER_ALARM = "ACTION_TRIGGER_ALARM"
+        const val ACTION_SHOW_ALARM = "ACTION_SHOW_ALARM"
+
 
         const val SESSION_STATE = "SESSION_STATE"
 
