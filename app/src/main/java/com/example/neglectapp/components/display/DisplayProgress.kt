@@ -1,5 +1,6 @@
 package com.example.neglectapp.components.display
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,7 +18,11 @@ fun DisplayProgress(sessionStore: StoreSessions){
     val startSeconds = calculateSeconds(LocalTime.parse(startHour))
     val endSeconds = calculateSeconds(LocalTime.parse(endHour))
     val diffHours = endSeconds - startSeconds
-    CircularProgressIndicator( progress = 0.4f,
+
+    val percentage = (endSeconds - startSeconds) / ((endSeconds + startSeconds)/2)
+    Log.d("DisplayProgress: ", "startseconds: $startSeconds, endseconds: $endSeconds, diff: $diffHours, percentage: $percentage")
+    CircularProgressIndicator( progress = 0.8f,
         modifier = Modifier.fillMaxSize(),
         strokeWidth = 5.dp)
+
 }
