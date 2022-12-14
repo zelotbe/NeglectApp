@@ -9,6 +9,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
@@ -29,6 +30,7 @@ import com.example.neglectapp.util.*
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_CANCEL
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_START
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_STOP
+import com.example.neglectapp.util.Constants.ACTION_TRIGGER_ALARM
 import java.time.LocalTime
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -90,7 +92,18 @@ fun DisplayLanding(
                             Log.d("StopButton:", "clicked");ServiceHelper.triggerForegroundService(
                                 context = context,
                                 action = ACTION_SERVICE_CANCEL
-                            )
+                            );
+                        }
+                    )
+                    NeglectButton(
+                        modifier = Modifier,
+                        contentDescription = "Stoppen",
+                        icon = Icons.Default.Alarm,
+                        onClick = {
+                            Log.d("AlarmButton:", "clicked");ServiceHelper.triggerForegroundService(
+                            context = context,
+                            action = ACTION_TRIGGER_ALARM
+                        )
                         }
                     )
                 }
