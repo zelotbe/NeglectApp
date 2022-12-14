@@ -1,6 +1,8 @@
 package com.example.neglectapp.ui.alarm
 
 import android.content.Context
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
@@ -13,11 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.MaterialTheme
+import androidx.wear.compose.material.Text
 
 @Composable
 fun DisplayAlarm(
-    navController: NavHostController,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ){
     Column(
         modifier = Modifier
@@ -29,6 +31,13 @@ fun DisplayAlarm(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally),
         ) {
+            Text("ALARMmmmmmmmmmmmmmmmmmmmmmmmm")
+            var alarmUri: Uri? = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+            if (alarmUri == null) {
+                alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            }
+            val r = RingtoneManager.getRingtone(LocalContext.current, alarmUri)
+            r.play()
             val vibrator = LocalContext.current.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             val vibrationEffect1: VibrationEffect =
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
