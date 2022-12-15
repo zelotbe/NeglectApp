@@ -26,6 +26,8 @@ This is an Android smartwatch app made with jetpack compose.
 
 - [x] Show an alarm screen
 
+- [x] Customize alarm screen with the chosen stimula
+
 - [ ] Trigger a random amount of stimula between operating hours
 
 - [x] Implement ongoing activity
