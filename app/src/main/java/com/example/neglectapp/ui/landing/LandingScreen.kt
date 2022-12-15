@@ -1,7 +1,5 @@
 package com.example.neglectapp.ui.landing
 
-import NeglectButton
-import android.se.omapi.Session
 import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
@@ -20,7 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.wear.compose.material.ButtonDefaults
+import androidx.wear.compose.material.Button
+import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.MaterialTheme
 import com.example.neglectapp.components.display.DisplayProgress
 import com.example.neglectapp.components.settings.SettingsIcon
@@ -69,43 +68,45 @@ fun DisplayLanding(
                 DisplayStatus(modifier = Modifier, status = currentState, sessionStore = sessionStore)
                 Spacer(modifier = Modifier.height(15.dp))
                 Row(modifier = Modifier) {
-                    NeglectButton(
-                        modifier = Modifier,
-                        contentDescription = if(currentState == SessionState.Idle || currentState == SessionState.Stopped)  "Starten" else "Pauzeren",
-                        icon = if(currentState == SessionState.Idle || currentState == SessionState.Stopped)  Icons.Default.PlayArrow else Icons.Default.Pause,
-                        onClick = {
-                            ServiceHelper.triggerForegroundService(
-                                context = context,
-                                action = if (currentState == SessionState.Started) ACTION_SERVICE_STOP
-                                else ACTION_SERVICE_START
-                            )
-                        }
-                    )
-                    Spacer(modifier = Modifier.width(25.dp))
-                    NeglectButton(
-                        modifier = Modifier,
-                        enabled = currentState!== SessionState.Idle,
-                        interactionSource = interactionSource,
-                        contentDescription = "Stoppen",
-                        icon = Icons.Default.Stop,
-                        onClick = {
-                            Log.d("StopButton:", "clicked");ServiceHelper.triggerForegroundService(
-                                context = context,
-                                action = ACTION_SERVICE_CANCEL
-                            );
-                        }
-                    )
-                    NeglectButton(
-                        modifier = Modifier,
-                        contentDescription = "Stoppen",
-                        icon = Icons.Default.Alarm,
-                        onClick = {
-                            Log.d("AlarmButton:", "clicked");ServiceHelper.triggerForegroundService(
+
+                    Button(onClick = {
+                        ServiceHelper.triggerForegroundService(
                             context = context,
-                            action = ACTION_TRIGGER_ALARM
+                            action = if (currentState == SessionState.Started) ACTION_SERVICE_STOP
+                            else ACTION_SERVICE_START
                         )
-                        }
+                    }, modifier = Modifier) {
+                        Icon(
+                            if(currentState == SessionState.Idle || currentState == SessionState.Stopped)  Icons.Default.PlayArrow else Icons.Default.Pause,
+                            contentDescription = if(currentState == SessionState.Idle || currentState == SessionState.Stopped)  "Starten" else "Pauzeren",
+                            modifier = Modifier.size(width = 35.dp, height = 35.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(25.dp))
+                    Button(onClick = {
+                        Log.d("StopButton:", "clicked");ServiceHelper.triggerForegroundService(
+                        context = context,
+                        action = ACTION_SERVICE_CANCEL
+                    );
+                    }, modifier = Modifier, interactionSource = interactionSource, enabled = currentState!== SessionState.Idle,) {
+                        Icon(
+                            Icons.Default.Stop,
+                            contentDescription = "Stoppen",
+                            modifier = Modifier.size(width = 35.dp, height = 35.dp)
+                        )
+                    }
+                    Button(onClick = {
+                        Log.d("AlarmButton:", "clicked");ServiceHelper.triggerForegroundService(
+                        context = context,
+                        action = ACTION_TRIGGER_ALARM
                     )
+                    }, modifier = Modifier) {
+                        Icon(
+                            Icons.Default.Alarm,
+                            contentDescription = "Alarm",
+                            modifier = Modifier.size(width = 35.dp, height = 35.dp)
+                        )
+                    }
                 }
             }
         }
