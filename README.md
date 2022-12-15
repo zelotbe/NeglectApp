@@ -23,7 +23,7 @@ This is an Android smartwatch app made with jetpack compose.
 
 - [ ] Pause & resume ability
 
-- [ ] Show an alarm screen
+- [x] Show an alarm screen
 
 - [ ] Trigger a random amount of stimula between operating hours
 
