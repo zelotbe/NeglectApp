@@ -11,6 +11,7 @@ This is an Android smartwatch app made with jetpack compose.
 
 ## Status
   WIP
+  Code is not optimized and needs to be improved.
 - [x] Choose & save operating hours
 
 - [x] Choose & save minimum and maximum amount of sessions
@@ -29,7 +30,7 @@ This is an Android smartwatch app made with jetpack compose.
 
 - [x] Implement ongoing activity
 
-- [ ] Ability to close the alarm
+- [x] Ability to close the alarm
 
 - [ ] Save time when user interacted with alarm
 
