@@ -86,23 +86,6 @@ fun DisplaySettings(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            item(){
-                Chip(
-                    onClick = { navController.navigate(Screen.Alarm.route)},
-                    icon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.counter),
-                            contentDescription = "",
-                            modifier = Modifier.size(width = 25.dp, height = 25.dp)
-                        )
-                    },
-                    label = {
-//                            Spacer(modifier = Modifier.width(10.dp))
-                        Text("AlarmScreen")
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
         }
     }
 }
