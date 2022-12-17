@@ -34,7 +34,9 @@ This is an Android smartwatch app made with jetpack compose.
 
 - [x] Ability to close the alarm
 
-- [ ] Save time when user interacted with alarm
+- [x] Auto close alarm after 15 seconds
+
+- [ ] Save time when alarm is triggered and if the user interacted with the alarm
 
 - [ ] Save data local
 
