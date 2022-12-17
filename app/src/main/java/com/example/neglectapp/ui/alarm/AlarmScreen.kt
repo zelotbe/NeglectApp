@@ -15,9 +15,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +27,8 @@ import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
 import com.example.neglectapp.data.datastore.StoreSessions
 import com.example.neglectapp.data.datastore.StoreStimula
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -49,6 +49,15 @@ fun DisplayAlarm(
             repeatMode = RepeatMode.Reverse
         )
     )
+    var secondsToDisappear by remember { mutableStateOf(15) }
+
+    LaunchedEffect(Unit) {
+        while (secondsToDisappear > 0) {
+            delay(1.seconds)
+            secondsToDisappear -= 1
+        }
+        activity?.finish()
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -61,7 +70,8 @@ fun DisplayAlarm(
         Spacer(modifier = Modifier.height(10.dp))
         Text("Heftos Alarm")
         Spacer(modifier = Modifier.height(50.dp))
-        Text("TIJD RESTEREND")
+
+        Text("Tijd resterend: $secondsToDisappear")
         Spacer(modifier = Modifier.height(50.dp))
         Button(onClick = { activity?.finish()}, modifier = Modifier) {
             Icon(
