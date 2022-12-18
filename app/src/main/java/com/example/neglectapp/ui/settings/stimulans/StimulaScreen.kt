@@ -8,9 +8,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.*
-import com.example.neglectapp.data.datastore.StoreStimula
 import com.example.neglectapp.navigation.Screen
-//import com.example.neglectapp.ui.settings.SettingsViewModel
+import com.example.neglectapp.viewmodel.HeftosViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -23,10 +22,10 @@ fun DisplayStimula(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     //STIMULA DATA STORE
-    val stimulaStore = StoreStimula(context)
-    val getVibration = stimulaStore.getVibration.collectAsState(initial = false)
-    val getSound = stimulaStore.getSound.collectAsState(initial = false)
-    val getLight = stimulaStore.getLight.collectAsState(initial = false)
+    val viewModel: HeftosViewModel = viewModel()
+    val getVibration = viewModel.vibration.collectAsState().value
+    val getSound = viewModel.sound.collectAsState().value
+    val getLight = viewModel.light.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -39,13 +38,13 @@ fun DisplayStimula(
         ){
             item() {
                 SplitToggleChip(
-                    checked = getVibration.value!!,
+                    checked = getVibration,
                     onCheckedChange = {},
                     onClick = { navController.navigate(Screen.Intensity.route + "/Vibratie") },
                     toggleControl = {
                         Switch(
-                            checked = getVibration.value!!,
-                            onCheckedChange = { scope.launch { stimulaStore.saveVibration(getVibration.value!!.not())  } }
+                            checked = getVibration,
+                            onCheckedChange = { viewModel.saveVibration(getVibration.not())}
                         )
                     },
                     label = {
@@ -56,13 +55,13 @@ fun DisplayStimula(
             }
             item() {
                 SplitToggleChip(
-                    checked = getSound.value!!,
+                    checked = getSound,
                     onCheckedChange = {},
                     onClick = { navController.navigate(Screen.Intensity.route + "/Geluid") },
                     toggleControl = {
                         Switch(
-                            checked = getSound.value!!,
-                            onCheckedChange = { scope.launch { stimulaStore.saveSound(getSound.value!!.not())  } }
+                            checked = getSound,
+                            onCheckedChange = { viewModel.saveSound(getSound.not()) }
                         )
                     },
                     label = {
@@ -73,13 +72,13 @@ fun DisplayStimula(
             }
             item(){
                 SplitToggleChip(
-                    checked = getLight.value!!,
+                    checked = getLight,
                     onCheckedChange = {},
                     onClick = { navController.navigate(Screen.Intensity.route + "/Licht") },
                     toggleControl = {
                         Switch(
-                            checked = getLight.value!!,
-                            onCheckedChange = { scope.launch { stimulaStore.saveLight(getLight.value!!.not())  } }
+                            checked = getLight,
+                            onCheckedChange = { viewModel.saveLight(getLight.not()) }
                         )
                     },
                     label = {

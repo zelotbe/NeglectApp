@@ -10,12 +10,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.InlineSlider
 import androidx.wear.compose.material.InlineSliderDefaults
 import androidx.wear.compose.material.Text
-import com.example.neglectapp.data.datastore.StoreStimula
+import com.example.neglectapp.viewmodel.HeftosViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -26,10 +26,10 @@ fun DisplayIntensity(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     //VIBRATION DATA STORE
-    val stimulaStore = StoreStimula(context)
-    val getVibration = stimulaStore.getVibrationIntensity.collectAsState(initial = 1)
-    val getSound = stimulaStore.getSoundIntensity.collectAsState(initial = 0)
-    val getLight = stimulaStore.getLightIntensity.collectAsState(initial = 0)
+    val viewModel: HeftosViewModel = viewModel()
+    val getVibration = viewModel.vibrationIntensity.collectAsState().value
+    val getSound = viewModel.soundIntensity.collectAsState().value
+    val getLight = viewModel.lightIntensity.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -41,8 +41,8 @@ fun DisplayIntensity(
             "Vibratie" -> {
                 Text("$stimula Intensiteit")
                 InlineSlider(
-                    value = getVibration.value!!,
-                    onValueChange = { Log.d("INTENSITY", "${getVibration.value!!}" );scope.launch { stimulaStore.saveVibrationIntensity(it)  } },
+                    value = getVibration,
+                    onValueChange = { Log.d("INTENSITY", "$getVibration" ); viewModel.saveVibrationIntensity(it) },
                     valueProgression = 1..10,
                     increaseIcon = { Icon(InlineSliderDefaults.Increase, "Increase") },
                     decreaseIcon = { Icon(InlineSliderDefaults.Decrease, "Decrease") }
@@ -51,8 +51,8 @@ fun DisplayIntensity(
             "Geluid" -> {
                 Text("$stimula Intensiteit")
                 InlineSlider(
-                    value = getSound.value!!,
-                    onValueChange = { Log.d("INTENSITY", "${getSound.value!!}" );scope.launch { stimulaStore.saveSoundIntensity(it)  } },
+                    value = getSound,
+                    onValueChange = { Log.d("INTENSITY", "$getSound" );viewModel.saveSoundIntensity(it) },
                     valueProgression = 1..10,
                     increaseIcon = { Icon(InlineSliderDefaults.Increase, "Increase") },
                     decreaseIcon = { Icon(InlineSliderDefaults.Decrease, "Decrease") }
@@ -61,8 +61,8 @@ fun DisplayIntensity(
             "Licht" -> {
                 Text("$stimula Intensiteit")
                 InlineSlider(
-                    value = getLight.value!!,
-                    onValueChange = { Log.d("INTENSITY", "${getLight.value!!}" );scope.launch { stimulaStore.saveLightIntensity(it)  } },
+                    value = getLight,
+                    onValueChange = { Log.d("INTENSITY", "$getLight" );viewModel.saveLightIntensity(it) },
                     valueProgression = 1..10,
                     increaseIcon = { Icon(InlineSliderDefaults.Increase, "Increase") },
                     decreaseIcon = { Icon(InlineSliderDefaults.Decrease, "Decrease") }

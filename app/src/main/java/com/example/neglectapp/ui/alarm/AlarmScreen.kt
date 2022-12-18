@@ -21,12 +21,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.Text
-import com.example.neglectapp.data.datastore.StoreSessions
-import com.example.neglectapp.data.datastore.StoreStimula
+import com.example.neglectapp.viewmodel.HeftosViewModel
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
@@ -37,9 +37,7 @@ fun DisplayAlarm(
 ){
     var context = LocalContext.current
     val activity = (LocalContext.current as? Activity)
-    val stimulaStore = StoreStimula(context)
-    val getLight by stimulaStore.getLight.collectAsState(initial = false)
-    val sessionStore = StoreSessions(context)
+    val viewModel: HeftosViewModel = viewModel()
     val infiniteTransition = rememberInfiniteTransition()
     val color by infiniteTransition.animateColor(
         initialValue = Color.Black,
@@ -61,7 +59,7 @@ fun DisplayAlarm(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(if(getLight == true){color} else {
+            .background(if(viewModel.light.collectAsState().value){color} else {
                 MaterialTheme.colors.background
             }
             ),
