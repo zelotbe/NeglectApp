@@ -17,6 +17,7 @@ class StoreSessions(private val context: Context) {
         val MAX_SESSION = intPreferencesKey("max_session")
         val IS_ACTIVE = booleanPreferencesKey("is_active")
         val CURRENT_SESSION = stringPreferencesKey("current_session")
+        val IS_ALARM_ACTIVE = booleanPreferencesKey("is_active")
     }
 
     val getStart: Flow<String?> = context.dataStore.data
@@ -42,6 +43,10 @@ class StoreSessions(private val context: Context) {
     val getCurrentSession: Flow<String> = context.dataStore.data
         .map { preferences ->
             preferences[CURRENT_SESSION] ?: ""
+        }
+    val getAlarmActive: Flow<Boolean> = context.dataStore.data
+        .map { preferences ->
+            preferences[IS_ALARM_ACTIVE] ?: false
         }
     suspend fun saveStart(startHour: String){
         context.dataStore.edit { preferences ->
@@ -72,6 +77,11 @@ class StoreSessions(private val context: Context) {
     suspend fun saveCurrentSession(session: String){
         context.dataStore.edit { preferences ->
             preferences[CURRENT_SESSION] = session
+        }
+    }
+    suspend fun saveAlarmActive(status: Boolean){
+        context.dataStore.edit { preferences ->
+            preferences[IS_ALARM_ACTIVE] = status
         }
     }
 }

@@ -9,12 +9,15 @@ import android.os.Build
 import android.os.SystemClock
 import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.NotificationCompat
 import androidx.wear.ongoing.OngoingActivity
 import androidx.wear.ongoing.Status
 import com.example.neglectapp.AlarmActivity
 import com.example.neglectapp.R
+import com.example.neglectapp.data.datastore.StoreSessions
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_CANCEL
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_START
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_STOP
@@ -25,6 +28,8 @@ import com.example.neglectapp.util.Constants.NOTIFICATION_CHANNEL_NAME
 import com.example.neglectapp.util.Constants.NOTIFICATION_ID
 import com.example.neglectapp.util.Constants.SESSION_STATE
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import java.util.*
 import javax.inject.Inject
 import kotlin.concurrent.fixedRateTimer
@@ -62,9 +67,7 @@ class SessionService() : Service() {
             SessionState.Started.name -> {
                 setStopButton()
                 startForegroundService()
-                startStopwatch { hours, minutes, seconds ->
-                    updateNotification(hours = hours, minutes = minutes, seconds = seconds)
-                }
+                currentState.value = SessionState.Started
             }
             SessionState.Stopped.name -> {
                 stopStopwatch()
@@ -82,9 +85,7 @@ class SessionService() : Service() {
                     Log.d("OnStart:", "START DETECTED")
                     setStopButton()
                     startForegroundService()
-                    startStopwatch { hours, minutes, seconds ->
-                        updateNotification(hours = hours, minutes = minutes, seconds = seconds)
-                    }
+                    currentState.value = SessionState.Started
                 }
                 ACTION_SERVICE_STOP -> {
                     stopStopwatch()
@@ -105,14 +106,6 @@ class SessionService() : Service() {
             }
         }
         return super.onStartCommand(intent, flags, startId)
-    }
-    private fun startStopwatch(onTick: (h: String, m: String, s: String) -> Unit) {
-        currentState.value = SessionState.Started
-        timer = fixedRateTimer(initialDelay = 1000L, period = 1000L) {
-            duration = duration.plus(1.seconds)
-            updateTimeUnits()
-            onTick(hours.value, minutes.value, seconds.value)
-        }
     }
 
     private fun stopStopwatch() {
@@ -154,6 +147,7 @@ class SessionService() : Service() {
         ongoingActivity.apply(applicationContext)
 
         startForeground(NOTIFICATION_ID, notificationBuilder.build())
+        startSession()
     }
 
     private fun stopForegroundService() {
@@ -211,6 +205,14 @@ class SessionService() : Service() {
             )
         )
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
+    }
+    private fun startSession(){
+//        val sessionStore = StoreSessions(applicationContext)
+//        val minimum = sessionStore.getMinSession
+//        val maximum = sessionStore.getMaxSession
+//        val random = (minimum..maximum).random()
+//        Log.d("RANDOM", "$random")
+
     }
 
     private fun triggerAlarm(action: String) {

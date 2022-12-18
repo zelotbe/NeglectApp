@@ -14,7 +14,6 @@ import androidx.compose.material.icons.filled.Stop
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -30,7 +29,6 @@ import com.example.neglectapp.util.Constants.ACTION_SERVICE_CANCEL
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_START
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_STOP
 import com.example.neglectapp.util.Constants.ACTION_TRIGGER_ALARM
-import java.time.LocalTime
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -42,11 +40,8 @@ fun DisplayLanding(
     var context = LocalContext.current
     val currentState by sessionService.currentState
     val sessionStore = StoreSessions(context)
-    val startHour = sessionStore.getStart.collectAsState(initial = LocalTime.of(7,30).toString() )
-    val endHour = sessionStore.getEnd.collectAsState(initial = LocalTime.of(16,0).toString())
+
     val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val color = if (currentState !== SessionState.Canceled) Color.Blue else Color.Gray
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -67,6 +62,7 @@ fun DisplayLanding(
                 Spacer(modifier = Modifier.height(60.dp))
                 DisplayStatus(modifier = Modifier, status = currentState, sessionStore = sessionStore)
                 Spacer(modifier = Modifier.height(15.dp))
+//                Text("${viewmodel.startHour}")
                 Row(modifier = Modifier) {
 
                     Button(onClick = {
