@@ -4,9 +4,12 @@
 //import androidx.lifecycle.LiveData
 //import androidx.lifecycle.ViewModel
 //import com.example.neglectapp.data.datastore.StoreSessions
+//import dagger.hilt.android.lifecycle.HiltViewModel
 //import kotlinx.coroutines.flow.StateFlow
+//import javax.inject.Inject
 //
-//class SessionViewModel: ViewModel() {
+//@HiltViewModel
+//class SessionViewModel @Inject constructor(private val ): ViewModel() {
 //    private val sessionStore = StoreSessions(context)
 //    private val _startHour = sessionStore.getStart
 //

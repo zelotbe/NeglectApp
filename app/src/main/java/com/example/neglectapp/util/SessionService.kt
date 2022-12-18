@@ -1,5 +1,6 @@
 package com.example.neglectapp.util
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.app.Notification.CATEGORY_ALARM
 import android.content.Context
@@ -9,15 +10,12 @@ import android.os.Build
 import android.os.SystemClock
 import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.NotificationCompat
 import androidx.wear.ongoing.OngoingActivity
 import androidx.wear.ongoing.Status
 import com.example.neglectapp.AlarmActivity
 import com.example.neglectapp.R
-import com.example.neglectapp.data.datastore.StoreSessions
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_CANCEL
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_START
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_STOP
@@ -28,13 +26,9 @@ import com.example.neglectapp.util.Constants.NOTIFICATION_CHANNEL_NAME
 import com.example.neglectapp.util.Constants.NOTIFICATION_ID
 import com.example.neglectapp.util.Constants.SESSION_STATE
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 import java.util.*
 import javax.inject.Inject
-import kotlin.concurrent.fixedRateTimer
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 
 
 @ExperimentalAnimationApi
@@ -181,6 +175,7 @@ class SessionService() : Service() {
         )
     }
 
+    @SuppressLint("RestrictedApi")
     private fun setStopButton() {
         notificationBuilder.mActions.removeAt(0)
         notificationBuilder.mActions.add(
@@ -194,6 +189,7 @@ class SessionService() : Service() {
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
     }
 
+    @SuppressLint("RestrictedApi")
     private fun setResumeButton() {
         notificationBuilder.mActions.removeAt(0)
         notificationBuilder.mActions.add(

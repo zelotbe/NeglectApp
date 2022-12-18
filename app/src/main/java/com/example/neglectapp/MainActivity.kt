@@ -21,6 +21,7 @@ import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.example.neglectapp.util.SessionService
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @ExperimentalAnimationApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -52,7 +53,7 @@ class MainActivity : ComponentActivity() {
                 WearApp(
                     modifier = Modifier,
                     swipeDismissableNavController = navController,
-                    sessionService = sessionService
+                    sessionService = sessionService,
                 )
             }
         }
