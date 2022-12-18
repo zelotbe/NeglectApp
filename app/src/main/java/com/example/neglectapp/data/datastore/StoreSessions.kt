@@ -79,6 +79,7 @@ class StoreSessions(private val context: Context) {
             preferences[CURRENT_SESSION] = session
         }
     }
+    
     suspend fun saveAlarmActive(status: Boolean){
         context.dataStore.edit { preferences ->
             preferences[IS_ALARM_ACTIVE] = status
