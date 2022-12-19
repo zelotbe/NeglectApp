@@ -7,10 +7,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.neglectapp.data.datastore.StoreSessions
 import com.example.neglectapp.ui.session.numberpicker.NumberStepper
-import kotlinx.coroutines.launch
+import com.example.neglectapp.viewmodel.HeftosViewModel
 
 @Composable
 fun DisplayNumberPicker(
@@ -20,9 +20,9 @@ fun DisplayNumberPicker(
 ){
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val store = StoreSessions(context)
-    val min = store.getMinSession.collectAsState(initial = 1).value!!
-    val max = store.getMaxSession.collectAsState(initial = 5).value!!
+    val viewModel: HeftosViewModel = viewModel()
+    val min = viewModel.minSession.collectAsState().value
+    val max = viewModel.maxSession.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -32,10 +32,10 @@ fun DisplayNumberPicker(
     ) {
         when (session){
             "min" -> {
-                NumberStepper(displayValue = min, onValueChange = {scope.launch { store.saveMinSession(it) }} , session = session)
+                NumberStepper(displayValue = min, onValueChange = { viewModel.saveMinSession(it)} , session = session)
             }
             "max" -> {
-                NumberStepper(displayValue = max, onValueChange = {scope.launch { store.saveMaxSession(it) }} , session = session)
+                NumberStepper(displayValue = max, onValueChange = {viewModel.saveMaxSession(it)} , session = session)
             }
         }
 

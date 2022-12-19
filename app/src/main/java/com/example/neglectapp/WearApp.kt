@@ -28,6 +28,7 @@ import com.example.neglectapp.ui.settings.DisplaySettings
 import com.example.neglectapp.ui.settings.intensity.DisplayIntensity
 import com.example.neglectapp.ui.settings.stimulans.DisplayStimula
 import com.example.neglectapp.util.SessionService
+import com.example.neglectapp.viewmodel.HeftosViewModel
 
 
 @OptIn(ExperimentalWearMaterialApi::class, ExperimentalAnimationApi::class)
@@ -35,7 +36,7 @@ import com.example.neglectapp.util.SessionService
 fun WearApp(
     modifier: Modifier,
     swipeDismissableNavController: NavHostController = rememberSwipeDismissableNavController(),
-    sessionService: SessionService
+    sessionService: SessionService,
 ) {
     MaterialTheme {
         // Mobile guidelines specify that if you back navigate out of a screen and then

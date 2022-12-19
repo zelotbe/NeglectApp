@@ -16,19 +16,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.MaterialTheme
 import com.example.neglectapp.components.display.DisplayProgress
 import com.example.neglectapp.components.settings.SettingsIcon
-import com.example.neglectapp.data.datastore.StoreSessions
 import com.example.neglectapp.ui.status.DisplayStatus
 import com.example.neglectapp.util.*
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_CANCEL
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_START
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_STOP
 import com.example.neglectapp.util.Constants.ACTION_TRIGGER_ALARM
+import com.example.neglectapp.viewmodel.HeftosViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -39,8 +40,7 @@ fun DisplayLanding(
 ){
     var context = LocalContext.current
     val currentState by sessionService.currentState
-    val sessionStore = StoreSessions(context)
-
+    val viewModel: HeftosViewModel = viewModel()
     val interactionSource = remember { MutableInteractionSource() }
     Column(
         modifier = Modifier
@@ -52,7 +52,7 @@ fun DisplayLanding(
             modifier = Modifier,
         ) {
 
-            DisplayProgress(sessionStore = sessionStore)
+            DisplayProgress()
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -60,7 +60,7 @@ fun DisplayLanding(
             ) {
                 SettingsIcon(navController = navController)
                 Spacer(modifier = Modifier.height(60.dp))
-                DisplayStatus(modifier = Modifier, status = currentState, sessionStore = sessionStore)
+                DisplayStatus(modifier = Modifier, status = currentState)
                 Spacer(modifier = Modifier.height(15.dp))
 //                Text("${viewmodel.startHour}")
                 Row(modifier = Modifier) {

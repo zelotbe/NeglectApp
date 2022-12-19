@@ -47,6 +47,7 @@ This is an Android smartwatch app made with jetpack compose.
 - [ ] Detect movement before stimula is triggered
 - [ ] Optimization
 - [ ] Animated icon for Ongoing Activity (wear homescreen icon)
+- [x] MVVM - Pattern
 
 ### Good resources
 

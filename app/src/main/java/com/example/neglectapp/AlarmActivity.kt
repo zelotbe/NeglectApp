@@ -13,23 +13,21 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.Text
-import com.example.neglectapp.data.datastore.StoreSessions
-import com.example.neglectapp.data.datastore.StoreStimula
 import com.example.neglectapp.ui.alarm.DisplayAlarm
+import com.example.neglectapp.viewmodel.HeftosViewModel
 
 class AlarmActivity : ComponentActivity() {
     @OptIn(ExperimentalAnimationApi::class)
+
     private lateinit var r:Ringtone
     private lateinit var vibrator:Vibrator
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val viewModel: HeftosViewModel = viewModel()
             var context = LocalContext.current
-            val stimulaStore = StoreStimula(context)
-            val getVibration by stimulaStore.getVibration.collectAsState(initial = false)
-            val getSound by stimulaStore.getSound.collectAsState(initial = false)
-            val sessionStore = StoreSessions(context)
             var alarmUri: Uri? = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
 
             if (alarmUri == null) {
@@ -46,11 +44,11 @@ class AlarmActivity : ComponentActivity() {
                     Log.e("TAG", "Cannot vibrate device..")
                     TODO("VERSION.SDK_INT < O")
                 }
-            if (getSound == true) {
+            if (viewModel.sound.collectAsState().value) {
                 r.play()
                 Text("Sound is active")
             }
-            if (getVibration == true) {
+            if (viewModel.vibration.collectAsState().value) {
                 // it is safe to cancel other
                 // vibrations currently taking place
                 vibrator.cancel()

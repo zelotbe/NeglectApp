@@ -13,10 +13,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.Text
-import com.example.neglectapp.data.datastore.StoreSessions
 import com.example.neglectapp.navigation.Screen
+import com.example.neglectapp.viewmodel.HeftosViewModel
 import com.google.android.horologist.composables.TimePicker
-import kotlinx.coroutines.launch
 import java.time.LocalTime
 
 @Composable
@@ -27,7 +26,7 @@ fun DisplayOperatingHours(
 ){
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val store = StoreSessions(context)
+    val viewModel: HeftosViewModel = viewModel()
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -36,11 +35,13 @@ fun DisplayOperatingHours(
         if (!operatingViewModel.showEnd.collectAsState().value){
             Spacer(modifier = Modifier.height(10.dp))
             Text("Startuur")
-            TimePicker( onTimeConfirm = {scope.launch { store.saveStart(it.toString()) }; Log.d("StartTime", it.toString()); operatingViewModel.toggleEnd()}, time = LocalTime.parse(store.getStart.collectAsState(initial = LocalTime.of(7,30).toString()).value), showSeconds = false)
+            TimePicker( onTimeConfirm = {viewModel.saveStartHour(it.toString()); Log.d("StartTime", it.toString()); operatingViewModel.toggleEnd()}, time = LocalTime.parse(
+                viewModel.startHour.collectAsState().value
+            ), showSeconds = false)
         }else{
             Spacer(modifier = Modifier.height(10.dp))
             Text("Einduur")
-            TimePicker(onTimeConfirm = {scope.launch { store.saveEnd(it.toString()) }; Log.d("EndTime", it.toString()); Toast.makeText(context, "Werkingsuren opgeslagen", Toast.LENGTH_LONG).show(); navController.navigate(Screen.Settings.route)}, time = LocalTime.parse(store.getEnd.collectAsState(initial = LocalTime.of(16,0).toString()).value), showSeconds = false )
+            TimePicker(onTimeConfirm = {viewModel.saveEndHour(it.toString()); Log.d("EndTime", it.toString()); Toast.makeText(context, "Werkingsuren opgeslagen", Toast.LENGTH_LONG).show(); navController.navigate(Screen.Settings.route)}, time = LocalTime.parse(viewModel.endHour.collectAsState().value), showSeconds = false )
         }
     }
 }

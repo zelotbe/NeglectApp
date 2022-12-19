@@ -6,12 +6,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.*
-import com.example.neglectapp.data.datastore.StoreSessions
 import com.example.neglectapp.navigation.Screen
 import com.example.neglectapp.ui.session.numberpicker.NumberPicker
-//import com.example.neglectapp.ui.session.numberpicker.MinNumberPicker
+import com.example.neglectapp.viewmodel.HeftosViewModel
 
 @Composable
 fun DisplaySession(
@@ -20,15 +20,15 @@ fun DisplaySession(
 ){
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    val store = StoreSessions(context)
+    val viewModel: HeftosViewModel = viewModel()
     Column(
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 //        val items = (0..10).toList()
-        val min = store.getMinSession.collectAsState(initial = 0).value!!
-        val max = store.getMaxSession.collectAsState(initial = 0).value!!
+        val min = viewModel.minSession.collectAsState().value
+        val max = viewModel.maxSession.collectAsState().value
 
         Spacer(modifier = Modifier.height(10.dp))
         Text("Sessies")
