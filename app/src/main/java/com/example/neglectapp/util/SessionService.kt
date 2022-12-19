@@ -10,12 +10,20 @@ import android.os.Build
 import android.os.SystemClock
 import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.ongoing.OngoingActivity
 import androidx.wear.ongoing.Status
 import com.example.neglectapp.AlarmActivity
+import com.example.neglectapp.MainActivity
+import com.example.neglectapp.MainApplication
 import com.example.neglectapp.R
+import com.example.neglectapp.data.datastore.IDataStore
+import com.example.neglectapp.data.datastore.LocalDataStore
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_CANCEL
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_START
 import com.example.neglectapp.util.Constants.ACTION_SERVICE_STOP
@@ -25,7 +33,10 @@ import com.example.neglectapp.util.Constants.NOTIFICATION_CHANNEL_ID
 import com.example.neglectapp.util.Constants.NOTIFICATION_CHANNEL_NAME
 import com.example.neglectapp.util.Constants.NOTIFICATION_ID
 import com.example.neglectapp.util.Constants.SESSION_STATE
+import com.example.neglectapp.viewmodel.HeftosViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.runBlocking
 import java.util.*
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -202,12 +213,28 @@ class SessionService() : Service() {
         )
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
     }
+
     private fun startSession(){
-//        val sessionStore = StoreSessions(applicationContext)
-//        val minimum = sessionStore.getMinSession
-//        val maximum = sessionStore.getMaxSession
-//        val random = (minimum..maximum).random()
-//        Log.d("RANDOM", "$random")
+
+//        var min = 0
+//        runBlocking {
+//            store.getMinSession().collect {
+//                if (it != null) {
+//                    min = it
+//                }
+//            }
+//        }
+//        var max = 0
+//            runBlocking {
+//                store.getMaxSession().collect {
+//                    if (it != null) {
+//                        max = it
+//                    }
+//                }
+//            }
+//
+//        val random = (min..max).random()
+//       Log.d("RANDOM", "$random")
 
     }
 
