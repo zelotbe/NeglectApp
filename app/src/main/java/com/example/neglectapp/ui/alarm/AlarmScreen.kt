@@ -72,7 +72,7 @@ fun DisplayAlarm(
 
         Text("Tijd resterend: $secondsToDisappear")
         Spacer(modifier = Modifier.height(50.dp))
-        Button(onClick = { Toast.makeText(context, "Sessie opgeslagen", Toast.LENGTH_LONG).show();sessionViewModel.addSession(HeftosSession(0,LocalDateTime.now(), true, 0)) ;activity?.finish()}, modifier = Modifier) {
+        Button(onClick = { Toast.makeText(context, "Activiteit opgenomen", Toast.LENGTH_LONG).show();sessionViewModel.addSession(HeftosSession(0,LocalDateTime.now(), true, 0)) ;activity?.finish()}, modifier = Modifier) {
             Icon(
                 Icons.Default.Check,
                 contentDescription = "Alarm accepteren",
