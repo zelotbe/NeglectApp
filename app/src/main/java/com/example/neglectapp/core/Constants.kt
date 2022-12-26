@@ -1,4 +1,4 @@
-package com.example.neglectapp.util
+package com.example.neglectapp.core
 
 object Constants {
         const val ACTION_SERVICE_START = "ACTION_SERVICE_START"
@@ -18,4 +18,6 @@ object Constants {
         const val CANCEL_REQUEST_CODE = 101
         const val STOP_REQUEST_CODE = 102
         const val RESUME_REQUEST_CODE = 103
+
+        const val SESSION_TABLE = "session_table"
 }

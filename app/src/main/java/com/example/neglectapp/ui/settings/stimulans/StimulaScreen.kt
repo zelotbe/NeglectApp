@@ -10,7 +10,6 @@ import androidx.navigation.NavHostController
 import androidx.wear.compose.material.*
 import com.example.neglectapp.navigation.Screen
 import com.example.neglectapp.viewmodel.HeftosViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun DisplayStimula(

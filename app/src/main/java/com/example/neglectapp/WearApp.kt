@@ -28,7 +28,6 @@ import com.example.neglectapp.ui.settings.DisplaySettings
 import com.example.neglectapp.ui.settings.intensity.DisplayIntensity
 import com.example.neglectapp.ui.settings.stimulans.DisplayStimula
 import com.example.neglectapp.util.SessionService
-import com.example.neglectapp.viewmodel.HeftosViewModel
 
 
 @OptIn(ExperimentalWearMaterialApi::class, ExperimentalAnimationApi::class)

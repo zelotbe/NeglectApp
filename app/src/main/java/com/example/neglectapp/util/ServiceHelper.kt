@@ -6,11 +6,11 @@ import android.content.Intent
 import android.os.Build
 import androidx.compose.animation.ExperimentalAnimationApi
 import com.example.neglectapp.MainActivity
-import com.example.neglectapp.util.Constants.CANCEL_REQUEST_CODE
-import com.example.neglectapp.util.Constants.CLICK_REQUEST_CODE
-import com.example.neglectapp.util.Constants.RESUME_REQUEST_CODE
-import com.example.neglectapp.util.Constants.SESSION_STATE
-import com.example.neglectapp.util.Constants.STOP_REQUEST_CODE
+import com.example.neglectapp.core.Constants.CANCEL_REQUEST_CODE
+import com.example.neglectapp.core.Constants.CLICK_REQUEST_CODE
+import com.example.neglectapp.core.Constants.RESUME_REQUEST_CODE
+import com.example.neglectapp.core.Constants.SESSION_STATE
+import com.example.neglectapp.core.Constants.STOP_REQUEST_CODE
 
 @ExperimentalAnimationApi
 object ServiceHelper {
