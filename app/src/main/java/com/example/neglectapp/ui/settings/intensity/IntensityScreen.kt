@@ -16,7 +16,6 @@ import androidx.wear.compose.material.InlineSlider
 import androidx.wear.compose.material.InlineSliderDefaults
 import androidx.wear.compose.material.Text
 import com.example.neglectapp.viewmodel.HeftosViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun DisplayIntensity(

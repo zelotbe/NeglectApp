@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.app.NotificationCompat
 import com.example.neglectapp.R
-import com.example.neglectapp.util.Constants.NOTIFICATION_CHANNEL_ID
+import com.example.neglectapp.core.Constants.NOTIFICATION_CHANNEL_ID
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

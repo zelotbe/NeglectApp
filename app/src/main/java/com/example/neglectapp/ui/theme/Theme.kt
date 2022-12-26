@@ -2,8 +2,6 @@ package com.example.neglectapp.ui.theme
 
 import androidx.compose.runtime.Composable
 import androidx.wear.compose.material.MaterialTheme
-import com.example.neglectapp.ui.theme.Typography
-import com.example.neglectapp.ui.theme.wearColorPalette
 
 @Composable
 fun NeglectAppTheme(
