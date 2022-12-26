@@ -13,19 +13,22 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.health.services.client.MeasureClient
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.Text
 import com.example.neglectapp.ui.alarm.DisplayAlarm
 import com.example.neglectapp.viewmodel.HeftosViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AlarmActivity : ComponentActivity() {
     @OptIn(ExperimentalAnimationApi::class)
-
     private lateinit var r:Ringtone
     private lateinit var vibrator:Vibrator
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+//            val measure = MeasureClient
             val viewModel: HeftosViewModel = viewModel()
             var context = LocalContext.current
             var alarmUri: Uri? = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)

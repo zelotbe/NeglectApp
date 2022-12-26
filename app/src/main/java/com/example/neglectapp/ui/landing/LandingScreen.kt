@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
@@ -16,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.Button
@@ -25,23 +25,28 @@ import com.example.neglectapp.components.display.DisplayProgress
 import com.example.neglectapp.components.settings.SettingsIcon
 import com.example.neglectapp.ui.status.DisplayStatus
 import com.example.neglectapp.util.*
-import com.example.neglectapp.util.Constants.ACTION_SERVICE_CANCEL
-import com.example.neglectapp.util.Constants.ACTION_SERVICE_START
-import com.example.neglectapp.util.Constants.ACTION_SERVICE_STOP
-import com.example.neglectapp.util.Constants.ACTION_TRIGGER_ALARM
+import com.example.neglectapp.core.Constants.ACTION_SERVICE_CANCEL
+import com.example.neglectapp.core.Constants.ACTION_SERVICE_START
+import com.example.neglectapp.core.Constants.ACTION_SERVICE_STOP
+import com.example.neglectapp.core.Constants.ACTION_TRIGGER_ALARM
 import com.example.neglectapp.viewmodel.HeftosViewModel
+import com.example.neglectapp.viewmodel.SessionViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DisplayLanding(
     navController: NavHostController,
     modifier: Modifier,
-    sessionService: SessionService
+    sessionService: SessionService,
+    sessionViewModel: SessionViewModel = hiltViewModel()
+
 ){
     var context = LocalContext.current
     val currentState by sessionService.currentState
     val viewModel: HeftosViewModel = viewModel()
     val interactionSource = remember { MutableInteractionSource() }
+    val sessions by sessionViewModel.sessions.collectAsState(initial = emptyList())
+    Log.d("ROOM SESSIONS: ", sessions.toString())
     Column(
         modifier = Modifier
             .fillMaxSize()
