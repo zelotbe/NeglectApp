@@ -24,13 +24,16 @@ import androidx.wear.compose.material.MaterialTheme
 import com.example.neglectapp.components.display.DisplayProgress
 import com.example.neglectapp.components.settings.SettingsIcon
 import com.example.neglectapp.ui.status.DisplayStatus
-import com.example.neglectapp.util.*
 import com.example.neglectapp.core.Constants.ACTION_SERVICE_CANCEL
 import com.example.neglectapp.core.Constants.ACTION_SERVICE_START
 import com.example.neglectapp.core.Constants.ACTION_SERVICE_STOP
 import com.example.neglectapp.core.Constants.ACTION_TRIGGER_ALARM
+import com.example.neglectapp.service.ServiceHelper
+import com.example.neglectapp.service.SessionService
+import com.example.neglectapp.service.SessionState
 import com.example.neglectapp.viewmodel.HeftosViewModel
 import com.example.neglectapp.viewmodel.SessionViewModel
+import org.checkerframework.checker.units.qual.min
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -41,12 +44,14 @@ fun DisplayLanding(
     sessionViewModel: SessionViewModel = hiltViewModel()
 
 ){
-    var context = LocalContext.current
+    val context = LocalContext.current
     val currentState by sessionService.currentState
     val viewModel: HeftosViewModel = viewModel()
     val interactionSource = remember { MutableInteractionSource() }
     val sessions by sessionViewModel.sessions.collectAsState(initial = emptyList())
-    Log.d("ROOM SESSIONS: ", sessions.toString())
+    sessions.forEach{ session ->
+        Log.d("ID:${session.id}", "Interacted: ${session.hasInteracted}, Date: ${session.currentDateTime}")
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,7 +62,9 @@ fun DisplayLanding(
             modifier = Modifier,
         ) {
 
-            DisplayProgress()
+            if(currentState !== SessionState.Idle){
+                DisplayProgress()
+            }
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -67,7 +74,6 @@ fun DisplayLanding(
                 Spacer(modifier = Modifier.height(60.dp))
                 DisplayStatus(modifier = Modifier, status = currentState)
                 Spacer(modifier = Modifier.height(15.dp))
-//                Text("${viewmodel.startHour}")
                 Row(modifier = Modifier) {
 
                     Button(onClick = {
@@ -96,18 +102,18 @@ fun DisplayLanding(
                             modifier = Modifier.size(width = 35.dp, height = 35.dp)
                         )
                     }
-                    Button(onClick = {
-                        Log.d("AlarmButton:", "clicked");ServiceHelper.triggerForegroundService(
-                        context = context,
-                        action = ACTION_TRIGGER_ALARM
-                    )
-                    }, modifier = Modifier) {
-                        Icon(
-                            Icons.Default.Alarm,
-                            contentDescription = "Alarm",
-                            modifier = Modifier.size(width = 35.dp, height = 35.dp)
-                        )
-                    }
+//                    Button(onClick = {
+//                        Log.d("AlarmButton:", "clicked");ServiceHelper.triggerForegroundService(
+//                        context = context,
+//                        action = ACTION_TRIGGER_ALARM
+//                    )
+//                    }, modifier = Modifier) {
+//                        Icon(
+//                            Icons.Default.Alarm,
+//                            contentDescription = "Alarm",
+//                            modifier = Modifier.size(width = 35.dp, height = 35.dp)
+//                        )
+//                    }
                 }
             }
         }
