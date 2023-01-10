@@ -1,4 +1,4 @@
-package com.example.neglectapp.util
+package com.example.neglectapp.service
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -6,7 +6,7 @@ import android.app.Notification.CATEGORY_ALARM
 import android.content.Context
 import android.content.Intent
 import android.os.Binder
-import android.os.Build
+import android.os.IBinder
 import android.os.SystemClock
 import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -25,7 +25,15 @@ import com.example.neglectapp.core.Constants.NOTIFICATION_CHANNEL_ID
 import com.example.neglectapp.core.Constants.NOTIFICATION_CHANNEL_NAME
 import com.example.neglectapp.core.Constants.NOTIFICATION_ID
 import com.example.neglectapp.core.Constants.SESSION_STATE
+import com.example.neglectapp.core.formatTime
+import com.example.neglectapp.core.pad
+import com.example.neglectapp.data.datastore.LocalDataStore
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.*
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -33,11 +41,12 @@ import kotlin.time.Duration
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
-class SessionService() : Service() {
+class SessionService() : Service(), KoinComponent {
     @Inject
     lateinit var notificationManager: NotificationManager
     @Inject
     lateinit var notificationBuilder: NotificationCompat.Builder
+    private val localDataStore: LocalDataStore by inject()
 
     private val binder = SessionBinder()
 
@@ -53,14 +62,25 @@ class SessionService() : Service() {
 
     var currentState = mutableStateOf(SessionState.Idle)
         private set
-    
-    override fun onBind(p0: Intent?) = binder
+    private val scope = CoroutineScope(Dispatchers.IO + Job())
+
+    private var minSession = 0
+    private var maxSession = 0
+    private var startHour = ""
+    private var endHour = ""
+    private var minBool = false
+    private var maxBool = false
+    private var startBool = false
+    private var endBool = false
+
+    override fun onBind(p0: Intent?): IBinder {return binder}
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.getStringExtra(SESSION_STATE)) {
             SessionState.Started.name -> {
                 setStopButton()
                 startForegroundService()
+
                 currentState.value = SessionState.Started
             }
             SessionState.Stopped.name -> {
@@ -79,6 +99,7 @@ class SessionService() : Service() {
                     Log.d("OnStart:", "START DETECTED")
                     setStopButton()
                     startForegroundService()
+                    scope.launch { gatherSessionData() }
                     currentState.value = SessionState.Started
                 }
                 ACTION_SERVICE_STOP -> {
@@ -141,7 +162,6 @@ class SessionService() : Service() {
         ongoingActivity.apply(applicationContext)
 
         startForeground(NOTIFICATION_ID, notificationBuilder.build())
-        startSession()
     }
 
     private fun stopForegroundService() {
@@ -151,14 +171,12 @@ class SessionService() : Service() {
     }
 
     private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                NOTIFICATION_CHANNEL_ID,
-                NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW
-            )
-            notificationManager.createNotificationChannel(channel)
-        }
+        val channel = NotificationChannel(
+            NOTIFICATION_CHANNEL_ID,
+            NOTIFICATION_CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_LOW
+        )
+        notificationManager.createNotificationChannel(channel)
     }
 
     private fun updateNotification(hours: String, minutes: String, seconds: String) {
@@ -203,28 +221,51 @@ class SessionService() : Service() {
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
     }
 
-    private fun startSession(){
+    private suspend fun gatherSessionData(){
+        localDataStore.getMinSession().onEach {
+            Log.d("min", it.toString())
+            if (it != null) {
+                minSession = it
+                minBool = true
+                createSessions()
+            }
 
-//        var min = 0
-//        runBlocking {
-//            store.getMinSession().collect {
-//                if (it != null) {
-//                    min = it
-//                }
-//            }
-//        }
-//        var max = 0
-//            runBlocking {
-//                store.getMaxSession().collect {
-//                    if (it != null) {
-//                        max = it
-//                    }
-//                }
-//            }
-//
-//        val random = (min..max).random()
-//       Log.d("RANDOM", "$random")
+        }.launchIn(this.scope)
 
+        localDataStore.getMaxSession().onEach {
+            Log.d("max", it.toString())
+            if (it != null) {
+                maxSession = it
+                maxBool = true
+                createSessions()
+            }
+        }.launchIn(this.scope)
+
+        localDataStore.getStartHour().onEach {
+            Log.d("max", it.toString())
+            if (it != null) {
+                startHour = it
+                startBool = true
+                createSessions()
+            }
+        }.launchIn(this.scope)
+
+        localDataStore.getEndHour().onEach {
+            Log.d("max", it.toString())
+            if (it != null) {
+                endHour = it
+                endBool = true
+                createSessions()
+            }
+        }.launchIn(this.scope)
+
+    }
+
+    private fun createSessions(){
+        if (minBool && maxBool && startHour !== "" && endHour !== "") {
+            Log.d("TestMin/max", "$minSession/$maxSession")
+            triggerAlarm(ACTION_TRIGGER_ALARM)
+        }
     }
 
     private fun triggerAlarm(action: String) {

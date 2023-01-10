@@ -1,4 +1,4 @@
-package com.example.neglectapp.util
+package com.example.neglectapp.service
 
 import android.app.PendingIntent
 import android.content.Context
@@ -8,18 +8,18 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import com.example.neglectapp.MainActivity
 import com.example.neglectapp.core.Constants.CANCEL_REQUEST_CODE
 import com.example.neglectapp.core.Constants.CLICK_REQUEST_CODE
+import com.example.neglectapp.core.Constants.CREATE_SESSIONS_CODE
+import com.example.neglectapp.core.Constants.MAX_SESSION
+import com.example.neglectapp.core.Constants.MIN_SESSION
 import com.example.neglectapp.core.Constants.RESUME_REQUEST_CODE
 import com.example.neglectapp.core.Constants.SESSION_STATE
 import com.example.neglectapp.core.Constants.STOP_REQUEST_CODE
+import org.checkerframework.checker.units.qual.min
 
 @ExperimentalAnimationApi
 object ServiceHelper {
 
-    private val flag =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            PendingIntent.FLAG_IMMUTABLE
-        else
-            0
+    private const val flag = PendingIntent.FLAG_IMMUTABLE
 
     fun clickPendingIntent(context: Context): PendingIntent {
         val clickIntent = Intent(context, MainActivity::class.java).apply {
@@ -62,5 +62,14 @@ object ServiceHelper {
             this.action = action
             context.startService(this)
         }
+    }
+    fun activateSessionCreation(context: Context, min: Int, max: Int) : PendingIntent{
+        val activateIntent = Intent(context, SessionService::class.java).apply{
+            var minMax: IntArray = intArrayOf(min, max)
+            putExtra("MINMAX", minMax)
+        }
+        return PendingIntent.getService(
+            context, CREATE_SESSIONS_CODE, activateIntent, flag
+        )
     }
 }
