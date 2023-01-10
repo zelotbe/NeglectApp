@@ -36,18 +36,24 @@ This is an Android smartwatch app made with jetpack compose.
 
 - [x] Auto close alarm after 15 seconds
 
-- [ ] Save time when alarm is triggered and if the user interacted with the alarm
+- [x] Save time when alarm is triggered and if the user interacted with the alarm
 
 - [ ] Save data local
 
 - [ ] Save data to Azure
 
 ### EXTRAS
-- [ ] Heartrate 
+- [ ] Heartrate
+
 - [ ] Detect movement before stimula is triggered
+
 - [ ] Optimization
+
 - [ ] Animated icon for Ongoing Activity (wear homescreen icon)
+
 - [x] MVVM - Pattern
+
+- [ ] Show data (Interactions) on a circle graph
 
 ### Good resources
 
