@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.MaterialTheme
+import androidx.wear.compose.material.Text
 import com.example.neglectapp.components.display.DisplayProgress
 import com.example.neglectapp.components.settings.SettingsIcon
 import com.example.neglectapp.ui.status.DisplayStatus
@@ -34,6 +35,7 @@ import com.example.neglectapp.service.SessionState
 import com.example.neglectapp.viewmodel.HeftosViewModel
 import com.example.neglectapp.viewmodel.SessionViewModel
 import org.checkerframework.checker.units.qual.min
+import java.time.LocalTime
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -47,8 +49,16 @@ fun DisplayLanding(
     val context = LocalContext.current
     val currentState by sessionService.currentState
     val viewModel: HeftosViewModel = viewModel()
+
+    val startHour by viewModel.startHour.collectAsState()
+    val startSeconds = LocalTime.parse(startHour).toSecondOfDay()
+
+    val endHour by viewModel.endHour.collectAsState()
+    val endSeconds = LocalTime.parse(endHour).toSecondOfDay()
+
     val interactionSource = remember { MutableInteractionSource() }
     val sessions by sessionViewModel.sessions.collectAsState(initial = emptyList())
+
     sessions.forEach{ session ->
         Log.d("ID:${session.id}", "Interacted: ${session.hasInteracted}, Date: ${session.currentDateTime}")
     }
@@ -72,36 +82,37 @@ fun DisplayLanding(
             ) {
                 SettingsIcon(navController = navController)
                 Spacer(modifier = Modifier.height(60.dp))
-                DisplayStatus(modifier = Modifier, status = currentState)
-                Spacer(modifier = Modifier.height(15.dp))
-                Row(modifier = Modifier) {
+                if (LocalTime.now().toSecondOfDay() in (startSeconds + 1) until endSeconds){
+                    DisplayStatus(modifier = Modifier, status = currentState)
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Row(modifier = Modifier) {
 
-                    Button(onClick = {
-                        ServiceHelper.triggerForegroundService(
+                        Button(onClick = {
+                            ServiceHelper.triggerForegroundService(
+                                context = context,
+                                action = if (currentState == SessionState.Started) ACTION_SERVICE_STOP
+                                else ACTION_SERVICE_START
+                            )
+                        }, modifier = Modifier) {
+                            Icon(
+                                if(currentState == SessionState.Idle || currentState == SessionState.Stopped)  Icons.Default.PlayArrow else Icons.Default.Pause,
+                                contentDescription = if(currentState == SessionState.Idle || currentState == SessionState.Stopped)  "Starten" else "Pauzeren",
+                                modifier = Modifier.size(width = 35.dp, height = 35.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(25.dp))
+                        Button(onClick = {
+                            Log.d("StopButton:", "clicked");ServiceHelper.triggerForegroundService(
                             context = context,
-                            action = if (currentState == SessionState.Started) ACTION_SERVICE_STOP
-                            else ACTION_SERVICE_START
-                        )
-                    }, modifier = Modifier) {
-                        Icon(
-                            if(currentState == SessionState.Idle || currentState == SessionState.Stopped)  Icons.Default.PlayArrow else Icons.Default.Pause,
-                            contentDescription = if(currentState == SessionState.Idle || currentState == SessionState.Stopped)  "Starten" else "Pauzeren",
-                            modifier = Modifier.size(width = 35.dp, height = 35.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(25.dp))
-                    Button(onClick = {
-                        Log.d("StopButton:", "clicked");ServiceHelper.triggerForegroundService(
-                        context = context,
-                        action = ACTION_SERVICE_CANCEL
-                    );
-                    }, modifier = Modifier, interactionSource = interactionSource, enabled = currentState!== SessionState.Idle,) {
-                        Icon(
-                            Icons.Default.Stop,
-                            contentDescription = "Stoppen",
-                            modifier = Modifier.size(width = 35.dp, height = 35.dp)
-                        )
-                    }
+                            action = ACTION_SERVICE_CANCEL
+                        );
+                        }, modifier = Modifier, interactionSource = interactionSource, enabled = currentState!== SessionState.Idle,) {
+                            Icon(
+                                Icons.Default.Stop,
+                                contentDescription = "Stoppen",
+                                modifier = Modifier.size(width = 35.dp, height = 35.dp)
+                            )
+                        }
 //                    Button(onClick = {
 //                        Log.d("AlarmButton:", "clicked");ServiceHelper.triggerForegroundService(
 //                        context = context,
@@ -114,6 +125,9 @@ fun DisplayLanding(
 //                            modifier = Modifier.size(width = 35.dp, height = 35.dp)
 //                        )
 //                    }
+                }
+                }else{
+                    DisplayStatus(modifier = Modifier, status = SessionState.ClosedOperatingHours )
                 }
             }
         }

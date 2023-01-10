@@ -15,9 +15,16 @@ fun DisplayStatus(
 ){
     val viewModel: HeftosViewModel = viewModel()
 
-    if (status == SessionState.Started || status == SessionState.Stopped){
-        Text("${viewModel.startHour.collectAsState().value} - ${viewModel.endHour.collectAsState().value}")
-    }else{
-        Text("Geen actieve sessie")
+    when (status) {
+        SessionState.Started, SessionState.Stopped -> {
+            Text("${viewModel.startHour.collectAsState().value} - ${viewModel.endHour.collectAsState().value}")
+        }
+        SessionState.ClosedOperatingHours -> {
+            Text("Tot morgen")
+            Text("om ${viewModel.startHour.collectAsState().value}!")
+        }
+        else -> {
+            Text("Geen actieve sessie")
+        }
     }
 }
