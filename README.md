@@ -20,7 +20,7 @@ This is an Android smartwatch app made with jetpack compose.
 
 - [x] Configurable stimula intensity
 
-- [ ] Show a functioning progress bar on landing screen (represents operating hours)
+- [x] Show a functioning progress bar on landing screen (represents operating hours)
 
 - [ ] Pause & resume ability
 
