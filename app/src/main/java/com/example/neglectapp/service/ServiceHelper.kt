@@ -63,13 +63,4 @@ object ServiceHelper {
             context.startService(this)
         }
     }
-    fun activateSessionCreation(context: Context, min: Int, max: Int) : PendingIntent{
-        val activateIntent = Intent(context, SessionService::class.java).apply{
-            var minMax: IntArray = intArrayOf(min, max)
-            putExtra("MINMAX", minMax)
-        }
-        return PendingIntent.getService(
-            context, CREATE_SESSIONS_CODE, activateIntent, flag
-        )
-    }
 }
