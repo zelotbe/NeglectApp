@@ -296,5 +296,6 @@ enum class SessionState {
     Idle,
     Started,
     Stopped,
-    Canceled
+    Canceled,
+    ClosedOperatingHours
 }
