@@ -5,7 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.Text
-import com.example.neglectapp.util.SessionState
+import com.example.neglectapp.service.SessionState
 import com.example.neglectapp.viewmodel.HeftosViewModel
 
 @Composable

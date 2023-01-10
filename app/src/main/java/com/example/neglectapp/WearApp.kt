@@ -27,7 +27,7 @@ import com.example.neglectapp.ui.session.DisplaySession
 import com.example.neglectapp.ui.settings.DisplaySettings
 import com.example.neglectapp.ui.settings.intensity.DisplayIntensity
 import com.example.neglectapp.ui.settings.stimulans.DisplayStimula
-import com.example.neglectapp.util.SessionService
+import com.example.neglectapp.service.SessionService
 
 
 @OptIn(ExperimentalWearMaterialApi::class, ExperimentalAnimationApi::class)

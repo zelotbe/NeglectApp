@@ -18,7 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
-import com.example.neglectapp.util.SessionService
+import com.example.neglectapp.service.SessionService
 import dagger.hilt.android.AndroidEntryPoint
 
 

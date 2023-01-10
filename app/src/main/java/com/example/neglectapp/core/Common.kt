@@ -1,4 +1,4 @@
-package com.example.neglectapp.util
+package com.example.neglectapp.core
 
 import java.time.LocalTime
 

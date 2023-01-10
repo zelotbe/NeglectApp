@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault">
         <service
-            android:name=".util.SessionService"
+            android:name=".service.SessionService"
             android:enabled="true"
             android:exported="false"
             />
