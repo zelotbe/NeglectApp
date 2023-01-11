@@ -42,6 +42,8 @@ This is an Android smartwatch app made with jetpack compose.
 
 - [ ] Save data to Azure
 
+- [ ] Unit testing
+
 ### EXTRAS
 - [ ] Heartrate
 
@@ -54,6 +56,8 @@ This is an Android smartwatch app made with jetpack compose.
 - [x] MVVM - Pattern
 
 - [ ] Show data (Interactions) on a circle graph
+
+- [ ] UI testing
 
 ### Good resources
 
