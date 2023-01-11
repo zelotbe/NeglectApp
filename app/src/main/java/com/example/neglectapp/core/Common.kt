@@ -1,13 +1,16 @@
 package com.example.neglectapp.core
 
-import java.time.LocalDateTime
+import java.time.Duration
 import java.time.LocalTime
-import java.time.ZoneId
 
-fun formatTime(seconds: String, minutes: String, hours: String): String {
-    return "$hours:$minutes:$seconds"
-}
+fun calculateProgress(startHour: String, endHour: String): Float {
+    val start = LocalTime.parse(startHour)
+    val end = LocalTime.parse(endHour)
+    val currentTime = LocalTime.now()
 
-fun Int.pad(): String {
-    return this.toString().padStart(2, '0')
+    val totalDuration = Duration.between(start, end).toMillis()
+    val elapsedDuration = Duration.between(start, currentTime).toMillis()
+
+    return (elapsedDuration.toFloat() / totalDuration.toFloat())
+
 }
