@@ -22,13 +22,13 @@ This is an Android smartwatch app made with jetpack compose.
 
 - [x] Show a functioning progress bar on landing screen (represents operating hours)
 
-- [ ] Pause & resume ability
+- [x] Pause & resume ability
 
 - [x] Show an alarm screen
 
 - [x] Customize alarm screen with the chosen stimula
 
-- [ ] Trigger a random amount of stimula between operating hours
+- [x] Trigger a random amount of stimula between operating hours
 
 - [x] Implement ongoing activity
 
@@ -45,6 +45,8 @@ This is an Android smartwatch app made with jetpack compose.
 - [ ] Unit testing
 
 ### EXTRAS
+- [ ] Check if I'm able to start the service automatically on starting hour
+
 - [ ] Heartrate
 
 - [ ] Detect movement before stimula is triggered
