@@ -3,18 +3,13 @@ package com.example.neglectapp.service
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.compose.animation.ExperimentalAnimationApi
 import com.example.neglectapp.MainActivity
 import com.example.neglectapp.core.Constants.CANCEL_REQUEST_CODE
 import com.example.neglectapp.core.Constants.CLICK_REQUEST_CODE
-import com.example.neglectapp.core.Constants.CREATE_SESSIONS_CODE
-import com.example.neglectapp.core.Constants.MAX_SESSION
-import com.example.neglectapp.core.Constants.MIN_SESSION
 import com.example.neglectapp.core.Constants.RESUME_REQUEST_CODE
 import com.example.neglectapp.core.Constants.SESSION_STATE
 import com.example.neglectapp.core.Constants.STOP_REQUEST_CODE
-import org.checkerframework.checker.units.qual.min
 
 @ExperimentalAnimationApi
 object ServiceHelper {
