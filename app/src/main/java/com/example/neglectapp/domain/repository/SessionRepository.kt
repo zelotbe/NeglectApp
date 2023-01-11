@@ -14,4 +14,8 @@ interface SessionRepository {
     fun updateSessionInRoom(session: HeftosSession)
 
     fun deleteSessionFromRoom(session: HeftosSession)
+
+    fun getAmountInteractedFromRoom(): Flow<Int>
+
+    fun getAmountNotInteractedFromRoom(): Flow<Int>
 }

@@ -9,6 +9,9 @@ import com.example.neglectapp.domain.model.HeftosSession
 import com.example.neglectapp.domain.repository.SessionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -22,6 +25,8 @@ class SessionViewModel @Inject constructor(
     var openDialog by mutableStateOf(false)
 
     val sessions = repo.getSessionsFromRoom()
+    var amountInteracted = repo.getAmountInteractedFromRoom()
+    var amountNotInteracted = repo.getAmountNotInteractedFromRoom()
 
 //    fun getBook(id: Int) = viewModelScope.launch(Dispatchers.IO) {
 //        book = repo.getBookFromRoom(id)
@@ -30,32 +35,4 @@ class SessionViewModel @Inject constructor(
     fun addSession(session: HeftosSession) = viewModelScope.launch(Dispatchers.IO) {
         repo.addSessionToRoom(session)
     }
-//
-//    fun updateBook(book: Book) = viewModelScope.launch(Dispatchers.IO) {
-//        repo.updateBookInRoom(book)
-//    }
-//
-//    fun deleteBook(book: Book) = viewModelScope.launch(Dispatchers.IO) {
-//        repo.deleteBookFromRoom(book)
-//    }
-//
-//    fun updateTitle(title: String) {
-//        book = book.copy(
-//            title = title
-//        )
-//    }
-//
-//    fun updateAuthor(author: String) {
-//        book = book.copy(
-//            author = author
-//        )
-//    }
-//
-//    fun openDialog() {
-//        openDialog = true
-//    }
-//
-//    fun closeDialog() {
-//        openDialog = false
-//    }
 }
