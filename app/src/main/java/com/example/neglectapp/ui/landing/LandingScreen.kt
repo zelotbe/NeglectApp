@@ -59,9 +59,9 @@ fun DisplayLanding(
     val interactionSource = remember { MutableInteractionSource() }
     val sessions by sessionViewModel.sessions.collectAsState(initial = emptyList())
 
-    sessions.forEach{ session ->
-        Log.d("ID:${session.id}", "Interacted: ${session.hasInteracted}, Date: ${session.currentDateTime}")
-    }
+//    sessions.forEach{ session ->
+//        Log.d("ID:${session.id}", "Interacted: ${session.hasInteracted}, Date: ${session.currentDateTime}")
+//    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -72,7 +72,7 @@ fun DisplayLanding(
             modifier = Modifier,
         ) {
 
-            if(currentState !== SessionState.Idle){
+            if(currentState == SessionState.Started || currentState == SessionState.Stopped){
                 DisplayProgress()
             }
             Column(
@@ -128,6 +128,10 @@ fun DisplayLanding(
                 }
                 }else{
                     DisplayStatus(modifier = Modifier, status = SessionState.ClosedOperatingHours )
+                    ServiceHelper.triggerForegroundService(
+                        context = context,
+                        action = ACTION_SERVICE_CANCEL
+                    );
                 }
             }
         }
