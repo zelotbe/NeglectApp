@@ -84,6 +84,23 @@ fun DisplaySettings(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
+            item(){
+                Chip(
+                    onClick = { navController.navigate(Screen.PieChart.route) },
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_baseline_pie_chart_24),
+                            contentDescription = "Data",
+                            modifier = Modifier.size(width = 25.dp, height = 25.dp)
+                        )
+                    },
+                    label = {
+//                            Spacer(modifier = Modifier.width(10.dp))
+                        Text("Data")
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
     }
 }
