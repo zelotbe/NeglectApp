@@ -5,8 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.wear.compose.material.Text
 import com.example.neglectapp.components.pieChart.PieChart
 import com.example.neglectapp.viewmodel.SessionViewModel
 
@@ -24,6 +26,9 @@ fun DisplayPieChart(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Spacer(modifier = Modifier.height(10.dp))
+        Text("Data")
+        Spacer(modifier = Modifier.height(10.dp))
         PieChart(values = listOf(amountInteracted.value, amountNotInteracted.value))
     }
 }
