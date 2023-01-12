@@ -1,6 +1,5 @@
 package com.example.neglectapp.components.pieChart
 
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -9,11 +8,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.wear.compose.material.MaterialTheme
 
 @Composable
 fun PieChart(
     values: List<Int> = emptyList(),
-    colors: List<Color> = listOf(Color.Green, Color.Red),
+    colors: List<Color> = listOf(MaterialTheme.colors.primaryVariant, MaterialTheme.colors.secondary),
     legend: List<String> = listOf("Wel", "Niet"),
     size: Dp = 150.dp
 ) {
@@ -44,12 +44,11 @@ fun PieChart(
                 )
                 startAngle += sweepAngles[i].toFloat()
             }
-
         }
 
         Spacer(modifier = Modifier.height(15.dp))
 
-        Row {
+        Column {
             for (i in values.indices) {
                 DisplayLegend(color = colors[i], legend = legend[i])
                 Spacer(modifier = Modifier.width(5.dp))
