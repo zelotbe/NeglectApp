@@ -1,6 +1,9 @@
 package com.example.neglectapp.ui.settings
 
 
+
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 
 import androidx.wear.compose.material.*
@@ -20,6 +23,7 @@ import com.example.neglectapp.navigation.Screen
 fun DisplaySettings(
     modifier: Modifier,
     navController: NavHostController,
+    scalingLazyListState: ScalingLazyListState,
 //    settingsViewModel: SettingsViewModel = viewModel()
 ){
     Column(
@@ -31,6 +35,9 @@ fun DisplaySettings(
 
         ScalingLazyColumn(
             horizontalAlignment = Alignment.Start,
+            modifier = Modifier.scrollable(scalingLazyListState, Orientation.Vertical),
+            state = scalingLazyListState,
+            autoCentering = AutoCenteringParams(itemIndex = 0)
 //            verticalArrangement = Arrangement.spacedBy(15.dp),
         ){
             item(){
