@@ -22,8 +22,6 @@ fun DisplayIntensity(
     modifier: Modifier,
     stimula: String,
     ){
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
     //VIBRATION DATA STORE
     val viewModel: HeftosViewModel = viewModel()
     val getVibration = viewModel.vibrationIntensity.collectAsState().value
@@ -42,7 +40,7 @@ fun DisplayIntensity(
                 InlineSlider(
                     value = getVibration,
                     onValueChange = { Log.d("INTENSITY", "$getVibration" ); viewModel.saveVibrationIntensity(it) },
-                    valueProgression = 1..10,
+                    valueProgression = 1..5,
                     increaseIcon = { Icon(InlineSliderDefaults.Increase, "Increase") },
                     decreaseIcon = { Icon(InlineSliderDefaults.Decrease, "Decrease") }
                 )
@@ -52,7 +50,7 @@ fun DisplayIntensity(
                 InlineSlider(
                     value = getSound,
                     onValueChange = { Log.d("INTENSITY", "$getSound" );viewModel.saveSoundIntensity(it) },
-                    valueProgression = 1..10,
+                    valueProgression = 1..5,
                     increaseIcon = { Icon(InlineSliderDefaults.Increase, "Increase") },
                     decreaseIcon = { Icon(InlineSliderDefaults.Decrease, "Decrease") }
                 )
@@ -62,7 +60,7 @@ fun DisplayIntensity(
                 InlineSlider(
                     value = getLight,
                     onValueChange = { Log.d("INTENSITY", "$getLight" );viewModel.saveLightIntensity(it) },
-                    valueProgression = 1..10,
+                    valueProgression = 1..5,
                     increaseIcon = { Icon(InlineSliderDefaults.Increase, "Increase") },
                     decreaseIcon = { Icon(InlineSliderDefaults.Decrease, "Decrease") }
                 )
