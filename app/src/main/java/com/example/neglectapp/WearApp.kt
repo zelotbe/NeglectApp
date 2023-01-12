@@ -28,6 +28,7 @@ import com.example.neglectapp.ui.settings.DisplaySettings
 import com.example.neglectapp.ui.settings.intensity.DisplayIntensity
 import com.example.neglectapp.ui.settings.stimulans.DisplayStimula
 import com.example.neglectapp.service.SessionService
+import com.example.neglectapp.ui.piechart.DisplayPieChart
 
 
 @OptIn(ExperimentalWearMaterialApi::class, ExperimentalAnimationApi::class)
@@ -120,6 +121,11 @@ fun WearApp(
                     arguments = listOf(navArgument("session"){ type = NavType.StringType})
                 ){ backStackEntry ->
                     DisplayNumberPicker(navController = swipeDismissableNavController, modifier = Modifier, backStackEntry.arguments?.getString("session")!!)
+                }
+                composable(
+                    route = Screen.PieChart.route,
+                ){
+                    DisplayPieChart(navController = swipeDismissableNavController, modifier = Modifier)
                 }
             }
         }

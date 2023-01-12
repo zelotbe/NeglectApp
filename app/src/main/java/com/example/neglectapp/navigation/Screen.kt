@@ -18,6 +18,8 @@ sealed class Screen(val route: String){
     object Session: Screen("session")
     object Alarm: Screen("alarm")
     object NumberPicker: Screen("numberpicker")
+    object PieChart: Screen("chart")
+
 
 
 }
