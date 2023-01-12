@@ -24,4 +24,10 @@ interface SessionDao {
 
     @Delete
     fun deleteSession(session: HeftosSession)
+
+    @Query("SELECT COUNT(id) FROM $SESSION_TABLE WHERE has_interacted = 1 ")
+    fun getAmountInteracted(): Flow<Int>
+
+    @Query("SELECT COUNT(id) FROM $SESSION_TABLE WHERE has_interacted = 0 ")
+    fun getAmountNotInteracted(): Flow<Int>
 }

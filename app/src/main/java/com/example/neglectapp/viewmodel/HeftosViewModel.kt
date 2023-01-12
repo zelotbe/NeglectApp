@@ -16,10 +16,10 @@ import java.time.LocalTime
 class HeftosViewModel : ViewModel(), KoinComponent{
     private val tag = HeftosViewModel::class.java.simpleName
     private val localDataStore: LocalDataStore by inject()
-    private val _startHour = MutableStateFlow("")
+    private val _startHour = MutableStateFlow("08:00")
     var startHour: StateFlow<String> = _startHour
 
-    private val _endHour = MutableStateFlow("")
+    private val _endHour = MutableStateFlow("19:00")
     var endHour: StateFlow<String> = _endHour
 
     private val _minSession = MutableStateFlow(0)

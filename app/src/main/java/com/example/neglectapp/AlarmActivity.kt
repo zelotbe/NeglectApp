@@ -30,7 +30,7 @@ class AlarmActivity : ComponentActivity() {
         setContent {
 //            val measure = MeasureClient
             val viewModel: HeftosViewModel = viewModel()
-            var context = LocalContext.current
+            val context = LocalContext.current
             var alarmUri: Uri? = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
 
             if (alarmUri == null) {
@@ -38,19 +38,15 @@ class AlarmActivity : ComponentActivity() {
             }
 
             r = RingtoneManager.getRingtone(context, alarmUri)
-            vibrator =
-                context.getSystemService(VIBRATOR_SERVICE) as Vibrator
-            val vibrationEffect1: VibrationEffect =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    VibrationEffect.createOneShot(100000, VibrationEffect.DEFAULT_AMPLITUDE)
-                } else {
-                    Log.e("TAG", "Cannot vibrate device..")
-                    TODO("VERSION.SDK_INT < O")
-                }
+            vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
+
+            val vibrationEffect1: VibrationEffect = VibrationEffect.createOneShot(100000, VibrationEffect.DEFAULT_AMPLITUDE)
+
             if (viewModel.sound.collectAsState().value) {
                 r.play()
                 Text("Sound is active")
             }
+
             if (viewModel.vibration.collectAsState().value) {
                 // it is safe to cancel other
                 // vibrations currently taking place
