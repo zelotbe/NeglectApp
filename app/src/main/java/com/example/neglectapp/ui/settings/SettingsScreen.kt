@@ -1,11 +1,11 @@
 package com.example.neglectapp.ui.settings
 
 
-
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CloudSync
 import androidx.wear.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +25,7 @@ fun DisplaySettings(
     navController: NavHostController,
     scalingLazyListState: ScalingLazyListState,
 //    settingsViewModel: SettingsViewModel = viewModel()
-){
+) {
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -39,42 +39,42 @@ fun DisplaySettings(
             state = scalingLazyListState,
             autoCentering = AutoCenteringParams(itemIndex = 0)
 //            verticalArrangement = Arrangement.spacedBy(15.dp),
-        ){
-            item(){
-                    Chip(
-                        onClick = { navController.navigate(Screen.Stimula.route) },
-                        icon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.watch_vibrate),
-                                contentDescription = "Stimulans",
-                                modifier = Modifier.size(width = 25.dp, height = 25.dp)
-                            )
-                        },
-                        label = {
+        ) {
+            item {
+                Chip(
+                    onClick = { navController.navigate(Screen.Stimula.route) },
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.watch_vibrate),
+                            contentDescription = "Stimulans",
+                            modifier = Modifier.size(width = 25.dp, height = 25.dp)
+                        )
+                    },
+                    label = {
 //                            Spacer(modifier = Modifier.width(10.dp))
-                            Text("Stimulans")
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                        Text("Stimulans")
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
-            item() {
-                    Chip(
-                        onClick = { navController.navigate(Screen.OperatingHours.route) },
-                        icon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.workhours),
-                                contentDescription = "Werkingsuren",
-                                modifier = Modifier.size(width = 25.dp, height = 25.dp)
-                            )
-                        },
-                        label = {
+            item {
+                Chip(
+                    onClick = { navController.navigate(Screen.OperatingHours.route) },
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.workhours),
+                            contentDescription = "Werkingsuren",
+                            modifier = Modifier.size(width = 25.dp, height = 25.dp)
+                        )
+                    },
+                    label = {
 //                            Spacer(modifier = Modifier.width(10.dp))
-                            Text("Werkingsuren")
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                        Text("Werkingsuren")
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
-            item(){
+            item {
                 Chip(
                     onClick = { navController.navigate(Screen.Session.route) },
                     icon = {
@@ -91,12 +91,29 @@ fun DisplaySettings(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            item(){
+            item {
                 Chip(
                     onClick = { navController.navigate(Screen.PieChart.route) },
                     icon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_baseline_pie_chart_24),
+                            contentDescription = "Grafiek data",
+                            modifier = Modifier.size(width = 25.dp, height = 25.dp)
+                        )
+                    },
+                    label = {
+//                            Spacer(modifier = Modifier.width(10.dp))
+                        Text("Grafiek")
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item {
+                Chip(
+                    onClick = { navController.navigate(Screen.Data.route) },
+                    icon = {
+                        Icon(
+                            Icons.Default.CloudSync,
                             contentDescription = "Data",
                             modifier = Modifier.size(width = 25.dp, height = 25.dp)
                         )
