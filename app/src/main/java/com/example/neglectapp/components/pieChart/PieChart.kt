@@ -56,8 +56,9 @@ fun PieChart(
         Column {
             for (i in values.indices) {
                 DisplayLegend(color = colors[i], legend = legend[i], percentage = percentages[i])
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))
             }
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }
