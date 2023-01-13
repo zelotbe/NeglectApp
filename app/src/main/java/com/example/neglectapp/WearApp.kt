@@ -37,6 +37,7 @@ import com.example.neglectapp.ui.settings.DisplaySettings
 import com.example.neglectapp.ui.settings.intensity.DisplayIntensity
 import com.example.neglectapp.ui.settings.stimulans.DisplayStimula
 import com.example.neglectapp.service.SessionService
+import com.example.neglectapp.ui.data.DisplayData
 import com.example.neglectapp.ui.piechart.DisplayPieChart
 
 
@@ -150,6 +151,12 @@ fun WearApp(
                 ){
                     val scrollState = scrollState(it)
                     DisplayPieChart(navController = swipeDismissableNavController, modifier = Modifier, scrollState = scrollState)
+                }
+                // DATA SCREEN
+                composable(
+                    route = Screen.Data.route
+                ){
+                    DisplayData(modifier = Modifier, navController = swipeDismissableNavController)
                 }
             }
         }

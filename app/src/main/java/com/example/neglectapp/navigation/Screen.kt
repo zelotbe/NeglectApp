@@ -19,7 +19,5 @@ sealed class Screen(val route: String){
     object Alarm: Screen("alarm")
     object NumberPicker: Screen("numberpicker")
     object PieChart: Screen("chart")
-
-
-
+    object Data: Screen("data")
 }
