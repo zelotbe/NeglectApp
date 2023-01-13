@@ -19,7 +19,7 @@ class RoomModule {
     @Provides
     fun provideSessionDb(
         @ApplicationContext
-        context : Context
+        context: Context
     ) = Room.databaseBuilder(
         context,
         SessionDb::class.java,

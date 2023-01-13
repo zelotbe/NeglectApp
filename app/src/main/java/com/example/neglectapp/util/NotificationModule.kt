@@ -25,15 +25,15 @@ object NotificationModule {
         @ApplicationContext context: Context
     ): NotificationCompat.Builder {
         return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-           .setContentTitle("HEFTOS")
-           .setContentText("00:00:00")
-           .setCategory(NotificationCompat.CATEGORY_PROGRESS)
-           .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-           .setSmallIcon(R.drawable.ic_baseline_flaky_24)
-           .setOngoing(true)
-           .addAction(0, "Stop", ServiceHelper.stopPendingIntent(context))
-           .addAction(0, "Cancel", ServiceHelper.cancelPendingIntent(context))
-           .setContentIntent(ServiceHelper.clickPendingIntent(context))
+            .setContentTitle("HEFTOS")
+            .setContentText("00:00:00")
+            .setCategory(NotificationCompat.CATEGORY_PROGRESS)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setSmallIcon(R.drawable.ic_baseline_flaky_24)
+            .setOngoing(true)
+            .addAction(0, "Stop", ServiceHelper.stopPendingIntent(context))
+            .addAction(0, "Cancel", ServiceHelper.cancelPendingIntent(context))
+            .setContentIntent(ServiceHelper.clickPendingIntent(context))
     }
 
 

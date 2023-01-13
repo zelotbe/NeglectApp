@@ -12,5 +12,4 @@ fun calculateProgress(startHour: String, endHour: String): Float {
     val elapsedDuration = Duration.between(start, currentTime).toMillis()
 
     return (elapsedDuration.toFloat() / totalDuration.toFloat())
-
 }

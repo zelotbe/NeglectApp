@@ -3,19 +3,15 @@ package com.example.neglectapp
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
-import androidx.health.services.client.MeasureClient
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.wear.compose.material.Text
 import com.example.neglectapp.ui.alarm.DisplayAlarm
 import com.example.neglectapp.viewmodel.HeftosViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,8 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AlarmActivity : ComponentActivity() {
     @OptIn(ExperimentalAnimationApi::class)
-    private lateinit var r:Ringtone
-    private lateinit var vibrator:Vibrator
+    private lateinit var r: Ringtone
+    private lateinit var vibrator: Vibrator
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -53,9 +49,48 @@ class AlarmActivity : ComponentActivity() {
             val vibrationIntensity = viewModel.vibrationIntensity.collectAsState().value
             if (vibration) {
                 val strength = 255 / vibrationIntensity
-                val pattern = longArrayOf(0, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500)
-                val amplitude = intArrayOf(0, strength, 0, strength, 0, strength, 0, strength, 0, strength, 0, strength, 0, strength, 0, strength, 0, strength)
-                val vibrationEffect: VibrationEffect = VibrationEffect.createWaveform(pattern, amplitude, 1)
+                val pattern = longArrayOf(
+                    0,
+                    500,
+                    100,
+                    500,
+                    100,
+                    500,
+                    100,
+                    500,
+                    100,
+                    500,
+                    100,
+                    500,
+                    100,
+                    500,
+                    100,
+                    500,
+                    100,
+                    500
+                )
+                val amplitude = intArrayOf(
+                    0,
+                    strength,
+                    0,
+                    strength,
+                    0,
+                    strength,
+                    0,
+                    strength,
+                    0,
+                    strength,
+                    0,
+                    strength,
+                    0,
+                    strength,
+                    0,
+                    strength,
+                    0,
+                    strength
+                )
+                val vibrationEffect: VibrationEffect =
+                    VibrationEffect.createWaveform(pattern, amplitude, 1)
                 // it is safe to cancel other
                 // vibrations currently taking place
                 vibrator.cancel()
@@ -63,7 +98,7 @@ class AlarmActivity : ComponentActivity() {
             }
             DisplayAlarm()
 
-            }
+        }
     }
 
     override fun onStop() {

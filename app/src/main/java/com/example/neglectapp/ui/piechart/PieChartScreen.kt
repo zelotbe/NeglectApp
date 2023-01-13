@@ -22,7 +22,7 @@ fun DisplayPieChart(
     modifier: Modifier,
     scrollState: ScrollState,
     viewModel: SessionViewModel = hiltViewModel()
-){
+) {
     val amountInteracted = viewModel.amountInteracted.collectAsState(initial = 0)
     val amountNotInteracted = viewModel.amountNotInteracted.collectAsState(initial = 0)
     Column(

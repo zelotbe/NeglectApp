@@ -6,10 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.InlineSlider
@@ -22,7 +20,7 @@ import com.example.neglectapp.viewmodel.HeftosViewModel
 fun DisplayIntensity(
     modifier: Modifier,
     stimula: String,
-    ){
+) {
     ReportFullyDrawn()
     //VIBRATION DATA STORE
     val viewModel: HeftosViewModel = viewModel()
@@ -37,13 +35,13 @@ fun DisplayIntensity(
         verticalArrangement = Arrangement.Center
     ) {
 
-        when (stimula){
+        when (stimula) {
             "Vibratie" -> {
                 Text("$stimula Intensiteit")
                 Log.d("Intensity", "$getVibration")
                 InlineSlider(
                     value = 6 - getVibration,
-                    onValueChange = { viewModel.saveVibrationIntensity( 6 - it) },
+                    onValueChange = { viewModel.saveVibrationIntensity(6 - it) },
                     valueProgression = 1..5,
                     increaseIcon = { Icon(InlineSliderDefaults.Increase, "Increase") },
                     decreaseIcon = { Icon(InlineSliderDefaults.Decrease, "Decrease") }

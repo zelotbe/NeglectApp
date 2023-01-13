@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 class SessionRepositoryImpl(
     private val sessionDao: SessionDao
-): SessionRepository {
+) : SessionRepository {
     override fun getSessionsFromRoom() = sessionDao.getSessions()
 
     override fun getSessionFromRoom(id: Int) = sessionDao.getSession(id)
@@ -20,6 +20,4 @@ class SessionRepositoryImpl(
 
     override fun getAmountInteractedFromRoom(): Flow<Int> = sessionDao.getAmountInteracted()
     override fun getAmountNotInteractedFromRoom(): Flow<Int> = sessionDao.getAmountNotInteracted()
-
-
 }

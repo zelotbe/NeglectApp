@@ -12,7 +12,7 @@ import com.example.neglectapp.viewmodel.HeftosViewModel
 fun DisplayStatus(
     status: SessionState,
     modifier: Modifier,
-){
+) {
     val viewModel: HeftosViewModel = viewModel()
 
     when (status) {
