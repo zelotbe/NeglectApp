@@ -7,10 +7,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
+import android.os.SystemClock
 import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.NotificationCompat
+import androidx.core.app.ServiceCompat.stopForeground
 import androidx.wear.ongoing.OngoingActivity
 import androidx.wear.ongoing.Status
 import com.example.neglectapp.AlarmActivity
@@ -19,6 +21,7 @@ import com.example.neglectapp.core.Constants.ACTION_SERVICE_CANCEL
 import com.example.neglectapp.core.Constants.ACTION_SERVICE_START
 import com.example.neglectapp.core.Constants.ACTION_SERVICE_STOP
 import com.example.neglectapp.core.Constants.ACTION_SHOW_ALARM
+import com.example.neglectapp.core.Constants.ACTION_TRIGGER_ALARM
 import com.example.neglectapp.core.Constants.CANCEL_REQUEST_CODE
 import com.example.neglectapp.core.Constants.NOTIFICATION_CHANNEL_ID
 import com.example.neglectapp.core.Constants.NOTIFICATION_CHANNEL_NAME
@@ -26,18 +29,16 @@ import com.example.neglectapp.core.Constants.NOTIFICATION_ID
 import com.example.neglectapp.core.Constants.SESSION_STATE
 import com.example.neglectapp.data.datastore.LocalDataStore
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.temporal.ChronoField
 import java.util.*
 import javax.inject.Inject
 
@@ -86,8 +87,17 @@ class SessionService() : Service(), KoinComponent {
                 ACTION_SERVICE_START -> {
                     Log.d("OnStart:", "START DETECTED")
                     startForegroundService()
-                    scope.launch { gatherSessionData() }
+                    GlobalScope.launch {
+                        suspend {
+                           gatherSessionData()
+                            delay(1000)
+                            withContext(Dispatchers.Main) {
+                               createSessions()
+                            }
+                        }.invoke()
+                    }
                     currentState.value = SessionState.Started
+                    createSessions()
                 }
                 ACTION_SERVICE_STOP -> {
                     currentState.value = SessionState.Stopped
@@ -96,10 +106,11 @@ class SessionService() : Service(), KoinComponent {
                     currentState.value = SessionState.Idle
                     stopForegroundService()
                 }
-//                ACTION_TRIGGER_ALARM -> {
-//                    Log.d("OnStart:", "ALARM TRIGGER DETECTED")
-//                    triggerAlarm(ACTION_SHOW_ALARM)
-//                }
+                //ACTION FOR DEBUGGING (BUTTON)
+                ACTION_TRIGGER_ALARM -> {
+                    Log.d("OnStart:", "ALARM TRIGGER DETECTED")
+                    triggerAlarm(ACTION_SHOW_ALARM, LocalTime.now().plusSeconds(20))
+                }
                 ACTION_SHOW_ALARM -> {
                    showAlarm()
                 }
@@ -174,7 +185,6 @@ class SessionService() : Service(), KoinComponent {
             if (it != null) {
                 endHour = it
                 endBool = true
-                createSessions()
             }
         }.launchIn(this.scope)
     }
@@ -185,7 +195,7 @@ class SessionService() : Service(), KoinComponent {
             Log.d("TestMin/max", "$minSession/$maxSession")
             Log.d("RANDOM", "$randomSessionAmount")
             for (i in 1..randomSessionAmount){
-                var randomHour: LocalTime = getRandomTimeBetween(startHour, endHour)
+                val randomHour: LocalTime = getRandomTimeBetween(startHour, endHour)
                 triggerAlarm(ACTION_SHOW_ALARM, randomHour)
             }
             scheduleStopService(ACTION_SERVICE_CANCEL, endHour)
@@ -216,11 +226,11 @@ class SessionService() : Service(), KoinComponent {
         val dateTime : LocalDateTime = LocalDateTime.of(datePart, hour)
         Log.d("DATE ", "$dateTime")
         Log.d("Alarm scheduled at:", "${  dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()}")
-                alarmManager?.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP,
-                    dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
-                    pendingIntent
-                )
+        val alarmClockInfo = AlarmManager.AlarmClockInfo(dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(), pendingIntent)
+        alarmManager?.setAlarmClock(
+            alarmClockInfo,
+            pendingIntent
+        )
     }
 
     private fun scheduleStopService(action: String, endHour: String){
@@ -237,10 +247,10 @@ class SessionService() : Service(), KoinComponent {
 
         val dateTime : LocalDateTime = LocalDateTime.of(datePart, end)
 
-        alarmManager?.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + 60 * 1000,
-            //1 MINUTE AFTER ENDHOUR, RANDOM HOURS IS ABLE TO USE ENDHOUR
+        //TRIGGER 1 MINUTE AFTER ENDHOUR, CAUSE ENDHOUR CAN STILL BE USED AS AN ALARM
+        val alarmClockInfo = AlarmManager.AlarmClockInfo(dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + 60 * 1000, pendingIntent)
+        alarmManager?.setAlarmClock(
+            alarmClockInfo,
             pendingIntent
         )
     }
