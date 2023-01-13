@@ -1,6 +1,9 @@
 package com.example.neglectapp.ui.settings
 
 
+
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 
 import androidx.wear.compose.material.*
@@ -20,6 +23,7 @@ import com.example.neglectapp.navigation.Screen
 fun DisplaySettings(
     modifier: Modifier,
     navController: NavHostController,
+    scalingLazyListState: ScalingLazyListState,
 //    settingsViewModel: SettingsViewModel = viewModel()
 ){
     Column(
@@ -31,6 +35,9 @@ fun DisplaySettings(
 
         ScalingLazyColumn(
             horizontalAlignment = Alignment.Start,
+            modifier = Modifier.scrollable(scalingLazyListState, Orientation.Vertical),
+            state = scalingLazyListState,
+            autoCentering = AutoCenteringParams(itemIndex = 0)
 //            verticalArrangement = Arrangement.spacedBy(15.dp),
         ){
             item(){
@@ -80,6 +87,23 @@ fun DisplaySettings(
                     label = {
 //                            Spacer(modifier = Modifier.width(10.dp))
                         Text("Aantal sessies")
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item(){
+                Chip(
+                    onClick = { navController.navigate(Screen.PieChart.route) },
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_baseline_pie_chart_24),
+                            contentDescription = "Data",
+                            modifier = Modifier.size(width = 25.dp, height = 25.dp)
+                        )
+                    },
+                    label = {
+//                            Spacer(modifier = Modifier.width(10.dp))
+                        Text("Data")
                     },
                     modifier = Modifier.fillMaxWidth()
                 )

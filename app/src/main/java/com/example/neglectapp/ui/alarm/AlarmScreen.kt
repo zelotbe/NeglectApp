@@ -37,12 +37,13 @@ fun DisplayAlarm(
     var context = LocalContext.current
     val activity = (LocalContext.current as? Activity)
     val viewModel: HeftosViewModel = viewModel()
+    val intensity = viewModel.lightIntensity.collectAsState().value
     val infiniteTransition = rememberInfiniteTransition()
     val color by infiniteTransition.animateColor(
         initialValue = Color.Black,
         targetValue = Color.White,
         animationSpec = infiniteRepeatable(
-            animation = tween(1000, easing = LinearEasing),
+            animation = tween(1000 * intensity, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
         )
     )
@@ -60,9 +61,12 @@ fun DisplayAlarm(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(if(viewModel.light.collectAsState().value){color} else {
-                MaterialTheme.colors.background
-            }
+            .background(
+                if (viewModel.light.collectAsState().value) {
+                    color
+                } else {
+                    MaterialTheme.colors.background
+                }
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

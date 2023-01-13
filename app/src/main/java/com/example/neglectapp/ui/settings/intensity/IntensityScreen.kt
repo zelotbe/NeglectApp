@@ -15,6 +15,7 @@ import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.InlineSlider
 import androidx.wear.compose.material.InlineSliderDefaults
 import androidx.wear.compose.material.Text
+import com.example.neglectapp.util.ReportFullyDrawn
 import com.example.neglectapp.viewmodel.HeftosViewModel
 
 @Composable
@@ -22,8 +23,7 @@ fun DisplayIntensity(
     modifier: Modifier,
     stimula: String,
     ){
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
+    ReportFullyDrawn()
     //VIBRATION DATA STORE
     val viewModel: HeftosViewModel = viewModel()
     val getVibration = viewModel.vibrationIntensity.collectAsState().value
@@ -36,13 +36,15 @@ fun DisplayIntensity(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+
         when (stimula){
             "Vibratie" -> {
                 Text("$stimula Intensiteit")
+                Log.d("Intensity", "$getVibration")
                 InlineSlider(
-                    value = getVibration,
-                    onValueChange = { Log.d("INTENSITY", "$getVibration" ); viewModel.saveVibrationIntensity(it) },
-                    valueProgression = 1..10,
+                    value = 6 - getVibration,
+                    onValueChange = { viewModel.saveVibrationIntensity( 6 - it) },
+                    valueProgression = 1..5,
                     increaseIcon = { Icon(InlineSliderDefaults.Increase, "Increase") },
                     decreaseIcon = { Icon(InlineSliderDefaults.Decrease, "Decrease") }
                 )
@@ -50,9 +52,9 @@ fun DisplayIntensity(
             "Geluid" -> {
                 Text("$stimula Intensiteit")
                 InlineSlider(
-                    value = getSound,
-                    onValueChange = { Log.d("INTENSITY", "$getSound" );viewModel.saveSoundIntensity(it) },
-                    valueProgression = 1..10,
+                    value = 6 - getSound,
+                    onValueChange = { viewModel.saveSoundIntensity(6 - it) },
+                    valueProgression = 1..5,
                     increaseIcon = { Icon(InlineSliderDefaults.Increase, "Increase") },
                     decreaseIcon = { Icon(InlineSliderDefaults.Decrease, "Decrease") }
                 )
@@ -60,9 +62,9 @@ fun DisplayIntensity(
             "Licht" -> {
                 Text("$stimula Intensiteit")
                 InlineSlider(
-                    value = getLight,
-                    onValueChange = { Log.d("INTENSITY", "$getLight" );viewModel.saveLightIntensity(it) },
-                    valueProgression = 1..10,
+                    value = 6 - getLight,
+                    onValueChange = { viewModel.saveLightIntensity(6 - it) },
+                    valueProgression = 1..5,
                     increaseIcon = { Icon(InlineSliderDefaults.Increase, "Increase") },
                     decreaseIcon = { Icon(InlineSliderDefaults.Decrease, "Decrease") }
                 )

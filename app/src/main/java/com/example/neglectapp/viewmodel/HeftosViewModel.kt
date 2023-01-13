@@ -1,20 +1,16 @@
 package com.example.neglectapp.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.neglectapp.data.datastore.LocalDataStore
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.time.LocalTime
 
 
 class HeftosViewModel : ViewModel(), KoinComponent{
-    private val tag = HeftosViewModel::class.java.simpleName
     private val localDataStore: LocalDataStore by inject()
     private val _startHour = MutableStateFlow("08:00")
     var startHour: StateFlow<String> = _startHour
@@ -37,13 +33,13 @@ class HeftosViewModel : ViewModel(), KoinComponent{
     private val _sound = MutableStateFlow(false)
     var sound: StateFlow<Boolean> = _sound
     
-    private val _vibrationIntensity = MutableStateFlow(0)
+    private val _vibrationIntensity = MutableStateFlow(1)
     var vibrationIntensity: StateFlow<Int> = _vibrationIntensity
 
-    private val _lightIntensity = MutableStateFlow(0)
+    private val _lightIntensity = MutableStateFlow(1)
     var lightIntensity: StateFlow<Int> = _lightIntensity
 
-    private val _soundIntensity = MutableStateFlow(0)
+    private val _soundIntensity = MutableStateFlow(1)
     var soundIntensity: StateFlow<Int> = _soundIntensity
 
     init {

@@ -40,18 +40,26 @@ class AlarmActivity : ComponentActivity() {
             r = RingtoneManager.getRingtone(context, alarmUri)
             vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
 
-            val vibrationEffect1: VibrationEffect = VibrationEffect.createOneShot(100000, VibrationEffect.DEFAULT_AMPLITUDE)
+            val sound = viewModel.sound.collectAsState().value
+            val soundIntensity = viewModel.soundIntensity.collectAsState().value
 
-            if (viewModel.sound.collectAsState().value) {
+            if (sound) {
+                r.volume = 1f / soundIntensity
+                r.isLooping = true
                 r.play()
-                Text("Sound is active")
             }
 
-            if (viewModel.vibration.collectAsState().value) {
+            val vibration = viewModel.vibration.collectAsState().value
+            val vibrationIntensity = viewModel.vibrationIntensity.collectAsState().value
+            if (vibration) {
+                val strength = 255 / vibrationIntensity
+                val pattern = longArrayOf(0, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500)
+                val amplitude = intArrayOf(0, strength, 0, strength, 0, strength, 0, strength, 0, strength, 0, strength, 0, strength, 0, strength, 0, strength)
+                val vibrationEffect: VibrationEffect = VibrationEffect.createWaveform(pattern, amplitude, 1)
                 // it is safe to cancel other
                 // vibrations currently taking place
                 vibrator.cancel()
-                vibrator.vibrate(vibrationEffect1)
+                vibrator.vibrate(vibrationEffect)
             }
             DisplayAlarm()
 
