@@ -47,7 +47,6 @@ class AlarmActivity : ComponentActivity() {
                 r.volume = 1f / soundIntensity
                 r.isLooping = true
                 r.play()
-                Text("Sound is active")
             }
 
             val vibration = viewModel.vibration.collectAsState().value
