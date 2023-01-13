@@ -49,6 +49,9 @@ fun DisplayStimula(
                     label = {
                         Text("Vibratie")
                     },
+                    secondaryLabel = {
+                        if (getVibration) {Text("Klik voor intensiteit")}
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -66,6 +69,9 @@ fun DisplayStimula(
                     label = {
                         Text("Geluid")
                     },
+                    secondaryLabel = {
+                        if (getSound) {Text("Klik voor intensiteit")}
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -82,6 +88,9 @@ fun DisplayStimula(
                     },
                     label = {
                         Text("Licht")
+                    },
+                    secondaryLabel = {
+                        if (getLight) {Text("Klik voor intensiteit")}
                     },
                     modifier = Modifier.fillMaxWidth()
                 )
