@@ -41,7 +41,7 @@ fun DisplayOperatingHours(
         }else{
             Spacer(modifier = Modifier.height(10.dp))
             Text("Einduur")
-            TimePicker(onTimeConfirm = {viewModel.saveEndHour(it.toString()); Log.d("EndTime", it.toString()); Toast.makeText(context, "Werkingsuren opgeslagen", Toast.LENGTH_LONG).show(); navController.navigate(Screen.Settings.route)}, time = LocalTime.parse(viewModel.endHour.collectAsState().value), showSeconds = false )
+            TimePicker(onTimeConfirm = {viewModel.saveEndHour(it.toString()); Log.d("EndTime", it.toString()); Toast.makeText(context, "Werkingsuren opgeslagen", Toast.LENGTH_LONG).show(); navController.navigate(Screen.Settings.route){popUpTo(Screen.Settings.route){inclusive = true} } }, time = LocalTime.parse(viewModel.endHour.collectAsState().value), showSeconds = false )
         }
     }
 }
