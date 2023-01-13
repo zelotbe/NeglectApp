@@ -33,13 +33,13 @@ class HeftosViewModel : ViewModel(), KoinComponent{
     private val _sound = MutableStateFlow(false)
     var sound: StateFlow<Boolean> = _sound
     
-    private val _vibrationIntensity = MutableStateFlow(3)
+    private val _vibrationIntensity = MutableStateFlow(1)
     var vibrationIntensity: StateFlow<Int> = _vibrationIntensity
 
-    private val _lightIntensity = MutableStateFlow(3)
+    private val _lightIntensity = MutableStateFlow(1)
     var lightIntensity: StateFlow<Int> = _lightIntensity
 
-    private val _soundIntensity = MutableStateFlow(3)
+    private val _soundIntensity = MutableStateFlow(1)
     var soundIntensity: StateFlow<Int> = _soundIntensity
 
     init {
