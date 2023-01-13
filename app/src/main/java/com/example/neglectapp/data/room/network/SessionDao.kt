@@ -1,6 +1,5 @@
 package com.example.neglectapp.data.room.network
 
-import android.se.omapi.Session
 import androidx.room.*
 import androidx.room.OnConflictStrategy.IGNORE
 import com.example.neglectapp.core.Constants.SESSION_TABLE

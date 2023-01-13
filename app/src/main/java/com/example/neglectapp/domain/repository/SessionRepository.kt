@@ -4,6 +4,7 @@ import com.example.neglectapp.domain.model.HeftosSession
 import kotlinx.coroutines.flow.Flow
 
 typealias Sessions = List<HeftosSession>
+
 interface SessionRepository {
     fun getSessionsFromRoom(): Flow<Sessions>
 

@@ -18,13 +18,16 @@ import androidx.wear.compose.material.MaterialTheme
 @Composable
 fun PieChart(
     values: List<Int> = emptyList(),
-    colors: List<Color> = listOf(MaterialTheme.colors.primaryVariant, MaterialTheme.colors.secondary),
-    legend: List<ImageVector> = listOf( Icons.Default.Check, Icons.Default.Close),
+    colors: List<Color> = listOf(
+        MaterialTheme.colors.primaryVariant,
+        MaterialTheme.colors.secondary
+    ),
+    legend: List<ImageVector> = listOf(Icons.Default.Check, Icons.Default.Close),
     size: Dp = 125.dp
 ) {
     val total = values.sum()
 
-    if(total != 0) {
+    if (total != 0) {
         val percentages: List<Double> = values.map {
             it * 100.0 / total
         }
@@ -56,8 +59,9 @@ fun PieChart(
         Column {
             for (i in values.indices) {
                 DisplayLegend(color = colors[i], legend = legend[i], percentage = percentages[i])
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))
             }
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }

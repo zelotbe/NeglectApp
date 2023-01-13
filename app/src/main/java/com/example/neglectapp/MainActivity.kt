@@ -34,6 +34,7 @@ class MainActivity : ComponentActivity() {
             sessionService = binder.getService()
             isBound = true
         }
+
         override fun onServiceDisconnected(arg0: ComponentName) {
             isBound = false
         }
@@ -41,10 +42,11 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-        Intent(this, SessionService::class.java).also{ intent ->
+        Intent(this, SessionService::class.java).also { intent ->
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -59,6 +61,7 @@ class MainActivity : ComponentActivity() {
         }
         requestPermissions(Manifest.permission.POST_NOTIFICATIONS)
     }
+
     private fun requestPermissions(vararg permissions: String) {
         val requestPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()

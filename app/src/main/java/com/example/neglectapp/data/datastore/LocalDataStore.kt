@@ -11,7 +11,7 @@ import java.time.LocalTime
 
 @OptIn(ExperimentalAnimationApi::class)
 class LocalDataStore : IDataStore {
-    companion object{
+    companion object {
         //STIMULA KEYS
         val VIBRATION_STIMULA_KEY = booleanPreferencesKey("vibration_stimula")
         val VIBRATION_INTENSITY_KEY = intPreferencesKey("vibration_intensity")
@@ -28,80 +28,75 @@ class LocalDataStore : IDataStore {
 
         val MIN_SESSION = intPreferencesKey("min_session")
         val MAX_SESSION = intPreferencesKey("max_session")
-
-        val IS_ACTIVE = booleanPreferencesKey("is_active")
-
-        val CURRENT_SESSION = stringPreferencesKey("current_session")
-
-        val IS_ALARM_ACTIVE = booleanPreferencesKey("is_active")
     }
+
     private val Context.dataStore by preferencesDataStore(name = "HEFTOS")
 
-    
-    override suspend fun getStartHour() : Flow<String?>{
+
+    override fun getStartHour(): Flow<String?> {
         return MainApplication.applicationContext().dataStore.data
             .map { preferences ->
-                preferences[START_HOUR_KEY] ?: LocalTime.of(7,30).toString()
+                preferences[START_HOUR_KEY] ?: LocalTime.of(7, 30).toString()
             }
     }
 
-    override suspend fun getEndHour() : Flow<String?>{
+    override fun getEndHour(): Flow<String?> {
         return MainApplication.applicationContext().dataStore.data
             .map { preferences ->
-                preferences[END_HOUR_KEY] ?: LocalTime.of(16,0).toString()
+                preferences[END_HOUR_KEY] ?: LocalTime.of(16, 0).toString()
             }
     }
 
-    override suspend fun getMinSession() : Flow<Int?> {
+    override fun getMinSession(): Flow<Int?> {
         return MainApplication.applicationContext().dataStore.data
             .map { preferences ->
                 preferences[MIN_SESSION] ?: 3
             }
     }
 
-    override suspend fun getMaxSession(): Flow<Int?> {
-       return MainApplication.applicationContext().dataStore.data
-           .map { preferences ->
-               preferences[MAX_SESSION] ?: 5
-           }
+    override fun getMaxSession(): Flow<Int?> {
+        return MainApplication.applicationContext().dataStore.data
+            .map { preferences ->
+                preferences[MAX_SESSION] ?: 5
+            }
     }
 
-    override suspend fun getVibration() : Flow<Boolean?> {
-       return MainApplication.applicationContext().dataStore.data
-           .map { preferences ->
-               preferences[VIBRATION_STIMULA_KEY] ?: true
-           }
+    override fun getVibration(): Flow<Boolean?> {
+        return MainApplication.applicationContext().dataStore.data
+            .map { preferences ->
+                preferences[VIBRATION_STIMULA_KEY] ?: true
+            }
     }
 
-    override suspend fun getVibrationIntensity() : Flow<Int?>{
+    override fun getVibrationIntensity(): Flow<Int?> {
         return MainApplication.applicationContext().dataStore.data
             .map { preferences ->
                 preferences[VIBRATION_INTENSITY_KEY] ?: 1
             }
     }
 
-    override suspend fun getLight() : Flow<Boolean?> {
+    override fun getLight(): Flow<Boolean?> {
         return MainApplication.applicationContext().dataStore.data
             .map { preferences ->
                 preferences[LIGHT_STIMULA_KEY] ?: false
             }
     }
 
-    override suspend fun getLightIntensity(): Flow<Int?> {
-       return MainApplication.applicationContext().dataStore.data
-           .map { preferences ->
-               preferences[LIGHT_INTENSITY_KEY] ?: 1
-           }
+    override fun getLightIntensity(): Flow<Int?> {
+        return MainApplication.applicationContext().dataStore.data
+            .map { preferences ->
+                preferences[LIGHT_INTENSITY_KEY] ?: 1
+            }
     }
 
-    override suspend fun getSound() : Flow<Boolean?> {
-       return MainApplication.applicationContext().dataStore.data
-           .map { preferences ->
-               preferences[SOUND_STIMULA_KEY] ?: false
-           }
+    override fun getSound(): Flow<Boolean?> {
+        return MainApplication.applicationContext().dataStore.data
+            .map { preferences ->
+                preferences[SOUND_STIMULA_KEY] ?: false
+            }
     }
 
-    override suspend fun getSoundIntensity() : Flow<Int?>{
+    override fun getSoundIntensity(): Flow<Int?> {
         return MainApplication.applicationContext().dataStore.data
             .map { preferences ->
                 preferences[SOUND_INTENSITY_KEY] ?: 1

@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
@@ -18,10 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.wear.compose.material.Button
-import androidx.wear.compose.material.Icon
-import androidx.wear.compose.material.MaterialTheme
-import androidx.wear.compose.material.Text
+import androidx.wear.compose.material.*
 import com.example.neglectapp.components.display.DisplayProgress
 import com.example.neglectapp.components.settings.SettingsIcon
 import com.example.neglectapp.ui.status.DisplayStatus
@@ -35,7 +31,6 @@ import com.example.neglectapp.service.SessionState
 import com.example.neglectapp.util.ReportFullyDrawn
 import com.example.neglectapp.viewmodel.HeftosViewModel
 import com.example.neglectapp.viewmodel.SessionViewModel
-import org.checkerframework.checker.units.qual.min
 import java.time.LocalTime
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -46,7 +41,7 @@ fun DisplayLanding(
     sessionService: SessionService,
     sessionViewModel: SessionViewModel = hiltViewModel()
 
-){
+) {
     ReportFullyDrawn()
     val context = LocalContext.current
     val currentState by sessionService.currentState
@@ -61,13 +56,13 @@ fun DisplayLanding(
     val interactionSource = remember { MutableInteractionSource() }
     val sessions by sessionViewModel.sessions.collectAsState(initial = emptyList())
 
-
-    val amountInteracted = sessionViewModel.amountInteracted.collectAsState(initial = 0)
-    val amountNotInteracted = sessionViewModel.amountNotInteracted.collectAsState(initial = 0)
-
-    sessions.forEach{ session ->
-        Log.d("ID:${session.id}", "Interacted: ${session.hasInteracted}, Date: ${session.currentDateTime}")
+    sessions.forEach { session ->
+        Log.d(
+            "ID:${session.id}",
+            "Interacted: ${session.hasInteracted}, Date: ${session.currentDateTime}"
+        )
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -77,7 +72,7 @@ fun DisplayLanding(
         Box(
             modifier = Modifier,
         ) {
-            if(currentState == SessionState.Started || currentState == SessionState.Stopped){
+            if (currentState == SessionState.Started || currentState == SessionState.Stopped) {
                 DisplayProgress()
             }
             Column(
@@ -89,7 +84,7 @@ fun DisplayLanding(
 
                 Spacer(modifier = Modifier.height(60.dp))
 
-                if (LocalTime.now().toSecondOfDay() in (startSeconds + 1) until endSeconds){
+                if (LocalTime.now().toSecondOfDay() in (startSeconds + 1) until endSeconds) {
                     DisplayStatus(modifier = Modifier, status = currentState)
                     Spacer(modifier = Modifier.height(15.dp))
                     Row(modifier = Modifier) {
@@ -106,43 +101,51 @@ fun DisplayLanding(
                             )
                         }, modifier = Modifier) {
                             Icon(
-                                if(currentState == SessionState.Idle || currentState == SessionState.Stopped)  Icons.Default.PlayArrow else Icons.Default.Pause,
-                                contentDescription = if(currentState == SessionState.Idle || currentState == SessionState.Stopped)  "Starten" else "Pauzeren",
+                                if (currentState == SessionState.Idle || currentState == SessionState.Stopped) Icons.Default.PlayArrow else Icons.Default.Pause,
+                                contentDescription = if (currentState == SessionState.Idle || currentState == SessionState.Stopped) "Starten" else "Pauzeren",
                                 modifier = Modifier.size(width = 35.dp, height = 35.dp)
                             )
                         }
                         Spacer(modifier = Modifier.width(25.dp))
-                        Button(onClick = {
-                            Log.d("StopButton:", "clicked");ServiceHelper.triggerForegroundService(
-                            context = context,
-                            action = ACTION_SERVICE_CANCEL
-                        );
-                        }, modifier = Modifier, interactionSource = interactionSource, enabled = currentState!== SessionState.Idle,) {
+                        Button(
+                            onClick = {
+                                Log.d(
+                                    "StopButton:",
+                                    "clicked"
+                                );ServiceHelper.triggerForegroundService(
+                                context = context,
+                                action = ACTION_SERVICE_CANCEL
+                            )
+                            },
+                            modifier = Modifier,
+                            interactionSource = interactionSource,
+                            enabled = currentState !== SessionState.Idle,
+                        ) {
                             Icon(
                                 Icons.Default.Stop,
                                 contentDescription = "Stoppen",
                                 modifier = Modifier.size(width = 35.dp, height = 35.dp)
                             )
                         }
-                    /*Button(onClick = {
-                        Log.d("AlarmButton:", "clicked");ServiceHelper.triggerForegroundService(
-                        context = context,
-                        action = ACTION_TRIGGER_ALARM
-                    )
-                    }, modifier = Modifier) {
-                        Icon(
-                            Icons.Default.Alarm,
-                            contentDescription = "Alarm",
-                            modifier = Modifier.size(width = 35.dp, height = 35.dp)
+                        /*Button(onClick = {
+                            Log.d("AlarmButton:", "clicked");ServiceHelper.triggerForegroundService(
+                            context = context,
+                            action = ACTION_TRIGGER_ALARM
                         )
-                    }*/
-                }
-                }else{
-                    DisplayStatus(modifier = Modifier, status = SessionState.ClosedOperatingHours )
+                        }, modifier = Modifier) {
+                            Icon(
+                                Icons.Default.Alarm,
+                                contentDescription = "Alarm",
+                                modifier = Modifier.size(width = 35.dp, height = 35.dp)
+                            )
+                        }*/
+                    }
+                } else {
+                    DisplayStatus(modifier = Modifier, status = SessionState.ClosedOperatingHours)
                     ServiceHelper.triggerForegroundService(
                         context = context,
                         action = ACTION_SERVICE_CANCEL
-                    );
+                    )
                 }
             }
         }

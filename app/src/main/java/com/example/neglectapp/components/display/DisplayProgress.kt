@@ -13,12 +13,14 @@ import com.example.neglectapp.viewmodel.HeftosViewModel
 @Composable
 fun DisplayProgress(
     viewModel: HeftosViewModel = viewModel()
-){
+) {
     val startHour = viewModel.startHour.collectAsState(initial = "09:30").value
     val endHour = viewModel.endHour.collectAsState(initial = "19:00").value
 
-    CircularProgressIndicator( progress = calculateProgress(startHour, endHour),
+    CircularProgressIndicator(
+        progress = calculateProgress(startHour, endHour),
         modifier = Modifier.fillMaxSize(),
-        strokeWidth = 5.dp)
+        strokeWidth = 5.dp
+    )
 }
 

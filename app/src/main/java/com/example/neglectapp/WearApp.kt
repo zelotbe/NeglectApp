@@ -4,14 +4,8 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
@@ -25,7 +19,6 @@ import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.example.neglectapp.navigation.DestinationScrollType
 import com.example.neglectapp.navigation.SCROLL_TYPE_NAV_ARGUMENT
 import com.example.neglectapp.navigation.Screen
-import com.example.neglectapp.navigation.WATCH_ID_NAV_ARGUMENT
 import com.example.neglectapp.ui.ScalingLazyListStateViewModel
 import com.example.neglectapp.ui.ScrollStateViewModel
 
@@ -37,6 +30,7 @@ import com.example.neglectapp.ui.settings.DisplaySettings
 import com.example.neglectapp.ui.settings.intensity.DisplayIntensity
 import com.example.neglectapp.ui.settings.stimulans.DisplayStimula
 import com.example.neglectapp.service.SessionService
+import com.example.neglectapp.ui.data.DisplayData
 import com.example.neglectapp.ui.piechart.DisplayPieChart
 
 
@@ -84,8 +78,12 @@ fun WearApp(
                 // LANDING PAGE
                 composable(
                     route = Screen.Landing.route
-                ){
-                    DisplayLanding(navController = swipeDismissableNavController, modifier = Modifier, sessionService = sessionService )
+                ) {
+                    DisplayLanding(
+                        navController = swipeDismissableNavController,
+                        modifier = Modifier,
+                        sessionService = sessionService
+                    )
                 }
                 // SETTINGS PAGE
                 composable(
@@ -96,47 +94,67 @@ fun WearApp(
                             defaultValue = DestinationScrollType.SCALING_LAZY_COLUMN_SCROLLING
                         }
                     )
-                ){
+                ) {
                     val scalingLazyListState = scalingLazyListState(it)
-                    DisplaySettings(modifier = Modifier, navController = swipeDismissableNavController, scalingLazyListState = scalingLazyListState)
+                    DisplaySettings(
+                        modifier = Modifier,
+                        navController = swipeDismissableNavController,
+                        scalingLazyListState = scalingLazyListState
+                    )
                 }
                 // STIMULA SETTINGS
                 composable(
                     route = Screen.Stimula.route
-                ){
-                    DisplayStimula(modifier = Modifier, navController = swipeDismissableNavController)
+                ) {
+                    DisplayStimula(
+                        modifier = Modifier,
+                        navController = swipeDismissableNavController
+                    )
                 }
                 // INTENSITY - STIMULA
                 composable(
                     route = Screen.Intensity.route + "/{stimula}",
-                    arguments = listOf(navArgument("stimula"){ type = NavType.StringType})
-                ){ backStackEntry ->
-                    DisplayIntensity(modifier = Modifier, backStackEntry.arguments?.getString("stimula")!!)
+                    arguments = listOf(navArgument("stimula") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    DisplayIntensity(
+                        modifier = Modifier,
+                        backStackEntry.arguments?.getString("stimula")!!
+                    )
                 }
                 // ALARM SCREEN
                 composable(
                     route = Screen.Alarm.route
-                ){
+                ) {
                     AlarmActivity()
                 }
                 // OPERATING HOURS SCREEN
                 composable(
                     route = Screen.OperatingHours.route
-                ){
-                    DisplayOperatingHours(modifier = Modifier, navController = swipeDismissableNavController)
+                ) {
+                    DisplayOperatingHours(
+                        modifier = Modifier,
+                        navController = swipeDismissableNavController
+                    )
                 }
                 // SESSION SCREEN
                 composable(
                     route = Screen.Session.route
-                ){
-                    DisplaySession(modifier = Modifier, navController = swipeDismissableNavController)
+                ) {
+                    DisplaySession(
+                        modifier = Modifier,
+                        navController = swipeDismissableNavController
+                    )
                 }
                 //SESSION NUMBER PICKER SCREEN
                 composable(
                     route = Screen.NumberPicker.route + "/{session}",
-                    arguments = listOf(navArgument("session"){ type = NavType.StringType})
-                ){ backStackEntry ->
-                    DisplayNumberPicker(navController = swipeDismissableNavController, modifier = Modifier, backStackEntry.arguments?.getString("session")!!)
+                    arguments = listOf(navArgument("session") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    DisplayNumberPicker(
+                        navController = swipeDismissableNavController,
+                        modifier = Modifier,
+                        backStackEntry.arguments?.getString("session")!!
+                    )
                 }
                 //DATA CHART SCREEN
                 composable(
@@ -147,9 +165,19 @@ fun WearApp(
                             defaultValue = DestinationScrollType.COLUMN_SCROLLING
                         }
                     )
-                ){
+                ) {
                     val scrollState = scrollState(it)
-                    DisplayPieChart(navController = swipeDismissableNavController, modifier = Modifier, scrollState = scrollState)
+                    DisplayPieChart(
+                        navController = swipeDismissableNavController,
+                        modifier = Modifier,
+                        scrollState = scrollState
+                    )
+                }
+                // DATA SCREEN
+                composable(
+                    route = Screen.Data.route
+                ) {
+                    DisplayData(modifier = Modifier, navController = swipeDismissableNavController)
                 }
             }
         }

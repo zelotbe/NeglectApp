@@ -44,9 +44,10 @@ import javax.inject.Inject
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
-class SessionService() : Service(), KoinComponent {
+class SessionService : Service(), KoinComponent {
     @Inject
     lateinit var notificationManager: NotificationManager
+
     @Inject
     lateinit var notificationBuilder: NotificationCompat.Builder
     private val localDataStore: LocalDataStore by inject()
@@ -66,7 +67,9 @@ class SessionService() : Service(), KoinComponent {
     private var startBool = false
     private var endBool = false
 
-    override fun onBind(p0: Intent?): IBinder {return binder}
+    override fun onBind(p0: Intent?): IBinder {
+        return binder
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.getStringExtra(SESSION_STATE)) {
@@ -89,10 +92,10 @@ class SessionService() : Service(), KoinComponent {
                     startForegroundService()
                     GlobalScope.launch {
                         suspend {
-                           gatherSessionData()
+                            gatherSessionData()
                             delay(1000)
                             withContext(Dispatchers.Main) {
-                               createSessions()
+                                createSessions()
                             }
                         }.invoke()
                     }
@@ -112,7 +115,7 @@ class SessionService() : Service(), KoinComponent {
                     triggerAlarm(ACTION_SHOW_ALARM, LocalTime.now().plusSeconds(20))
                 }
                 ACTION_SHOW_ALARM -> {
-                   showAlarm()
+                    showAlarm()
                 }
             }
         }
@@ -154,7 +157,7 @@ class SessionService() : Service(), KoinComponent {
         notificationManager.createNotificationChannel(channel)
     }
 
-    private suspend fun gatherSessionData(){
+    private fun gatherSessionData() {
         localDataStore.getMinSession().onEach {
             Log.d("min", it.toString())
             if (it != null) {
@@ -189,12 +192,12 @@ class SessionService() : Service(), KoinComponent {
         }.launchIn(this.scope)
     }
 
-    private fun createSessions(){
+    private fun createSessions() {
         if (minBool && maxBool && startHour !== "" && endHour !== "") {
             val randomSessionAmount = (minSession..maxSession).random()
             Log.d("TestMin/max", "$minSession/$maxSession")
             Log.d("RANDOM", "$randomSessionAmount")
-            for (i in 1..randomSessionAmount){
+            for (i in 1..randomSessionAmount) {
                 val randomHour: LocalTime = getRandomTimeBetween(startHour, endHour)
                 triggerAlarm(ACTION_SHOW_ALARM, randomHour)
             }
@@ -214,58 +217,75 @@ class SessionService() : Service(), KoinComponent {
     private fun triggerAlarm(action: String, hour: LocalTime) {
         val alarmManager =
             applicationContext.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
-        val triggerIntent = Intent(applicationContext, SessionService::class.java).apply{
+        val triggerIntent = Intent(applicationContext, SessionService::class.java).apply {
             this.action = action
         }
-        val pendingIntent = PendingIntent.getService(applicationContext,
-            hour.hashCode(), triggerIntent,0
+        val pendingIntent = PendingIntent.getService(
+            applicationContext,
+            hour.hashCode(), triggerIntent, 0
         )
 
         val datePart = LocalDate.now()
 
-        val dateTime : LocalDateTime = LocalDateTime.of(datePart, hour)
+        val dateTime: LocalDateTime = LocalDateTime.of(datePart, hour)
         Log.d("DATE ", "$dateTime")
-        Log.d("Alarm scheduled at:", "${  dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()}")
-        val alarmClockInfo = AlarmManager.AlarmClockInfo(dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(), pendingIntent)
+        Log.d(
+            "Alarm scheduled at:",
+            "${dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()}"
+        )
+        val alarmClockInfo = AlarmManager.AlarmClockInfo(
+            dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(), pendingIntent
+        )
         alarmManager?.setAlarmClock(
             alarmClockInfo,
             pendingIntent
         )
     }
 
-    private fun scheduleStopService(action: String, endHour: String){
+    private fun scheduleStopService(action: String, endHour: String) {
         val end: LocalTime = LocalTime.parse(endHour)
         val alarmManager =
             applicationContext.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
-        val triggerIntent = Intent(applicationContext, SessionService::class.java).apply{
+        val triggerIntent = Intent(applicationContext, SessionService::class.java).apply {
             this.action = action
         }
-        val pendingIntent = PendingIntent.getService(applicationContext,
+        val pendingIntent = PendingIntent.getService(
+            applicationContext,
             CANCEL_REQUEST_CODE, triggerIntent, FLAG_UPDATE_CURRENT
         )
         val datePart = LocalDate.now()
 
-        val dateTime : LocalDateTime = LocalDateTime.of(datePart, end)
+        val dateTime: LocalDateTime = LocalDateTime.of(datePart, end)
 
         //TRIGGER 1 MINUTE AFTER ENDHOUR, CAUSE ENDHOUR CAN STILL BE USED AS AN ALARM
-        val alarmClockInfo = AlarmManager.AlarmClockInfo(dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + 60 * 1000, pendingIntent)
+        val alarmClockInfo = AlarmManager.AlarmClockInfo(
+            dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() + 60 * 1000,
+            pendingIntent
+        )
         alarmManager?.setAlarmClock(
             alarmClockInfo,
             pendingIntent
         )
     }
 
-    private fun showAlarm(){
-        if (currentState.value == SessionState.Started){
-            applicationContext.startActivity(Intent(applicationContext, AlarmActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-        }else{
+    private fun showAlarm() {
+        if (currentState.value == SessionState.Started) {
+            applicationContext.startActivity(
+                Intent(
+                    applicationContext,
+                    AlarmActivity::class.java
+                ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            )
+        } else {
             Log.d("showAlarm", "Applicatie is gestopt/gepauzeerd")
         }
     }
+
     inner class SessionBinder : Binder() {
         fun getService(): SessionService = this@SessionService
     }
 }
+
 enum class SessionState {
     Idle,
     Started,

@@ -4,18 +4,18 @@ import kotlinx.coroutines.flow.Flow
 
 interface IDataStore {
     //GETTERS SESSION
-    suspend fun getStartHour() : Flow<String?>
-    suspend fun getEndHour() : Flow<String?>
-    suspend fun getMinSession() : Flow<Int?>
-    suspend fun getMaxSession() : Flow<Int?>
+    fun getStartHour(): Flow<String?>
+    fun getEndHour(): Flow<String?>
+    fun getMinSession(): Flow<Int?>
+    fun getMaxSession(): Flow<Int?>
 
     //GETTERS STIMULA
-    suspend fun getVibration() : Flow<Boolean?>
-    suspend fun getVibrationIntensity() : Flow<Int?>
-    suspend fun getLight() : Flow<Boolean?>
-    suspend fun getLightIntensity() : Flow<Int?>
-    suspend fun getSound() : Flow<Boolean?>
-    suspend fun getSoundIntensity(): Flow<Int?>
+    fun getVibration(): Flow<Boolean?>
+    fun getVibrationIntensity(): Flow<Int?>
+    fun getLight(): Flow<Boolean?>
+    fun getLightIntensity(): Flow<Int?>
+    fun getSound(): Flow<Boolean?>
+    fun getSoundIntensity(): Flow<Int?>
 
     //SETTERS SESSION
     suspend fun saveStartHour(startHour: String)

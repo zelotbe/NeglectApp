@@ -1,7 +1,5 @@
 package com.example.neglectapp.di
 
-import com.example.neglectapp.MainApplication
-import com.example.neglectapp.data.datastore.IDataStore
 import com.example.neglectapp.data.datastore.LocalDataStore
 import org.koin.dsl.module
 

@@ -65,7 +65,7 @@ class HeftosViewModel : ViewModel(), KoinComponent{
         }
     }
     private fun getEndHour(){
-        viewModelScope.launch() {
+        viewModelScope.launch {
             localDataStore.getEndHour().collect{
                 if (it != null) {
                     _endHour.value = it
@@ -74,7 +74,7 @@ class HeftosViewModel : ViewModel(), KoinComponent{
         }
     }
     private fun getMinSession(){
-        viewModelScope.launch() {
+        viewModelScope.launch {
             localDataStore.getMinSession().collect{
                 if (it != null) {
                     _minSession.value = it
@@ -83,7 +83,7 @@ class HeftosViewModel : ViewModel(), KoinComponent{
         }
     }
     private fun getMaxSession(){
-        viewModelScope.launch() {
+        viewModelScope.launch {
             localDataStore.getMaxSession().collect{
                 if (it != null) {
                     _maxSession.value = it
@@ -92,7 +92,7 @@ class HeftosViewModel : ViewModel(), KoinComponent{
         }
     }
     private fun getVibration(){
-        viewModelScope.launch() {
+        viewModelScope.launch {
             localDataStore.getVibration().collect{
                 if (it != null) {
                     _vibration.value = it
@@ -101,7 +101,7 @@ class HeftosViewModel : ViewModel(), KoinComponent{
         }
     }
     private fun getLight(){
-        viewModelScope.launch() {
+        viewModelScope.launch {
             localDataStore.getLight().collect{
                 if (it != null) {
                     _light.value = it
@@ -110,7 +110,7 @@ class HeftosViewModel : ViewModel(), KoinComponent{
         }
     }
     private fun getSound(){
-        viewModelScope.launch() {
+        viewModelScope.launch {
             localDataStore.getSound().collect{
                 if (it != null) {
                    _sound.value = it
@@ -119,7 +119,7 @@ class HeftosViewModel : ViewModel(), KoinComponent{
         }
     }
     private fun getVibrationIntensity(){
-        viewModelScope.launch() {
+        viewModelScope.launch {
             localDataStore.getVibrationIntensity().collect{
                 if (it != null) {
                     _vibrationIntensity.value = it
@@ -128,7 +128,7 @@ class HeftosViewModel : ViewModel(), KoinComponent{
         }
     }
     private fun getLightIntensity(){
-        viewModelScope.launch() {
+        viewModelScope.launch {
             localDataStore.getLightIntensity().collect{
                 if (it != null) {
                    _lightIntensity.value = it
@@ -138,7 +138,7 @@ class HeftosViewModel : ViewModel(), KoinComponent{
     }
 
     private fun getSoundIntensity(){
-        viewModelScope.launch() {
+        viewModelScope.launch {
             localDataStore.getSoundIntensity().collect{
                 if (it != null) {
                     _soundIntensity.value = it
@@ -149,54 +149,54 @@ class HeftosViewModel : ViewModel(), KoinComponent{
 
     //SAVE - SETTERS
     fun saveStartHour(time: String){
-        viewModelScope.launch(){
+        viewModelScope.launch {
             localDataStore.saveStartHour(time)
         }
     }
     fun saveEndHour(time: String){
-        viewModelScope.launch(){
+        viewModelScope.launch {
             localDataStore.saveEndHour(time)
         }
     }
     fun saveMinSession(int: Int){
-        viewModelScope.launch(){
+        viewModelScope.launch {
             localDataStore.saveMinSession(int)
         }
     }
     fun saveMaxSession(int: Int){
-        viewModelScope.launch(){
+        viewModelScope.launch {
             localDataStore.saveMaxSession(int)
         }
     }
     fun saveVibration(bool: Boolean){
-        viewModelScope.launch(){
+        viewModelScope.launch {
             localDataStore.saveVibration(bool)
         }
     }
     fun saveSound(bool: Boolean){
-        viewModelScope.launch(){
+        viewModelScope.launch {
             localDataStore.saveSound(bool)
         }
     }
     fun saveLight(bool: Boolean){
-        viewModelScope.launch(){
+        viewModelScope.launch {
             localDataStore.saveLight(bool)
         }
     }
     fun saveVibrationIntensity(intensity: Int){
-        viewModelScope.launch(){
+        viewModelScope.launch {
             localDataStore.saveVibrationIntensity(intensity)
         }
     }
 
     fun saveSoundIntensity(intensity: Int){
-        viewModelScope.launch(){
+        viewModelScope.launch {
             localDataStore.saveSoundIntensity(intensity)
         }
     }
 
     fun saveLightIntensity(intensity: Int){
-        viewModelScope.launch(){
+        viewModelScope.launch {
             localDataStore.saveLightIntensity(intensity)
         }
     }

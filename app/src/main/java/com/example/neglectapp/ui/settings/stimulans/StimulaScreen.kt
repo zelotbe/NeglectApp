@@ -17,7 +17,7 @@ fun DisplayStimula(
     modifier: Modifier,
     navController: NavHostController,
 //    settingsViewModel: SettingsViewModel = viewModel()
-){
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     //STIMULA DATA STORE
@@ -34,8 +34,8 @@ fun DisplayStimula(
     ) {
         ScalingLazyColumn(
             horizontalAlignment = Alignment.Start,
-        ){
-            item() {
+        ) {
+            item {
                 SplitToggleChip(
                     checked = getVibration,
                     onCheckedChange = {},
@@ -43,19 +43,21 @@ fun DisplayStimula(
                     toggleControl = {
                         Switch(
                             checked = getVibration,
-                            onCheckedChange = { viewModel.saveVibration(getVibration.not())}
+                            onCheckedChange = { viewModel.saveVibration(getVibration.not()) }
                         )
                     },
                     label = {
                         Text("Vibratie")
                     },
                     secondaryLabel = {
-                        if (getVibration) {Text("Klik voor intensiteit")}
+                        if (getVibration) {
+                            Text("Klik voor intensiteit")
+                        }
                     },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            item() {
+            item {
                 SplitToggleChip(
                     checked = getSound,
                     onCheckedChange = {},
@@ -70,12 +72,14 @@ fun DisplayStimula(
                         Text("Geluid")
                     },
                     secondaryLabel = {
-                        if (getSound) {Text("Klik voor intensiteit")}
+                        if (getSound) {
+                            Text("Klik voor intensiteit")
+                        }
                     },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            item(){
+            item {
                 SplitToggleChip(
                     checked = getLight,
                     onCheckedChange = {},
@@ -90,7 +94,9 @@ fun DisplayStimula(
                         Text("Licht")
                     },
                     secondaryLabel = {
-                        if (getLight) {Text("Klik voor intensiteit")}
+                        if (getLight) {
+                            Text("Klik voor intensiteit")
+                        }
                     },
                     modifier = Modifier.fillMaxWidth()
                 )

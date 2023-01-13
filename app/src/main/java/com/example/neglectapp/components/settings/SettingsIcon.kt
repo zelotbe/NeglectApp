@@ -23,11 +23,13 @@ fun SettingsIcon(
     Spacer(modifier = Modifier.height(15.dp))
     Box(
         modifier = Modifier,
-    ){
+    ) {
         Button(
             onClick = { navController.navigate(Screen.Settings.route) },
-            modifier = Modifier.size(25.dp).background(Color.Black.copy(alpha = 0f))
-        ){
+            modifier = Modifier
+                .size(25.dp)
+                .background(Color.Black.copy(alpha = 0f))
+        ) {
             Icon(
                 Icons.Default.Settings,
                 contentDescription = "Settings",

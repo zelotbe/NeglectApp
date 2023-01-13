@@ -8,7 +8,7 @@ import java.time.ZoneOffset
 class Converters {
     @TypeConverter
     fun fromTimestamp(value: Long?): LocalDateTime? {
-        return value?.let { LocalDateTime.ofInstant(Instant.ofEpochMilli(value), ZoneOffset.UTC)  }
+        return value?.let { LocalDateTime.ofInstant(Instant.ofEpochMilli(value), ZoneOffset.UTC) }
     }
 
     @TypeConverter
