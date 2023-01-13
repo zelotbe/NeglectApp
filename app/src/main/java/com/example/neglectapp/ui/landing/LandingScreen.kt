@@ -32,6 +32,7 @@ import com.example.neglectapp.core.Constants.ACTION_TRIGGER_ALARM
 import com.example.neglectapp.service.ServiceHelper
 import com.example.neglectapp.service.SessionService
 import com.example.neglectapp.service.SessionState
+import com.example.neglectapp.util.ReportFullyDrawn
 import com.example.neglectapp.viewmodel.HeftosViewModel
 import com.example.neglectapp.viewmodel.SessionViewModel
 import org.checkerframework.checker.units.qual.min
@@ -46,6 +47,7 @@ fun DisplayLanding(
     sessionViewModel: SessionViewModel = hiltViewModel()
 
 ){
+    ReportFullyDrawn()
     val context = LocalContext.current
     val currentState by sessionService.currentState
     val viewModel: HeftosViewModel = viewModel()
@@ -59,9 +61,13 @@ fun DisplayLanding(
     val interactionSource = remember { MutableInteractionSource() }
     val sessions by sessionViewModel.sessions.collectAsState(initial = emptyList())
 
-//    sessions.forEach{ session ->
-//        Log.d("ID:${session.id}", "Interacted: ${session.hasInteracted}, Date: ${session.currentDateTime}")
-//    }
+
+    val amountInteracted = sessionViewModel.amountInteracted.collectAsState(initial = 0)
+    val amountNotInteracted = sessionViewModel.amountNotInteracted.collectAsState(initial = 0)
+
+    sessions.forEach{ session ->
+        Log.d("ID:${session.id}", "Interacted: ${session.hasInteracted}, Date: ${session.currentDateTime}")
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -71,7 +77,6 @@ fun DisplayLanding(
         Box(
             modifier = Modifier,
         ) {
-
             if(currentState == SessionState.Started || currentState == SessionState.Stopped){
                 DisplayProgress()
             }
@@ -81,17 +86,23 @@ fun DisplayLanding(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 SettingsIcon(navController = navController)
+
                 Spacer(modifier = Modifier.height(60.dp))
+
                 if (LocalTime.now().toSecondOfDay() in (startSeconds + 1) until endSeconds){
                     DisplayStatus(modifier = Modifier, status = currentState)
                     Spacer(modifier = Modifier.height(15.dp))
                     Row(modifier = Modifier) {
-
                         Button(onClick = {
                             ServiceHelper.triggerForegroundService(
                                 context = context,
                                 action = if (currentState == SessionState.Started) ACTION_SERVICE_STOP
                                 else ACTION_SERVICE_START
+                            )
+                            //TODO REMOVE LINE 102 -> 106 FOR PRODUCTION
+                            ServiceHelper.triggerForegroundService(
+                                context = context,
+                                action = ACTION_TRIGGER_ALARM
                             )
                         }, modifier = Modifier) {
                             Icon(
@@ -113,18 +124,18 @@ fun DisplayLanding(
                                 modifier = Modifier.size(width = 35.dp, height = 35.dp)
                             )
                         }
-//                    Button(onClick = {
-//                        Log.d("AlarmButton:", "clicked");ServiceHelper.triggerForegroundService(
-//                        context = context,
-//                        action = ACTION_TRIGGER_ALARM
-//                    )
-//                    }, modifier = Modifier) {
-//                        Icon(
-//                            Icons.Default.Alarm,
-//                            contentDescription = "Alarm",
-//                            modifier = Modifier.size(width = 35.dp, height = 35.dp)
-//                        )
-//                    }
+                    /*Button(onClick = {
+                        Log.d("AlarmButton:", "clicked");ServiceHelper.triggerForegroundService(
+                        context = context,
+                        action = ACTION_TRIGGER_ALARM
+                    )
+                    }, modifier = Modifier) {
+                        Icon(
+                            Icons.Default.Alarm,
+                            contentDescription = "Alarm",
+                            modifier = Modifier.size(width = 35.dp, height = 35.dp)
+                        )
+                    }*/
                 }
                 }else{
                     DisplayStatus(modifier = Modifier, status = SessionState.ClosedOperatingHours )
