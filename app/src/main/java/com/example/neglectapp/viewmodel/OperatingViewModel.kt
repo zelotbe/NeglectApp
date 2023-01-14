@@ -1,4 +1,4 @@
-package com.example.neglectapp.ui.operatinghours
+package com.example.neglectapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
