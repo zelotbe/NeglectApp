@@ -1,5 +1,7 @@
 package com.example.neglectapp.ui.data
 
+import android.widget.Toast
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudUpload
@@ -12,7 +14,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.*
+import com.example.neglectapp.core.Constants
+import com.example.neglectapp.service.ServiceHelper
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DisplayData(
     navController: NavHostController,
@@ -29,7 +34,12 @@ fun DisplayData(
         Spacer(modifier = Modifier.height(15.dp))
 
         Chip(
-            onClick = { },
+            onClick = {
+                ServiceHelper.triggerForegroundService(
+                    context = context,
+                    action = Constants.ACTION_SAVE_LOCAL
+                ); Toast.makeText(context, "Opgeslagen", Toast.LENGTH_SHORT).show()
+            },
             icon = {
                 Icon(
                     Icons.Default.Download,
@@ -64,7 +74,7 @@ fun DisplayData(
 
         Spacer(modifier = Modifier.height(15.dp))
 
-        Text("Laatste upload:")
+        Text("Laatste sync:")
         Text("DATUM")
     }
 }
