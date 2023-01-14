@@ -1,6 +1,7 @@
 package com.example.neglectapp.data.datastore
 
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDateTime
 
 interface IDataStore {
     //GETTERS SESSION
@@ -8,6 +9,7 @@ interface IDataStore {
     fun getEndHour(): Flow<String?>
     fun getMinSession(): Flow<Int?>
     fun getMaxSession(): Flow<Int?>
+    fun getLastSynced(): Flow<String?>
 
     //GETTERS STIMULA
     fun getVibration(): Flow<Boolean?>
@@ -22,6 +24,7 @@ interface IDataStore {
     suspend fun saveEndHour(endHour: String)
     suspend fun saveMinSession(min: Int)
     suspend fun saveMaxSession(max: Int)
+    suspend fun saveLastSynced(date: String)
 
     //SETTERS STIMULA
     suspend fun saveVibration(status: Boolean)

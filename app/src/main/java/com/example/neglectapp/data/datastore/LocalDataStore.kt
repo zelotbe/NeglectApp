@@ -7,7 +7,9 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.example.neglectapp.MainApplication
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalAnimationApi::class)
 class LocalDataStore : IDataStore {
@@ -28,6 +30,8 @@ class LocalDataStore : IDataStore {
 
         val MIN_SESSION = intPreferencesKey("min_session")
         val MAX_SESSION = intPreferencesKey("max_session")
+        val LAST_SYNCED = stringPreferencesKey("last_synced")
+
     }
 
     private val Context.dataStore by preferencesDataStore(name = "HEFTOS")
@@ -58,6 +62,14 @@ class LocalDataStore : IDataStore {
         return MainApplication.applicationContext().dataStore.data
             .map { preferences ->
                 preferences[MAX_SESSION] ?: 5
+            }
+    }
+
+    override fun getLastSynced(): Flow<String?> {
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM HH:mm")
+        return MainApplication.applicationContext().dataStore.data
+            .map { preferences ->
+                preferences[LAST_SYNCED] ?: formatter.format(LocalDateTime.now()).toString()
             }
     }
 
@@ -124,6 +136,12 @@ class LocalDataStore : IDataStore {
     override suspend fun saveMaxSession(max: Int) {
         MainApplication.applicationContext().dataStore.edit { preferences ->
             preferences[MAX_SESSION] = max
+        }
+    }
+
+    override suspend fun saveLastSynced(date: String) {
+        MainApplication.applicationContext().dataStore.edit { preferences ->
+            preferences[LAST_SYNCED] = date
         }
     }
 

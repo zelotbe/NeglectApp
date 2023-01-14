@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class HeftosViewModel : ViewModel(), KoinComponent{
@@ -23,6 +25,9 @@ class HeftosViewModel : ViewModel(), KoinComponent{
 
     private val _maxSession = MutableStateFlow(0)
     var maxSession: StateFlow<Int> = _maxSession
+
+    private val _lastSynced = MutableStateFlow("/")
+    var lastSynced: StateFlow<String> = _lastSynced
 
     private val _vibration = MutableStateFlow(false)
     var vibration: StateFlow<Boolean> = _vibration
@@ -47,6 +52,7 @@ class HeftosViewModel : ViewModel(), KoinComponent{
         getEndHour()
         getMinSession()
         getMaxSession()
+        getLastSynced()
         getVibration()
         getSound()
         getLight()
@@ -87,6 +93,17 @@ class HeftosViewModel : ViewModel(), KoinComponent{
             localDataStore.getMaxSession().collect{
                 if (it != null) {
                     _maxSession.value = it
+                }
+            }
+        }
+    }
+
+    private fun getLastSynced(){
+        val formatter = DateTimeFormatter.ofPattern("dd/MM HH:mm")
+        viewModelScope.launch {
+            localDataStore.getLastSynced().collect{
+                if (it != null) {
+                    _lastSynced.value = formatter.format(LocalDateTime.parse(it)).toString()
                 }
             }
         }
@@ -166,6 +183,12 @@ class HeftosViewModel : ViewModel(), KoinComponent{
     fun saveMaxSession(int: Int){
         viewModelScope.launch {
             localDataStore.saveMaxSession(int)
+        }
+    }
+    fun saveLastSynced(date: String){
+        val formatter = DateTimeFormatter.ofPattern("dd/MM HH:mm")
+        viewModelScope.launch {
+            localDataStore.saveLastSynced(formatter.format(LocalDateTime.parse(date)).toString())
         }
     }
     fun saveVibration(bool: Boolean){
