@@ -145,17 +145,6 @@ fun WearApp(
                         navController = swipeDismissableNavController
                     )
                 }
-                //SESSION NUMBER PICKER SCREEN
-                composable(
-                    route = Screen.NumberPicker.route + "/{session}",
-                    arguments = listOf(navArgument("session") { type = NavType.StringType })
-                ) { backStackEntry ->
-                    DisplayNumberPicker(
-                        navController = swipeDismissableNavController,
-                        modifier = Modifier,
-                        backStackEntry.arguments?.getString("session")!!
-                    )
-                }
                 //DATA CHART SCREEN
                 composable(
                     route = Screen.PieChart.route,
