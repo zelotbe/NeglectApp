@@ -16,6 +16,8 @@ import androidx.wear.compose.material.Text
 import com.example.neglectapp.navigation.Screen
 import com.example.neglectapp.viewmodel.HeftosViewModel
 import com.google.android.horologist.composables.TimePicker
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.LocalTime
 
 @Composable
@@ -54,11 +56,11 @@ fun DisplayOperatingHours(
                     "EndTime",
                     it.toString()
                 ); Toast.makeText(context, "Werkingsuren opgeslagen", Toast.LENGTH_LONG)
-                    .show(); navController.navigate(Screen.Settings.route) {
+                    .show(); scope.launch { delay(5); navController.navigate(Screen.Settings.route) {
                     popUpTo(Screen.Settings.route) {
                         inclusive = true
                     }
-                }
+                } }
                 },
                 time = LocalTime.parse(viewModel.endHour.collectAsState().value),
                 showSeconds = false
