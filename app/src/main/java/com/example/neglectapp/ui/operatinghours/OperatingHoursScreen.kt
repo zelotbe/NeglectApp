@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.wear.compose.material.Text
 import com.example.neglectapp.navigation.Screen
 import com.example.neglectapp.viewmodel.HeftosViewModel
+import com.example.neglectapp.viewmodel.OperatingViewModel
 import com.google.android.horologist.composables.TimePicker
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
