@@ -40,7 +40,7 @@ This is an Android smartwatch app made with jetpack compose.
 
 - [x] Save time when alarm is triggered and if the user interacted with the alarm
 
-- [ ] Save data local
+- [x] Save data local
 
 - [ ] Save data to Azure
 
