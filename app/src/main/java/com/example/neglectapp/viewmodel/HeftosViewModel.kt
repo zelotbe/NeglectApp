@@ -2,6 +2,7 @@ package com.example.neglectapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.neglectapp.core.Constants.DATE_PATTERN
 import com.example.neglectapp.data.datastore.LocalDataStore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,8 +26,9 @@ class HeftosViewModel : ViewModel(), KoinComponent{
 
     private val _maxSession = MutableStateFlow(0)
     var maxSession: StateFlow<Int> = _maxSession
-
-    private val _lastSynced = MutableStateFlow("/")
+    
+    private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_PATTERN)
+    private val _lastSynced = MutableStateFlow(formatter.format(LocalDateTime.now()).toString())
     var lastSynced: StateFlow<String> = _lastSynced
 
     private val _vibration = MutableStateFlow(false)
@@ -99,11 +101,10 @@ class HeftosViewModel : ViewModel(), KoinComponent{
     }
 
     private fun getLastSynced(){
-        val formatter = DateTimeFormatter.ofPattern("dd/MM HH:mm")
         viewModelScope.launch {
             localDataStore.getLastSynced().collect{
                 if (it != null) {
-                    _lastSynced.value = formatter.format(LocalDateTime.parse(it)).toString()
+                    _lastSynced.value = it
                 }
             }
         }
@@ -185,10 +186,10 @@ class HeftosViewModel : ViewModel(), KoinComponent{
             localDataStore.saveMaxSession(int)
         }
     }
-    fun saveLastSynced(date: String){
-        val formatter = DateTimeFormatter.ofPattern("dd/MM HH:mm")
+    fun saveLastSynced(date: LocalDateTime){
+        val formatter = DateTimeFormatter.ofPattern(DATE_PATTERN)
         viewModelScope.launch {
-            localDataStore.saveLastSynced(formatter.format(LocalDateTime.parse(date)).toString())
+            localDataStore.saveLastSynced(formatter.format(date).toString())
         }
     }
     fun saveVibration(bool: Boolean){

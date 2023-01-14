@@ -5,6 +5,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.neglectapp.MainApplication
+import com.example.neglectapp.core.Constants.DATE_PATTERN
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDateTime
@@ -66,7 +67,7 @@ class LocalDataStore : IDataStore {
     }
 
     override fun getLastSynced(): Flow<String?> {
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM HH:mm")
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_PATTERN)
         return MainApplication.applicationContext().dataStore.data
             .map { preferences ->
                 preferences[LAST_SYNCED] ?: formatter.format(LocalDateTime.now()).toString()
