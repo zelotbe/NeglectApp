@@ -34,15 +34,6 @@ object ServiceHelper {
         )
     }
 
-    fun resumePendingIntent(context: Context): PendingIntent {
-        val resumeIntent = Intent(context, SessionService::class.java).apply {
-            putExtra(SESSION_STATE, SessionState.Started.name)
-        }
-        return PendingIntent.getService(
-            context, RESUME_REQUEST_CODE, resumeIntent, flag
-        )
-    }
-
     fun cancelPendingIntent(context: Context): PendingIntent {
         val cancelIntent = Intent(context, SessionService::class.java).apply {
             putExtra(SESSION_STATE, SessionState.Canceled.name)
