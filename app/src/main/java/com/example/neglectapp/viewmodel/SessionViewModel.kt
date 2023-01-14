@@ -9,9 +9,6 @@ import com.example.neglectapp.domain.model.HeftosSession
 import com.example.neglectapp.domain.repository.SessionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -22,17 +19,12 @@ class SessionViewModel @Inject constructor(
 ) : ViewModel() {
     var session by mutableStateOf(HeftosSession(0, LocalDateTime.now(), false, 0))
         private set
-    var openDialog by mutableStateOf(false)
 
     val sessions = repo.getSessionsFromRoom()
     var amountInteracted = repo.getAmountInteractedFromRoom()
     var amountNotInteracted = repo.getAmountNotInteractedFromRoom()
 
-//    fun getBook(id: Int) = viewModelScope.launch(Dispatchers.IO) {
-//        book = repo.getBookFromRoom(id)
-//    }
-//
-    fun addSession(session: HeftosSession) = viewModelScope.launch(Dispatchers.IO) {
+    fun addSession(session: HeftosSession) = viewModelScope.launch {
         repo.addSessionToRoom(session)
     }
 }
