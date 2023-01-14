@@ -7,15 +7,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.*
 import com.example.neglectapp.core.Constants
 import com.example.neglectapp.service.ServiceHelper
+import com.example.neglectapp.viewmodel.HeftosViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -25,6 +29,8 @@ fun DisplayData(
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val viewModel: HeftosViewModel = viewModel()
+    val lastSynced = viewModel.lastSynced.collectAsState().value
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -74,7 +80,7 @@ fun DisplayData(
 
         Spacer(modifier = Modifier.height(15.dp))
 
-        Text("Laatste sync:")
-        Text("DATUM")
+        Text("Laatste upload:", fontSize = 12.sp)
+        Text(lastSynced, fontSize = 12.sp)
     }
 }
