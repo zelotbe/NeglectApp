@@ -21,4 +21,6 @@ object Constants {
     const val RESUME_REQUEST_CODE = 103
 
     const val SESSION_TABLE = "session_table"
+
+    const val DATE_PATTERN = "dd/MM HH:mm"
 }
