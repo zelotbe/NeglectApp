@@ -3,21 +3,25 @@ package com.example.neglectapp.service
 import android.app.*
 import android.app.Notification.CATEGORY_ALARM
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.os.Binder
+import android.os.Environment
 import android.os.IBinder
-import android.os.SystemClock
+import android.provider.MediaStore
 import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.NotificationCompat
-import androidx.core.app.ServiceCompat.stopForeground
+import androidx.room.Room
 import androidx.wear.ongoing.OngoingActivity
 import androidx.wear.ongoing.Status
 import com.example.neglectapp.AlarmActivity
 import com.example.neglectapp.R
+import com.example.neglectapp.core.Constants.ACTION_SAVE_LOCAL
 import com.example.neglectapp.core.Constants.ACTION_SERVICE_CANCEL
+import com.example.neglectapp.core.Constants.ACTION_SERVICE_CANCEL_AND_SAVE
 import com.example.neglectapp.core.Constants.ACTION_SERVICE_START
 import com.example.neglectapp.core.Constants.ACTION_SERVICE_STOP
 import com.example.neglectapp.core.Constants.ACTION_SHOW_ALARM
@@ -28,17 +32,22 @@ import com.example.neglectapp.core.Constants.NOTIFICATION_CHANNEL_NAME
 import com.example.neglectapp.core.Constants.NOTIFICATION_ID
 import com.example.neglectapp.core.Constants.SESSION_STATE
 import com.example.neglectapp.data.datastore.LocalDataStore
+import com.example.neglectapp.data.room.network.SessionDb
+import com.example.neglectapp.domain.model.HeftosSession
+import com.example.neglectapp.domain.repository.Sessions
+import com.opencsv.CSVWriter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.io.File
+import java.io.FileWriter
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
-import java.time.temporal.ChronoField
+import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 
@@ -52,6 +61,8 @@ class SessionService : Service(), KoinComponent {
     lateinit var notificationBuilder: NotificationCompat.Builder
     private val localDataStore: LocalDataStore by inject()
 
+    @Inject
+    lateinit var db: SessionDb
     private val binder = SessionBinder()
 
     var currentState = mutableStateOf(SessionState.Idle)
@@ -67,11 +78,15 @@ class SessionService : Service(), KoinComponent {
     private var startBool = false
     private var endBool = false
 
+    private val fileName = "NeglectAppData.csv"
+
     override fun onBind(p0: Intent?): IBinder {
         return binder
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val dao = db.sessionDao()
+        val sessions = dao.getSessions()
         when (intent?.getStringExtra(SESSION_STATE)) {
             SessionState.Started.name -> {
                 startForegroundService()
@@ -90,6 +105,7 @@ class SessionService : Service(), KoinComponent {
                 ACTION_SERVICE_START -> {
                     Log.d("OnStart:", "START DETECTED")
                     startForegroundService()
+                    currentState.value = SessionState.Started
                     GlobalScope.launch {
                         suspend {
                             gatherSessionData()
@@ -99,8 +115,6 @@ class SessionService : Service(), KoinComponent {
                             }
                         }.invoke()
                     }
-                    currentState.value = SessionState.Started
-                    createSessions()
                 }
                 ACTION_SERVICE_STOP -> {
                     currentState.value = SessionState.Stopped
@@ -117,6 +131,13 @@ class SessionService : Service(), KoinComponent {
                 ACTION_SHOW_ALARM -> {
                     showAlarm()
                 }
+                ACTION_SAVE_LOCAL -> {
+                    exportDataLocal(sessions)
+                }
+                ACTION_SERVICE_CANCEL_AND_SAVE -> {
+                    stopForegroundServiceAndSave(sessions)
+                }
+                else -> {}
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -140,12 +161,23 @@ class SessionService : Service(), KoinComponent {
         ongoingActivity.apply(applicationContext)
 
         startForeground(NOTIFICATION_ID, notificationBuilder.build())
+
+        //TODO REMOVE THIS FOR PRODUCTION
+        ServiceHelper.triggerForegroundService(
+            context = applicationContext,
+            action = ACTION_TRIGGER_ALARM
+        )
     }
 
     private fun stopForegroundService() {
         notificationManager.cancel(NOTIFICATION_ID)
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
+    }
+
+    private fun stopForegroundServiceAndSave(sessions: Flow<Sessions>) {
+        exportDataLocal(sessions)
+        stopForegroundService()
     }
 
     private fun createNotificationChannel() {
@@ -176,7 +208,7 @@ class SessionService : Service(), KoinComponent {
         }.launchIn(this.scope)
 
         localDataStore.getStartHour().onEach {
-            Log.d("max", it.toString())
+            Log.d("Start", it.toString())
             if (it != null) {
                 startHour = it
                 startBool = true
@@ -184,7 +216,7 @@ class SessionService : Service(), KoinComponent {
         }.launchIn(this.scope)
 
         localDataStore.getEndHour().onEach {
-            Log.d("max", it.toString())
+            Log.d("End", it.toString())
             if (it != null) {
                 endHour = it
                 endBool = true
@@ -193,7 +225,7 @@ class SessionService : Service(), KoinComponent {
     }
 
     private fun createSessions() {
-        if (minBool && maxBool && startHour !== "" && endHour !== "") {
+        if (minBool && maxBool && startHour !== "" && endHour !== "" && currentState.value == SessionState.Started) {
             val randomSessionAmount = (minSession..maxSession).random()
             Log.d("TestMin/max", "$minSession/$maxSession")
             Log.d("RANDOM", "$randomSessionAmount")
@@ -201,7 +233,7 @@ class SessionService : Service(), KoinComponent {
                 val randomHour: LocalTime = getRandomTimeBetween(startHour, endHour)
                 triggerAlarm(ACTION_SHOW_ALARM, randomHour)
             }
-            scheduleStopService(ACTION_SERVICE_CANCEL, endHour)
+            scheduleStopService(ACTION_SERVICE_CANCEL_AND_SAVE, endHour)
         }
     }
 
@@ -268,6 +300,41 @@ class SessionService : Service(), KoinComponent {
         )
     }
 
+    private fun exportDataLocal(sessions: Flow<Sessions>) {
+        Log.d("ExportDataLocal", "FUNCTION STARTED")
+        sessions.map { sessionsList ->
+            writeCsvFile(sessionsList)
+        }.launchIn(this.scope)
+    }
+
+    private fun writeCsvFile(sessions: List<HeftosSession>) {
+        val documents =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        val neglectFolder = File(documents, "NeglectApp")
+        if (!neglectFolder.exists()) {
+            neglectFolder.mkdirs()
+        }
+        val file = File(neglectFolder, fileName)
+
+        val csvWriter = CSVWriter(FileWriter(file))
+        val header = arrayOf("Datum", "Interactie", "Hartslag")
+        csvWriter.writeNext(header)
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+        for (session in sessions) {
+            Log.d("session", "$session")
+            val data = arrayOf(
+                formatter.format(session.currentDateTime).toString(),
+                session.hasInteracted.toString(),
+                session.heartRate.toString()
+            )
+            csvWriter.writeNext(data)
+        }
+        csvWriter.flush()
+        csvWriter.close()
+
+        Log.d("ExportDataLocal", "WROTE FILE")
+    }
+
     private fun showAlarm() {
         if (currentState.value == SessionState.Started) {
             applicationContext.startActivity(
@@ -283,6 +350,11 @@ class SessionService : Service(), KoinComponent {
 
     inner class SessionBinder : Binder() {
         fun getService(): SessionService = this@SessionService
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        db.close()
     }
 }
 
