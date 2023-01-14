@@ -56,12 +56,12 @@ fun DisplayLanding(
     val interactionSource = remember { MutableInteractionSource() }
     val sessions by sessionViewModel.sessions.collectAsState(initial = emptyList())
 
-    sessions.forEach { session ->
-        Log.d(
-            "ID:${session.id}",
-            "Interacted: ${session.hasInteracted}, Date: ${session.currentDateTime}"
-        )
-    }
+//    sessions.forEach { session ->
+//        Log.d(
+//            "ID:${session.id}",
+//            "Interacted: ${session.hasInteracted}, Date: ${session.currentDateTime}"
+//        )
+//    }
 
     Column(
         modifier = Modifier
@@ -93,11 +93,6 @@ fun DisplayLanding(
                                 context = context,
                                 action = if (currentState == SessionState.Started) ACTION_SERVICE_STOP
                                 else ACTION_SERVICE_START
-                            )
-                            //TODO REMOVE LINE 102 -> 106 FOR PRODUCTION
-                            ServiceHelper.triggerForegroundService(
-                                context = context,
-                                action = ACTION_TRIGGER_ALARM
                             )
                         }, modifier = Modifier) {
                             Icon(
