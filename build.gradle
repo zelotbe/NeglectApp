@@ -3,6 +3,9 @@ buildscript {
         compose_version = '1.2.0-alpha08'
         wear_compose_version = '1.2.0-alpha02'
         room_version = "2.4.3"
+        mockitoVersion = '4.9.0'
+        mockitoKotlinVersion = '4.1.0'
+
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-serialization:1.6.10"
