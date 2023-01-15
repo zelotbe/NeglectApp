@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -71,11 +72,15 @@ fun DisplayAlarm(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(10.dp))
-        Text("Heftos Alarm", modifier = Modifier.testTag("alarm"))
+        Spacer(modifier = Modifier.height(20.dp))
+        Text("Heftos Alarm", modifier = Modifier.testTag("alarm"), fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(50.dp))
 
-        Text("Tijd resterend: $secondsToDisappear")
+        Row(){
+            Text("Tijd resterend: ")
+            Text("$secondsToDisappear", color = MaterialTheme.colors.secondary)
+        }
+
         Spacer(modifier = Modifier.height(50.dp))
         Button(onClick = {
             Toast.makeText(context, "Activiteit opgenomen", Toast.LENGTH_LONG)
