@@ -5,10 +5,14 @@ import android.app.Notification.CATEGORY_ALARM
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.NetworkInfo
 import android.os.Binder
 import android.os.Environment
 import android.os.IBinder
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.NotificationCompat
@@ -16,6 +20,7 @@ import androidx.wear.ongoing.OngoingActivity
 import androidx.wear.ongoing.Status
 import com.example.neglectapp.AlarmActivity
 import com.example.neglectapp.R
+import com.example.neglectapp.core.Constants
 import com.example.neglectapp.core.Constants.ACTION_SAVE_LOCAL
 import com.example.neglectapp.core.Constants.ACTION_SAVE_ONLINE
 import com.example.neglectapp.core.Constants.ACTION_SERVICE_CANCEL
@@ -332,37 +337,46 @@ class SessionService : Service(), KoinComponent {
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
 
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(network)
+        val isConnected = capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
 
+        if (isConnected){
+            GlobalScope.launch {
+                suspend {
+                    delay(10)
+                    val gson = GsonBuilder()
+                        .setLenient()
+                        .create()
+                    Log.d("body", "$body")
+                    val retrofit = Retrofit.Builder()
+                        .baseUrl("http://192.168.0.178:3000")
+                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        .build()
 
-        GlobalScope.launch {
-            suspend {
-                delay(10)
-                val gson = GsonBuilder()
-                    .setLenient()
-                    .create()
-                Log.d("body", "$body")
-                val retrofit = Retrofit.Builder()
-                    .baseUrl("http://192.168.0.178:3000")
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .build()
+                    val apiService = retrofit.create(ApiService::class.java)
 
-                val apiService = retrofit.create(ApiService::class.java)
+                    val call = apiService.postFile(body)
+                    call.enqueue(object : Callback<ResponseBody> {
+                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                            Log.d("Saving Online", "Saved succesfully")
+                            Toast.makeText(applicationContext, "Geupload", Toast.LENGTH_SHORT).show()
+                        }
 
-                val call = apiService.postFile(body)
-                call.enqueue(object : Callback<ResponseBody> {
-                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                        Log.d("Saving Online", "Saved succesfully")
-                    }
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            Toast.makeText(applicationContext, "Fout in opslaan", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern(Constants.DATE_PATTERN)
 
-                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Log.d("Saving Online", "FAILED")
-                    }
-                })
-            }.invoke()
+                    localDataStore.saveLastSynced(formatter.format(LocalDateTime.now()))
+                }.invoke()
+            }
+            Log.d("Saving Online", "end function")
+        }else{
+            Toast.makeText(applicationContext, "Geen internet verbinding", Toast.LENGTH_SHORT).show()
         }
-
-
-        Log.d("Saving Online", "end function")
     }
 
     private fun writeCsvFile(sessions: List<HeftosSession>) {
