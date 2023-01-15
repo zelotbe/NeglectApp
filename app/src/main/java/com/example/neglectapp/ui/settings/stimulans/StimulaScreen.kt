@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.*
+import com.example.neglectapp.core.Constants.INTENSITY_CLICK
 import com.example.neglectapp.navigation.Screen
 import com.example.neglectapp.viewmodel.HeftosViewModel
 
@@ -51,10 +52,11 @@ fun DisplayStimula(
                     },
                     secondaryLabel = {
                         if (getVibration) {
-                            Text("Klik voor intensiteit")
+                            Text(INTENSITY_CLICK)
                         }
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = getVibration
                 )
             }
             item {
@@ -73,10 +75,11 @@ fun DisplayStimula(
                     },
                     secondaryLabel = {
                         if (getSound) {
-                            Text("Klik voor intensiteit")
+                            Text(INTENSITY_CLICK)
                         }
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = getSound
                 )
             }
             item {
@@ -95,10 +98,11 @@ fun DisplayStimula(
                     },
                     secondaryLabel = {
                         if (getLight) {
-                            Text("Klik voor intensiteit")
+                            Text(INTENSITY_CLICK)
                         }
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = getLight
                 )
             }
         }
