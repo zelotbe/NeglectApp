@@ -9,6 +9,8 @@ object Constants {
     const val ACTION_TRIGGER_ALARM = "ACTION_TRIGGER_ALARM"
     const val ACTION_SHOW_ALARM = "ACTION_SHOW_ALARM"
     const val ACTION_SAVE_LOCAL = "ACTION_SAVE_LOCAL"
+    const val ACTION_SAVE_ONLINE = "ACTION_SAVE_ONLINE"
+
     const val SESSION_STATE = "SESSION_STATE"
 
     const val NOTIFICATION_CHANNEL_ID = "SESSION_NOTIFICATION_ID"
@@ -23,4 +25,6 @@ object Constants {
     const val SESSION_TABLE = "session_table"
 
     const val DATE_PATTERN = "dd/MM HH:mm"
+
+    const val INTENSITY_CLICK = "Klik voor intensiteit"
 }
