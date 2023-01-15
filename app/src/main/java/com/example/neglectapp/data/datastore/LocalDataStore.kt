@@ -67,10 +67,9 @@ class LocalDataStore : IDataStore {
     }
 
     override fun getLastSynced(): Flow<String?> {
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_PATTERN)
         return MainApplication.applicationContext().dataStore.data
             .map { preferences ->
-                preferences[LAST_SYNCED] ?: formatter.format(LocalDateTime.now()).toString()
+                preferences[LAST_SYNCED] ?: "/"
             }
     }
 
