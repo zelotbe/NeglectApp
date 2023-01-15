@@ -33,7 +33,7 @@ app.listen(PORT, () => {
 });
 
 app.get("/sessions", (req, res) => {
-    db.query("SELECT * from data", (error, data) => {
+    db.query("SELECT * from sessions", (error, data) => {
         if (error) {
             return res.json({ status: "ERROR", error });
         }
