@@ -3,23 +3,21 @@ package com.example.neglectapp.service
 import android.app.*
 import android.app.Notification.CATEGORY_ALARM
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.Environment
 import android.os.IBinder
-import android.provider.MediaStore
 import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.app.NotificationCompat
-import androidx.room.Room
 import androidx.wear.ongoing.OngoingActivity
 import androidx.wear.ongoing.Status
 import com.example.neglectapp.AlarmActivity
 import com.example.neglectapp.R
 import com.example.neglectapp.core.Constants.ACTION_SAVE_LOCAL
+import com.example.neglectapp.core.Constants.ACTION_SAVE_ONLINE
 import com.example.neglectapp.core.Constants.ACTION_SERVICE_CANCEL
 import com.example.neglectapp.core.Constants.ACTION_SERVICE_CANCEL_AND_SAVE
 import com.example.neglectapp.core.Constants.ACTION_SERVICE_START
@@ -31,16 +29,30 @@ import com.example.neglectapp.core.Constants.NOTIFICATION_CHANNEL_ID
 import com.example.neglectapp.core.Constants.NOTIFICATION_CHANNEL_NAME
 import com.example.neglectapp.core.Constants.NOTIFICATION_ID
 import com.example.neglectapp.core.Constants.SESSION_STATE
+import com.example.neglectapp.data.api.ApiService
 import com.example.neglectapp.data.datastore.LocalDataStore
 import com.example.neglectapp.data.room.network.SessionDb
 import com.example.neglectapp.domain.model.HeftosSession
 import com.example.neglectapp.domain.repository.Sessions
+import com.google.gson.GsonBuilder
 import com.opencsv.CSVWriter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.FileWriter
 import java.time.LocalDate
@@ -50,6 +62,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
+
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
@@ -134,8 +147,12 @@ class SessionService : Service(), KoinComponent {
                 ACTION_SAVE_LOCAL -> {
                     exportDataLocal(sessions)
                 }
+                ACTION_SAVE_ONLINE ->{
+                    exportDataOnline()
+                }
                 ACTION_SERVICE_CANCEL_AND_SAVE -> {
                     stopForegroundServiceAndSave(sessions)
+                    exportDataOnline()
                 }
                 else -> {}
             }
@@ -306,6 +323,47 @@ class SessionService : Service(), KoinComponent {
             writeCsvFile(sessionsList)
         }.launchIn(this.scope)
     }
+    private fun exportDataOnline(){
+        val documents =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        val neglectFolder = File(documents, "NeglectApp")
+
+        val file = File(neglectFolder, fileName)
+        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+
+
+
+        GlobalScope.launch {
+            suspend {
+                delay(10)
+                val gson = GsonBuilder()
+                    .setLenient()
+                    .create()
+                Log.d("body", "$body")
+                val retrofit = Retrofit.Builder()
+                    .baseUrl("http://192.168.0.178:3000")
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build()
+
+                val apiService = retrofit.create(ApiService::class.java)
+
+                val call = apiService.postFile(body)
+                call.enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        Log.d("Saving Online", "Saved succesfully")
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Log.d("Saving Online", "FAILED")
+                    }
+                })
+            }.invoke()
+        }
+
+
+        Log.d("Saving Online", "end function")
+    }
 
     private fun writeCsvFile(sessions: List<HeftosSession>) {
         val documents =
@@ -319,11 +377,10 @@ class SessionService : Service(), KoinComponent {
         val csvWriter = CSVWriter(FileWriter(file))
         val header = arrayOf("Datum", "Interactie", "Hartslag")
         csvWriter.writeNext(header)
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
         for (session in sessions) {
             Log.d("session", "$session")
             val data = arrayOf(
-                formatter.format(session.currentDateTime).toString(),
+                session.currentDateTime.toString(),
                 session.hasInteracted.toString(),
                 session.heartRate.toString()
             )
