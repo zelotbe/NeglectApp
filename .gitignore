@@ -28,3 +28,12 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Node Modules
+/API/node_modules/
+
+# dotEnv
+/API/.env
+
+# CA certificate
+/API/DigiCertGlobalRootCA.crt.pem
