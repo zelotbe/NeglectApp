@@ -66,7 +66,7 @@ fun DisplayData(
             onClick = { ServiceHelper.triggerForegroundService(
                 context = context,
                 action = Constants.ACTION_SAVE_ONLINE
-            ); Toast.makeText(context, "Bestand verzonden", Toast.LENGTH_SHORT).show()},
+            )},
             icon = {
                 Icon(
                     Icons.Default.CloudUpload,
