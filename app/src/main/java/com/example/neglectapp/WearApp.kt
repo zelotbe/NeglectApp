@@ -24,7 +24,6 @@ import com.example.neglectapp.ui.ScrollStateViewModel
 
 import com.example.neglectapp.ui.landing.DisplayLanding
 import com.example.neglectapp.ui.operatinghours.DisplayOperatingHours
-import com.example.neglectapp.ui.session.DisplayNumberPicker
 import com.example.neglectapp.ui.session.DisplaySession
 import com.example.neglectapp.ui.settings.DisplaySettings
 import com.example.neglectapp.ui.settings.intensity.DisplayIntensity
