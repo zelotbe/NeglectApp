@@ -3,6 +3,8 @@
 This is an Android smartwatch app made with:
 Jetpack Compose, Room Database, Preferences Datastore
 
+[Link to Figma Design](https://www.figma.com/file/ee2ODLVjAsJZy6VTkFxLN3/HEFTOS?node-id=0%3A1&t=FmouBmdflXOcGewx-1)
+
 ## API Installation & Setup
 <details>
   <summary>Be sure to read this when cloning the project! (Click to open)</summary>
