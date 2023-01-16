@@ -7,7 +7,7 @@ Jetpack Compose, Room Database, Preferences Datastore
 
 ## API Installation & Setup
 <details>
-  <summary>Be sure to read this when cloning the project! (Click to open)</summary>
+  <summary>Be sure to read this when cloning the project! <b>(Click to open)<b></summary>
   
  I recommend you to use an Azure MySQL database.
 When you have cloned the project, move the API folder to a folder of your choice.
@@ -76,6 +76,9 @@ CREATE TABLE `sessions` (
 5. Ready to build
 ## Extracting Local csv file from WearOS to PC
 
+<details>
+  <summary><b>Click here to reveal the instructions</b></summary>
+
 Make sure you have [adb installed](https://www.xda-developers.com/install-adb-windows-macos-linux/#how-to-set-up-adb) and setup correctly.
 
 Before we can extract our .csv file we have to make sure that the smartwatch has developer options enabled. 
@@ -122,6 +125,8 @@ This will download the NeglectAppData.csv file to your chosen folder.
 ```powershell
 adb pull "/sdcard/Documents/NeglectApp/NeglectAppData.csv" "C:\Users\USER\FOLDER_LOCATION"
 ```
+
+</details>
 
 ## Status
   Code is can be improved at some areas.
