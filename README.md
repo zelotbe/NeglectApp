@@ -92,9 +92,9 @@ adb pull "/sdcard/Documents/NeglectApp/NeglectAppData.csv" "C:\Users\USER\FOLDER
 
 - [x] Save data local
 
-- [ ] Save data to Azure
+- [x] Save data to Azure
 
-- [ ] Unit testing
+- [x] Unit testing
 
 ### EXTRAS
 - [ ] Check if I'm able to start the service automatically on starting hour
@@ -111,7 +111,7 @@ adb pull "/sdcard/Documents/NeglectApp/NeglectAppData.csv" "C:\Users\USER\FOLDER
 
 - [x] Show data (Interactions) on a circle graph
 
-- [ ] UI testing
+- [x] UI testing
 
 ### Good resources
 
