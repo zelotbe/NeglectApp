@@ -10,6 +10,57 @@ Jetpack Compose, Room Database, Preferences Datastore
 3. Wait for Android Studio to run the gradle scripts.
 4. Ready to build
 
+## API Installation & Setup
+<details>
+  <summary>Be sure to read this when cloning the project!</summary>
+  
+ I recommend you to use an Azure MySQL database.
+When you have cloned the project, move the API folder to a folder of your choice.
+
+Open a terminal and execute the following:
+```javascript
+npm install
+```
+
+Now do the following:
+1. Create a ".env" file in your root folder.
+2. Copy these and change the placeholders with your database connection details.
+
+```Shell
+DB_DATABASE={DATABASE NAME}
+DB_USERNAME={USERNAME}
+DB_PASSWORD={PASSWORD}
+DB_HOST={HOSTNAME}
+```
+
+3. If you want to use a SSL connection you have to download your certificate and place it in the root of the project folder.
+   (Azure MySQL database: Click on settings > networks | Here you can download the SSL-certficate)
+   If you don't want to use SSL, remove line 23 which should look like the following code:
+```javascript
+ ssl: { ca: fs.readFileSync("DigiCertGlobalRootCA.crt.pem") }
+```
+  
+</details>
+
+
+## MySQL database
+
+Import the following into your MySQL database:
+```sql
+CREATE DATABASE  IF NOT EXISTS `neglectapp`;
+USE `neglectapp`;
+
+DROP TABLE IF EXISTS `sessions`;
+
+CREATE TABLE `sessions` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Datum` datetime DEFAULT NULL,
+  `Interactie` tinyint DEFAULT NULL,
+  `Hartslag` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb3;
+
+``` 
 ## Extracting Local csv file from WearOS to PC
 
 Make sure you have [adb installed](https://www.xda-developers.com/install-adb-windows-macos-linux/#how-to-set-up-adb) and setup correctly.
@@ -37,10 +88,10 @@ To enable developer options (This may be different depending the OS), do the fol
 
 2. Connect the debugger to the watch using the watch's IP address. For example, if the IP address is `192.168.1.100`, the adb connect command and its response will look like this (a port number, `5555` is added to the address):
 
-   ```
-   adb connect 192.168.1.100:5555
-   connected to 192.168.1.100:5555
-   ```
+```
+adb connect 192.168.1.100:5555
+connected to 192.168.1.100:5555
+```
 
 The watch is now connected to the debugger and you're ready to start debugging. 
 Send adb commands to the watch using the `-s` flag and specify the watch's IP address, including the port number:
