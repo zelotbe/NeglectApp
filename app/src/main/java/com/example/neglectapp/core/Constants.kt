@@ -27,4 +27,7 @@ object Constants {
     const val DATE_PATTERN = "dd/MM HH:mm"
 
     const val INTENSITY_CLICK = "Klik voor intensiteit"
+
+    const val API_URL = "http://10.110.169.8:3000"
+
 }

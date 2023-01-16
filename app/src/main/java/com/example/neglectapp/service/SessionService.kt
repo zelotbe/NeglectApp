@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.net.NetworkInfo
 import android.os.Binder
 import android.os.Environment
 import android.os.IBinder
@@ -29,6 +28,7 @@ import com.example.neglectapp.core.Constants.ACTION_SERVICE_START
 import com.example.neglectapp.core.Constants.ACTION_SERVICE_STOP
 import com.example.neglectapp.core.Constants.ACTION_SHOW_ALARM
 import com.example.neglectapp.core.Constants.ACTION_TRIGGER_ALARM
+import com.example.neglectapp.core.Constants.API_URL
 import com.example.neglectapp.core.Constants.CANCEL_REQUEST_CODE
 import com.example.neglectapp.core.Constants.NOTIFICATION_CHANNEL_ID
 import com.example.neglectapp.core.Constants.NOTIFICATION_CHANNEL_NAME
@@ -351,7 +351,7 @@ class SessionService : Service(), KoinComponent {
                         .create()
                     Log.d("body", "$body")
                     val retrofit = Retrofit.Builder()
-                        .baseUrl("http://192.168.0.178:3000")
+                        .baseUrl(API_URL)
                         .addConverterFactory(GsonConverterFactory.create(gson))
                         .build()
 
