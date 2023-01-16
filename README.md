@@ -12,7 +12,7 @@ Jetpack Compose, Room Database, Preferences Datastore
 
 ## API Installation & Setup
 <details>
-  <summary>Be sure to read this when cloning the project!</summary>
+  <summary>Be sure to read this when cloning the project! (Click to open)</summary>
   
  I recommend you to use an Azure MySQL database.
 When you have cloned the project, move the API folder to a folder of your choice.
