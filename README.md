@@ -3,13 +3,6 @@
 This is an Android smartwatch app made with:
 Jetpack Compose, Room Database, Preferences Datastore
 
-## Installation
-
-1. Clone the project to a folder of your choice.
-2. Open the project in Android Studio.
-3. Wait for Android Studio to run the gradle scripts.
-4. Ready to build
-
 ## API Installation & Setup
 <details>
   <summary>Be sure to read this when cloning the project! (Click to open)</summary>
@@ -61,6 +54,24 @@ CREATE TABLE `sessions` (
 ) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb3;
 
 ``` 
+
+## Project Installation
+
+1. Clone the project to a folder of your choice.
+2. Open the project in Android Studio.
+3. Wait for Android Studio to run the gradle scripts.
+4. Change the API_URL variable in Core > Constants.kt to the desired API URL
+
+   If the API is running on localhost or your URL is not HTTPS, you have to also edit the IP adress in res > xml > network_security_config.xml
+   (Android doesn't like connecting to HTTP)
+   ```xml
+   ...
+      <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">PLACE LOCAL IP ADRESS HERE</domain>
+      </domain-config>
+    ...
+   ``` 
+5. Ready to build
 ## Extracting Local csv file from WearOS to PC
 
 Make sure you have [adb installed](https://www.xda-developers.com/install-adb-windows-macos-linux/#how-to-set-up-adb) and setup correctly.
